@@ -20,7 +20,7 @@ class ImageBox extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        child: Image.asset(
+        child: Image.network(
           url,
           fit: fit,
         ),

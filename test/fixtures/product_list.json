@@ -1,0 +1,80 @@
+[
+  {
+    "title": "Vegetable paste",
+    "desc": "Vegetable paste with sweet onion and sun-dried tomatoes.",
+    "award_point": 200,
+    "image": "https://www.stipra.com/offers/images/Captsdsdsure.jpg",
+    "start_date": "29/10/2021",
+    "end_date": "30/09/2022",
+    "similar_offers": []
+  },
+  {
+    "title": "PRIMAECO Hummus natural gluten-free BIO",
+    "desc": "Hummus can be spread on sandwiches, pancakes, used as a dip for fresh vegetables or as an addition to the main course. This paste works as the main element of a meal - for example, lightly poured with olive oil, sprinkled with black seeds, parsley, pine nuts, ground paprika with added chopped black",
+    "award_point": 150,
+    "image": "https://www.stipra.com/offers/images/Captsddsdsdsdure.jpg",
+    "start_date": "29/10/2021",
+    "end_date": "30/09/2022",
+    "similar_offers": []
+  },
+  {
+    "title": "ALLOS BIO avocado cream paste",
+    "desc": "Cream paste with avocado BIO",
+    "award_point": 150,
+    "image": "https://www.stipra.com/offers/images/Capturwewee.jpg",
+    "start_date": "29/10/2021",
+    "end_date": "30/09/2022",
+    "similar_offers": []
+  },
+  {
+    "title": "BIO CEILING CINNAMON GROUND",
+    "desc": "Cynamon Celjonski: is the noblest version of this popular, aromatic spice. It is characterized by a sweet, delicate flavour finished with a hint of citrus, thanks to which I give fullness to numerous dishes.",
+    "award_point": 100,
+    "image": "https://www.stipra.com/offers/images/rr.jpg",
+    "start_date": "26/10/2021",
+    "end_date": "20/10/2022",
+    "similar_offers": []
+  },
+  {
+    "title": "JACOBS Cronat Gold Instant coffee",
+    "desc": "Many of us cannot imagine the morning without aromatic coffee. It is important that it is strong and at the same time not too burdensome for the digestive system. JACOBS Cronat Gold instant coffee, thanks to carefully selected types of coffee beans used in the production process.",
+    "award_point": 100,
+    "image": "https://www.stipra.com/offers/images/dwdw.jpg",
+    "start_date": "29/10/2021",
+    "end_date": "30/09/2022",
+    "similar_offers": [
+      {
+        "title": "Coffee beans JACOBS Kronung 1 kg",
+        "desc": "Since 1895, with every cup of Jacobs coffee drunk, Johann Jacobss dream comes true. He wanted everyone to experience the magic of the coffee aroma. The package contains 1000 g.",
+        "award_point": 100,
+        "image": "https://www.stipra.com/offers/images/wwe.jpg",
+        "start_date": "21/10/2021",
+        "end_date": "22/07/2022"
+      },
+      {
+        "title": "Tesco Gold Instant Coffee",
+        "desc": "Tesco Gold RICH & SMOOTH Robusta and Arabica beans, roasted for a deep flavour Our farmers harvest coffee at the height of the season when the coffee cherry is at perfect ripeness. And if you dispose of it in the green bin for glass you get 120 pointsO",
+        "award_point": 120,
+        "image": "https://www.stipra.com/offers/images/Capturwewee.jpg",
+        "start_date": "18/02/2021",
+        "end_date": "24/07/2022"
+      }
+    ]
+  },
+  {
+    "title": "Coffee beans JACOBS Kronung 1 kg",
+    "desc": " Since 1895, with every cup of Jacobs coffee drunk, Johann Jacobss dream comes true. He wanted everyone to experience the magic of the coffee aroma. The package contains 1000 g.",
+    "award_point": 100,
+    "image": "https://www.stipra.com/offers/images/wwe.jpg",
+    "start_date": "21/10/2021",
+    "end_date": "22/07/2022"
+  },
+  {
+    "title": "Tesco Gold Instant Coffee",
+    "desc": "Tesco Gold RICH & SMOOTH Robusta and Arabica beans, roasted for a deep flavour Our farmers harvest coffee at the height of the season when the coffee cherry is at perfect ripeness. And if you dispose of it in the green bin for glass you get 120 pointsO",
+    "award_point": 120,
+    "image": "https://www.stipra.com/offers/images/Capturwewee.jpg",
+    "start_date": "18/02/2021",
+    "end_date": "24/07/2022"
+  }
+]

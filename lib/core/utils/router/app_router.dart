@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:stipra/data/models/offer_model.dart';
+import 'package:stipra/data/models/product_model.dart';
+import 'package:stipra/presentation/pages/product_detail/product_detail_page.dart';
+import 'package:stipra/presentation/pages/trading_offer_detail/trading_offer_detail_page.dart';
 
 import '../../../presentation/pages/home/home_page.dart';
 import '../../../presentation/pages/splash/splash_page.dart';
@@ -21,7 +25,8 @@ class AppRouter {
   };
 
   late final Map<String, AppRoute> routeBuilders = {
-    'AppRoutes.otpVerify': routeOtpVerifyPage,
+    AppRoutes.productDetail: _routeProductDetailPage,
+    AppRoutes.tradingOfferDetail: _routeTradingOfferDetailPage,
   };
 
   Route? onGenerateRoute(RouteSettings routeSettings) {
@@ -38,16 +43,28 @@ class AppRouter {
     }
   }
 
-  Route routeOtpVerifyPage(RouteSettings routeSettings) {
-    var phoneNumber;
-    if (routeSettings.arguments is String) {
-      phoneNumber = routeSettings.arguments as String;
-    }
-    if (phoneNumber != null) {
+  Route _routeProductDetailPage(RouteSettings routeSettings) {
+    final data = routeSettings.arguments;
+
+    if (data != null) {
       return MaterialPageRoute(
-        builder: (context) => Container(
-            //phoneNumber: phoneNumber,
-            ),
+        builder: (context) => ProductDetailPage(
+          productModel: data as ProductModel,
+        ),
+      );
+    } else {
+      return MaterialPageRoute(builder: (context) => Container());
+    }
+  }
+
+  Route _routeTradingOfferDetailPage(RouteSettings routeSettings) {
+    final data = routeSettings.arguments;
+
+    if (data != null) {
+      return MaterialPageRoute(
+        builder: (context) => TradingOfferDetailPage(
+          offerModel: data as OfferModel,
+        ),
       );
     } else {
       return MaterialPageRoute(builder: (context) => Container());

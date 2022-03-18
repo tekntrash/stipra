@@ -15,51 +15,51 @@ class AppTheme {
   static const bgColor = const Color.fromARGB(255, 248, 248, 236);
 
   static final headingText = GoogleFonts.inter(
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: FontWeight.w600,
   );
   static final largeParagraphBoldText = GoogleFonts.inter(
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: FontWeight.bold,
   );
   static final paragraphBoldText = GoogleFonts.inter(
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: FontWeight.bold,
   );
   static final paragraphSemiBoldText = GoogleFonts.inter(
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: FontWeight.w600,
   );
   static final paragraphRegularText = GoogleFonts.inter(
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: FontWeight.w400,
   );
   static final buttonText = GoogleFonts.inter(
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: FontWeight.w600,
   );
   static final smallParagraphSemiBoldText = GoogleFonts.inter(
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: FontWeight.w600,
   );
   static final smallParagraphRegularText = GoogleFonts.inter(
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: FontWeight.w400,
   );
   static final smallParagraphMediumText = GoogleFonts.inter(
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: FontWeight.w500,
   );
   static final extraSmallParagraphSemiBoldText = GoogleFonts.inter(
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: FontWeight.w600,
   );
   static final extraSmallParagraphRegularText = GoogleFonts.inter(
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: FontWeight.w400,
   );
   static final extraSmallParagraphMediumText = GoogleFonts.inter(
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: FontWeight.w500,
   );
 }

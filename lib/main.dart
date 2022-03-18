@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stipra/shared/app_theme.dart';
 
 import 'core/utils/router/app_router.dart';
+import 'injection_container.dart' as di;
 
 Future<void> main() async {
+  await di.init();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ScreenUtilInit(
@@ -23,6 +26,10 @@ class StipraApplication extends StatelessWidget {
         //home: Container(),
         navigatorKey: AppRouter().mainNavigatorKey,
         onGenerateRoute: AppRouter().onGenerateRoute,
+        theme: ThemeData(
+          primaryColor: AppTheme.primaryColor,
+          secondaryHeaderColor: AppTheme.secondaryColor,
+        ),
         //routes: AppRouter().routes,
       );
 }
