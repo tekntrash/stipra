@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stipra/data/models/offer_model.dart';
 import 'package:stipra/data/models/product_model.dart';
+import 'package:stipra/presentation/pages/board/board_screen.dart';
 import 'package:stipra/presentation/pages/product_detail/product_detail_page.dart';
 import 'package:stipra/presentation/pages/trading_offer_detail/trading_offer_detail_page.dart';
 
@@ -22,6 +23,7 @@ class AppRouter {
   final Map<String, Widget> routes = {
     AppRoutes.splash: SplashPage(),
     AppRoutes.home: HomePage(),
+    AppRoutes.board: BoardScreen(),
   };
 
   late final Map<String, AppRoute> routeBuilders = {

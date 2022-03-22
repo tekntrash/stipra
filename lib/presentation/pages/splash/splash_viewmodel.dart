@@ -8,7 +8,7 @@ class SplashViewModel extends BaseViewModel {
     await Future.delayed(Duration(seconds: 2));
     AppNavigator.pushReplacementNamed(
       context: context,
-      routeName: AppRoutes.home,
+      routeName: AppRoutes.board,
     );
   }
 }
