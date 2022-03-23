@@ -9,6 +9,7 @@ import '../../../../shared/app_theme.dart';
 import '../../../widgets/field_builder_auto.dart';
 import '../phone_number_input_field.dart';
 import 'enter_phone_number_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 part 'widgets/phone_number_field.dart';
 part 'widgets/topbar_widget.dart';
@@ -52,7 +53,7 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         TopBarWidget(isSignIn: widget.isSignIn),
-                        SizedBox(height: 30),
+                        SizedBox(height: 30.h),
                         /*if (widget.isSignIn != true)
                           FieldBuilderAuto(
                             controller: viewModel.taxId.textController,
@@ -64,13 +65,13 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                             style: AppTheme.paragraphBoldText,
                           ),*/
                         SizedBox(
-                          height: 20,
+                          height: 20.h,
                         ),
                         PhoneNumberField(
                           viewModel: viewModel,
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 20.h,
                         ),
                         GestureDetector(
                           onTap: () async {
@@ -86,7 +87,7 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 15),
+                                  padding: EdgeInsets.only(left: 15.w),
                                   child: SquareCheckbox(
                                       value:
                                           true /*HiveService()
@@ -106,8 +107,8 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                                       glowColor: AppTheme.accentFirstColor),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 20),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.w, horizontal: 20.h),
                                   child: ClassicText(
                                     text: 'Keep signed',
                                     style: AppTheme.smallParagraphMediumText
@@ -123,13 +124,13 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Container(
-                                padding: EdgeInsets.only(bottom: 80),
+                                padding: EdgeInsets.only(bottom: 80.h),
                                 child: VerifyNumberButton(
                                   viewModel: viewModel,
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.only(bottom: 25),
+                                padding: EdgeInsets.only(bottom: 25.h),
                                 alignment: Alignment.bottomCenter,
                                 child: Text('Stipra all rights reserved'),
                               ),

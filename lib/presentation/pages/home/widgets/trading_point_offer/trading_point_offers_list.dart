@@ -22,7 +22,7 @@ class TradingPointOffersList extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(left: 15.w),
             child: Text(
-              'Trading Point Offers',
+              'Deals on Fruits & Tea',
               style: AppTheme.largeParagraphBoldText,
             ),
           ),
@@ -30,17 +30,36 @@ class TradingPointOffersList extends StatelessWidget {
             height: 10.h,
           ),
           Container(
-            height: 190.h,
+            height: 35.h,
             child: ListView.builder(
-              itemCount: offers.length,
-              //shrinkWrap: true,
+              itemCount: offers.length * 2,
               scrollDirection: Axis.horizontal,
-              //shrinkWrap: true,
               itemBuilder: (context, index) {
+                final bool isFirst = index == 0;
+                index = index % offers.length;
                 return Container(
-                  margin: EdgeInsets.only(left: index == 0 ? 15.w : 0),
-                  child: TradingPointOfferCard(
-                    offerModel: offers[index],
+                  margin: EdgeInsets.only(left: isFirst ? 15.w : 0, right: 8.w),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 18),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: isFirst
+                            ? AppTheme.darkPrimaryColor
+                            : Colors.transparent,
+                        border: Border.all(
+                          color: isFirst
+                              ? AppTheme.darkPrimaryColor
+                              : Colors.black,
+                        )),
+                    height: 35.h,
+                    child: Center(
+                      child: Text(
+                        offers[index].title!,
+                        style: AppTheme.extraSmallParagraphMediumText.copyWith(
+                          color: isFirst ? Colors.white : Colors.black,
+                        ),
+                      ),
+                    ),
                   ),
                 );
               },

@@ -12,7 +12,7 @@ import 'package:stipra/domain/usecases/get_products.dart';
 
 final locator = GetIt.instance;
 
-Future<void> init() async {
+void init() {
   //!Features
   //Usecases
   //locator.registerLazySingleton(() => GetOffers(locator()));

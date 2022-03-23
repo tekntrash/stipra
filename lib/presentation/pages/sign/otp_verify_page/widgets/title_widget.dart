@@ -7,7 +7,7 @@ class TitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicWidth(
       child: Container(
-        padding: EdgeInsets.fromLTRB(20, 30, 10, 20),
+        padding: EdgeInsets.fromLTRB(20.w, 30.h, 10.w, 20.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,

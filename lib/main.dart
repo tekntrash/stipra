@@ -6,12 +6,23 @@ import 'core/utils/router/app_router.dart';
 import 'injection_container.dart' as di;
 
 Future<void> main() async {
-  await di.init();
+  di.init();
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    ScaffoldMessenger.of(
+      AppRouter().mainNavigatorKey!.currentState!.context,
+    ).showSnackBar(
+      SnackBar(
+        content: Text('Error: $details'),
+      ),
+    );
+  };
   runApp(
     ScreenUtilInit(
       designSize: Size(360, 690),
       minTextAdapt: true,
+      splitScreenMode: true,
       builder: () => StipraApplication(),
     ),
   );

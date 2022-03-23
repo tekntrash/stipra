@@ -7,7 +7,7 @@ class BottomInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.only(bottom: 25),
+        padding: EdgeInsets.only(bottom: 25.h),
         alignment: Alignment.bottomCenter,
         child: Text('Stipra all rights reserved'),
       ),

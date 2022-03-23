@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/home/widgets/bottom_bar.dart';
 import 'package:stipra/presentation/pages/home/widgets/top_bar.dart';
+import 'package:stipra/presentation/widgets/local_image_box.dart';
 
 import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
@@ -46,22 +47,41 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           );
         }
         return Scaffold(
+          floatingActionButton: Container(
+            width: 48.w,
+            height: 48.w,
+            decoration: BoxDecoration(
+              color: AppTheme.primaryColor,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: LocalImageBox(
+                width: 32.w,
+                height: 32.w,
+                imgUrl: 'barcode.png',
+              ),
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomBar(
             tabController: tabController,
           ),
-          backgroundColor: AppTheme.primaryColor,
+          //backgroundColor: Color.fromRGBO(255, 189, 55, 1),
           body: Container(
+            color: Color.fromRGBO(255, 189, 55, 1),
             child: SafeArea(
               child: ListView(
                 children: [
                   SizedBox(
-                    height: 20.h,
+                    height: 10.h,
                   ),
                   TopBar(),
                   SizedBox(
-                    height: 40.h,
+                    height: 15.h,
                   ),
                   CurvedContainer(
+                    radius: 30,
                     child: Container(
                       color: AppTheme.whiteColor,
                       child: Column(
@@ -72,9 +92,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           ),
                           TradingPointOffersList(
                             offers: viewModel.offers,
-                          ),
-                          Container(
-                            height: 25.h,
                           ),
                           ProductOffersList(
                             products: viewModel.products,

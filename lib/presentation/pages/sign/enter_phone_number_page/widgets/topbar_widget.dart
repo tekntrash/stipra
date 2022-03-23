@@ -12,7 +12,7 @@ class TopBarWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.fromLTRB(15, 20, 10, 10),
+          padding: EdgeInsets.fromLTRB(15.w, 20.h, 10.w, 10.h),
           alignment: Alignment.centerLeft,
           child: GestureDetector(
             onTap: () {
@@ -27,7 +27,7 @@ class TopBarWidget extends StatelessWidget {
         ),
         IntrinsicWidth(
           child: Container(
-            padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
+            padding: EdgeInsets.fromLTRB(20.w, 30.h, 20.w, 20.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -42,7 +42,7 @@ class TopBarWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 20.h,
                 ),
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),

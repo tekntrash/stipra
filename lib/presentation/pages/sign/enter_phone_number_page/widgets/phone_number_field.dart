@@ -10,7 +10,7 @@ class PhoneNumberField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+      margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
       child: PhoneNumberInputField(
         phonevalidator: viewModel.phonevalidator,
         autoValidateMode: AutovalidateMode.disabled,

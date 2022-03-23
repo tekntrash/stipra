@@ -19,8 +19,8 @@ class ConfirmButton extends StatelessWidget {
           child: viewModel.isCheckingPin
               ? Center(
                   child: Container(
-                    width: 24,
-                    height: 24,
+                    width: 24.w,
+                    height: 24.w,
                     child: CircularProgressIndicator(
                       strokeWidth: 2.5,
                       color: Colors.white,
@@ -33,8 +33,8 @@ class ConfirmButton extends StatelessWidget {
                 ),
         ),
         options: CustomButtonOptions(
-          width: 200,
-          height: 60,
+          width: 200.w,
+          height: 60.h,
           color: AppTheme.primaryColor,
           textStyle: AppTheme.buttonText.apply(color: Colors.black),
           elevation: 3,

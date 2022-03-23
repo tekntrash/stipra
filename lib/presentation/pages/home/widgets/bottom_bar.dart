@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stipra/shared/app_theme.dart';
 
@@ -11,6 +12,58 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.white,
+      shape: CircularNotchedRectangle(),
+      notchMargin: 3,
+      child: Container(
+        //color: Colors.transparent,
+        height: 56,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            IconButton(
+                icon: Icon(
+                  Icons.sell_outlined,
+                  size: 28,
+                  color: AppTheme.primaryColor,
+                ),
+                onPressed: () {}),
+            IconButton(
+                icon: Icon(
+                  Icons.storefront,
+                  size: 28,
+                ),
+                onPressed: () {}),
+            SizedBox(width: 40), // The dummy child
+            IconButton(
+                icon: Icon(
+                  Icons.person_outline_outlined,
+                  size: 32,
+                ),
+                onPressed: () {}),
+            InkWell(
+              onTap: () {
+                //
+              },
+              child: SvgPicture.asset(
+                'assets/images/info.svg',
+                width: 24,
+                height: 24,
+                color: Colors.grey[900],
+                semanticsLabel: 'Info box',
+              ),
+            ),
+            /* IconButton(
+                icon: Icon(
+                  Icons.image,
+                  size: 28,
+                ),
+                onPressed: () {}),*/
+          ],
+        ),
+      ),
+    );
     return Material(
       elevation: 15,
       color: Colors.white,

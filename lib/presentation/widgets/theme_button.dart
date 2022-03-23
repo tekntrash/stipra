@@ -34,11 +34,11 @@ class ThemeButton extends StatelessWidget {
         text: text,
         child: child,
         options: CustomButtonOptions(
-          width: 200.w,
-          height: 50.h,
+          width: 200,
+          height: 50,
           color: color ?? AppTheme.primaryColor,
           textStyle: AppTheme.paragraphRegularText.apply(
-            color: color == Colors.white ? Colors.black : Colors.white,
+            color: Colors.white,
           ),
           elevation: elevation,
           borderSide: BorderSide(

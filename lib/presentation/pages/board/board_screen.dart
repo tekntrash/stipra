@@ -20,11 +20,18 @@ class BoardScreen extends StatefulWidget {
 
 class _BoardScreenState extends State<BoardScreen> {
   late List<PageViewModel> pageViewModels;
+  late bool isInited;
 
   @override
   void initState() {
+    isInited = false;
+    if (isInited != true) {
+      initApp();
+    }
     super.initState();
-    final double imageSize = 128.h;
+  }
+
+  void initApp() {
     pageViewModels = [
       PageViewModel(
         useScrollView: false,
@@ -33,18 +40,19 @@ class _BoardScreenState extends State<BoardScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SvgPicture.asset(
-              'assets/images/Illustration.svg',
-              width: 196,
-              height: 196,
+              'assets/images/image_box.svg',
+              width: 196.w,
+              height: 196.w,
+              semanticsLabel: 'Image box',
             ),
             SizedBox(
-              height: 20.h,
+              height: 20,
             ),
             buildTitle(
               'Consume and earn',
             ),
             SizedBox(
-              height: 20.h,
+              height: 20,
             ),
             buildSubTitle(
               'Let\'s win together with recycle the products we consumed!',
@@ -59,18 +67,19 @@ class _BoardScreenState extends State<BoardScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SvgPicture.asset(
-              'assets/images/Illustration.svg',
-              width: 196,
-              height: 196,
+              'assets/images/image_box.svg',
+              width: 196.w,
+              height: 196.w,
+              semanticsLabel: 'Image box',
             ),
             SizedBox(
-              height: 20.h,
+              height: 20,
             ),
             buildTitle(
               'Consume and earn',
             ),
             SizedBox(
-              height: 20.h,
+              height: 20,
             ),
             buildSubTitle(
               'Let\'s win together with recycle the products we consumed!',
@@ -85,18 +94,19 @@ class _BoardScreenState extends State<BoardScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SvgPicture.asset(
-              'assets/images/Illustration.svg',
-              width: 196,
-              height: 196,
+              'assets/images/image_box.svg',
+              width: 196.w,
+              height: 196.w,
+              semanticsLabel: 'Image box',
             ),
             SizedBox(
-              height: 20.h,
+              height: 20,
             ),
             buildTitle(
               'Consume and earn',
             ),
             SizedBox(
-              height: 20.h,
+              height: 20,
             ),
             buildSubTitle(
               'Let\'s win together with recycle the products we consumed!',
@@ -105,6 +115,13 @@ class _BoardScreenState extends State<BoardScreen> {
         ),
       ),
     ];
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      setState(() {
+        isInited = true;
+        //
+      });
+    });
   }
 
   Widget buildTitle(String text) {
@@ -135,29 +152,35 @@ class _BoardScreenState extends State<BoardScreen> {
           child: Column(
             children: [
               SizedBox(
-                height: 50.h,
+                height: 40.h,
               ),
-              Expanded(
-                child: IntroductionScreen(
-                  pages: pageViewModels,
-                  onDone: () {},
-                  controlsPadding: EdgeInsets.zero,
-                  globalBackgroundColor: AppTheme.gray4Color.withOpacity(0.01),
-                  showSkipButton: false,
-                  showDoneButton: false,
-                  showNextButton: false,
-                  dotsDecorator: DotsDecorator(
-                      size: const Size.square(10.0),
-                      activeSize: const Size(10.0, 10.0),
-                      activeColor: AppTheme.primaryColor,
-                      color: Colors.black26,
-                      spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-                      activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(500.0))),
-                ),
-              ),
+              (isInited == true)
+                  ? Expanded(
+                      child: IntroductionScreen(
+                        pages: pageViewModels,
+                        onDone: () {},
+                        controlsPadding: EdgeInsets.zero,
+                        globalBackgroundColor:
+                            AppTheme.gray4Color.withOpacity(0.01),
+                        showSkipButton: false,
+                        showDoneButton: false,
+                        showNextButton: false,
+                        dotsDecorator: DotsDecorator(
+                            size: const Size.square(10.0),
+                            activeSize: const Size(10.0, 10.0),
+                            activeColor: AppTheme.primaryColor,
+                            color: Colors.black26,
+                            spacing:
+                                const EdgeInsets.symmetric(horizontal: 3.0),
+                            activeShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(500.0))),
+                      ),
+                    )
+                  : Expanded(
+                      child: Container(),
+                    ),
               SizedBox(
-                height: 50,
+                height: 40.h,
               ),
               ThemeButton(
                   text: 'Login',
@@ -168,10 +191,10 @@ class _BoardScreenState extends State<BoardScreen> {
                     );
                   }),
               SizedBox(
-                height: 5,
+                height: 5.h,
               ),
               ThemeButton(
-                  text: 'Signup',
+                  text: 'Register',
                   onTap: () {
                     AppNavigator.push(
                       context: context,
@@ -179,7 +202,7 @@ class _BoardScreenState extends State<BoardScreen> {
                     );
                   }),
               SizedBox(
-                height: 20,
+                height: 20.h,
               ),
               buildBottomWidget(),
             ],

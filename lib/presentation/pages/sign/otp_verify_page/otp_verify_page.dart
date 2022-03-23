@@ -5,6 +5,7 @@ import 'package:stipra/presentation/widgets/custom_button.dart';
 
 import '../../../../shared/app_theme.dart';
 import 'otp_verify_viewmodel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 part 'widgets/bottom_info_widget.dart';
 part 'widgets/confirm_button.dart';
@@ -39,12 +40,12 @@ class OtpVerifyPage extends StatelessWidget {
                       children: [
                         TopBarWidget(),
                         TitleWidget(),
-                        SizedBox(height: 50),
+                        SizedBox(height: 50.h),
                         Form(
                           key: viewModel.formKey,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 30),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.0.h, horizontal: 30.w),
                             child: PinCodeWidget(
                               viewModel: viewModel,
                             ),
@@ -56,13 +57,13 @@ class OtpVerifyPage extends StatelessWidget {
                             children: [
                               Container(),
                               Container(
-                                padding: EdgeInsets.only(bottom: 100),
+                                padding: EdgeInsets.only(bottom: 100.h),
                                 child: ConfirmButton(
                                   viewModel: viewModel,
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.only(bottom: 25),
+                                padding: EdgeInsets.only(bottom: 25.h),
                                 alignment: Alignment.bottomCenter,
                                 child: Text('Stipra all rights reserved'),
                               ),

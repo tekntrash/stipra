@@ -10,18 +10,18 @@ class VerifyNumberButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5),
+      margin: EdgeInsets.all(5.w),
       child: CustomButton(
         onPressed: () {
           viewModel.verifyNumber(context);
         },
         text: "Continue",
         options: CustomButtonOptions(
-          width: 200,
-          height: 60,
+          width: 200.w,
+          height: 60.h,
           color: AppTheme.primaryColor,
           textStyle: AppTheme.paragraphRegularText.apply(
-            color: Colors.black,
+            color: Colors.white,
           ),
           elevation: 3,
           borderSide: BorderSide(
