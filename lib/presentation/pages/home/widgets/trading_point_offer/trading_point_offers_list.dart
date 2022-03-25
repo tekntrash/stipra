@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../data/models/offer_model.dart';
 import '../../../../../shared/app_theme.dart';
-import 'trading_point_offer_card.dart';
 
 class TradingPointOffersList extends StatelessWidget {
   final List<OfferModel> offers;
@@ -23,7 +22,9 @@ class TradingPointOffersList extends StatelessWidget {
             margin: EdgeInsets.only(left: 15.w),
             child: Text(
               'Deals on Fruits & Tea',
-              style: AppTheme.largeParagraphBoldText,
+              style: AppTheme().largeParagraphBoldText.copyWith(
+                    color: AppTheme().greyScale0,
+                  ),
             ),
           ),
           SizedBox(
@@ -44,20 +45,23 @@ class TradingPointOffersList extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         color: isFirst
-                            ? AppTheme.darkPrimaryColor
+                            ? AppTheme().darkPrimaryColor
                             : Colors.transparent,
                         border: Border.all(
                           color: isFirst
-                              ? AppTheme.darkPrimaryColor
-                              : Colors.black,
+                              ? AppTheme().darkPrimaryColor
+                              : AppTheme().greyScale4,
                         )),
                     height: 35.h,
                     child: Center(
                       child: Text(
                         offers[index].title!,
-                        style: AppTheme.extraSmallParagraphMediumText.copyWith(
-                          color: isFirst ? Colors.white : Colors.black,
-                        ),
+                        style:
+                            AppTheme().extraSmallParagraphMediumText.copyWith(
+                                  color: isFirst
+                                      ? AppTheme().greyScale6
+                                      : AppTheme().greyScale2,
+                                ),
                       ),
                     ),
                   ),

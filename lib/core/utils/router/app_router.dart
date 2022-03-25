@@ -19,7 +19,7 @@ class AppRouter {
   AppRouter._();
 
   factory AppRouter() => _instance;
-
+/*
   final Map<String, Widget> routes = {
     AppRoutes.splash: SplashPage(),
     AppRoutes.home: HomePage(),
@@ -71,7 +71,8 @@ class AppRouter {
     } else {
       return MaterialPageRoute(builder: (context) => Container());
     }
-  }
+  }*/
 
+  late TabController tabController;
   GlobalKey<NavigatorState>? mainNavigatorKey = GlobalKey();
 }

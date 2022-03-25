@@ -20,7 +20,7 @@ class TopBarWidget extends StatelessWidget {
             },
             child: Icon(
               Icons.arrow_back_ios_rounded,
-              color: AppTheme.blackColor,
+              color: AppTheme().blackColor,
               size: 24,
             ),
           ),
@@ -35,10 +35,10 @@ class TopBarWidget extends StatelessWidget {
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Text(
                     'Welcome to Stipra!',
-                    style: AppTheme.smallParagraphMediumText.copyWith(
-                      fontSize: 26,
-                      color: AppTheme.blackColor,
-                    ),
+                    style: AppTheme().smallParagraphMediumText.copyWith(
+                          fontSize: 26,
+                          color: AppTheme().blackColor,
+                        ),
                   ),
                 ),
                 SizedBox(
@@ -50,9 +50,9 @@ class TopBarWidget extends StatelessWidget {
                     isSignIn != true
                         ? 'Please enter your phone number below to get started with the registration process'
                         : 'Please enter your phone number below to get started to use app',
-                    style: AppTheme.smallParagraphMediumText.copyWith(
-                      color: AppTheme.blackColor,
-                    ),
+                    style: AppTheme().smallParagraphMediumText.copyWith(
+                          color: AppTheme().blackColor,
+                        ),
                   ),
                 ),
               ],

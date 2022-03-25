@@ -55,7 +55,7 @@ class OverlayErrorDialog extends StatelessWidget {
                                 padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 child: ClassicText(
                                   text: error,
-                                  style: AppTheme.paragraphRegularText,
+                                  style: AppTheme().paragraphRegularText,
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -71,7 +71,8 @@ class OverlayErrorDialog extends StatelessWidget {
                                   width: 80,
                                   height: 24,
                                   color: Color(0xFF121833),
-                                  textStyle: AppTheme.paragraphRegularText
+                                  textStyle: AppTheme()
+                                      .paragraphRegularText
                                       .apply(color: Colors.white),
                                   elevation: 0,
                                   borderSide: BorderSide(

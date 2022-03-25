@@ -40,7 +40,7 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
       onModelReady: (model) => model.init(),
       builder: (context, viewModel, child) {
         return Scaffold(
-          backgroundColor: AppTheme.whiteColor,
+          backgroundColor: AppTheme().whiteColor,
           body: Container(
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
@@ -62,7 +62,7 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                             hint: 'Tax ID',
                             margin: EdgeInsets.symmetric(horizontal: 20),
                             autovalidateMode: true,
-                            style: AppTheme.paragraphBoldText,
+                            style: AppTheme().paragraphBoldText,
                           ),*/
                         SizedBox(
                           height: 20.h,
@@ -89,29 +89,31 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 15.w),
                                   child: SquareCheckbox(
-                                      value:
-                                          true /*HiveService()
+                                    value:
+                                        true /*HiveService()
                                           .getLocalInfo()
                                           .keepSigned*/
-                                      ,
-                                      onChange: (val) async {
-                                        /*HiveService()
+                                    ,
+                                    onChange: (val) async {
+                                      /*HiveService()
                                             .getLocalInfo()
                                             .keepSigned = val;
                                         await HiveService()
                                             .getLocalInfo()
                                             .save();*/
-                                        setState(() {});
-                                      },
-                                      color: AppTheme.accentFirstColor,
-                                      glowColor: AppTheme.accentFirstColor),
+                                      setState(() {});
+                                    },
+                                    color: AppTheme().primaryColor,
+                                    glowColor: AppTheme().darkPrimaryColor,
+                                  ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10.w, horizontal: 20.h),
                                   child: ClassicText(
                                     text: 'Keep signed',
-                                    style: AppTheme.smallParagraphMediumText
+                                    style: AppTheme()
+                                        .smallParagraphMediumText
                                         .copyWith(color: Colors.black),
                                   ),
                                 ),

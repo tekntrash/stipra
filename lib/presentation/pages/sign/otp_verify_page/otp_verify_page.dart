@@ -26,7 +26,7 @@ class OtpVerifyPage extends StatelessWidget {
       viewModelBuilder: () => OtpVerifyViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
-          backgroundColor: AppTheme.whiteColor,
+          backgroundColor: AppTheme().whiteColor,
           body: Container(
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
@@ -45,7 +45,7 @@ class OtpVerifyPage extends StatelessWidget {
                           key: viewModel.formKey,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
-                                vertical: 8.0.h, horizontal: 30.w),
+                                vertical: 8.0.h, horizontal: 50.w),
                             child: PinCodeWidget(
                               viewModel: viewModel,
                             ),

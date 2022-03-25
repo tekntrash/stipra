@@ -92,19 +92,19 @@ class _SignTextFormFieldState extends State<SignTextFormField> {
               : widget.textController.text.length > 0
                   ? ''
                   : widget.labelText,
-          labelStyle: AppTheme.smallParagraphRegularText.copyWith(
-            color: AppTheme.blackColor,
-          ),
-          helperStyle: AppTheme.smallParagraphRegularText.copyWith(
-            color: Colors.transparent,
-          ),
-          errorStyle: AppTheme.smallParagraphRegularText.copyWith(
-            color: Colors.red[400],
-          ),
+          labelStyle: AppTheme().smallParagraphRegularText.copyWith(
+                color: AppTheme().blackColor,
+              ),
+          helperStyle: AppTheme().smallParagraphRegularText.copyWith(
+                color: Colors.transparent,
+              ),
+          errorStyle: AppTheme().smallParagraphRegularText.copyWith(
+                color: Colors.red[400],
+              ),
           hintText: widget.hintText,
-          hintStyle: AppTheme.smallParagraphRegularText.apply(
-            color: widget.hintColor,
-          ),
+          hintStyle: AppTheme().smallParagraphRegularText.apply(
+                color: widget.hintColor,
+              ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: widget.borderColor,
@@ -198,10 +198,10 @@ class _SignTextFormFieldState extends State<SignTextFormField> {
               widget.suffixIcon,
         ),
         style: widget.style ??
-            AppTheme.smallParagraphRegularText.copyWith(
+            AppTheme().smallParagraphRegularText.copyWith(
                 color: widget.isEnabled
-                    ? (widget.textColor ?? AppTheme.blackColor)
-                    : (widget.disabledTextColor ?? AppTheme.blackColor)),
+                    ? (widget.textColor ?? AppTheme().blackColor)
+                    : (widget.disabledTextColor ?? AppTheme().blackColor)),
         onChanged: widget.onChanged,
         keyboardType: widget.keyboardType,
         validator: widget.disableValidator

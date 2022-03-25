@@ -64,7 +64,7 @@ class FieldBuilder extends StatelessWidget {
               child: ClassicText(
                 text: text,
                 style: titleStyle ??
-                    AppTheme.extraSmallParagraphMediumText.copyWith(),
+                    AppTheme().extraSmallParagraphMediumText.copyWith(),
               ),
             ),
           IntrinsicHeight(
@@ -138,9 +138,9 @@ class FieldBuilder extends StatelessWidget {
                         child: ClassicText(
                           text: error ?? '',
                           style:
-                              AppTheme.extraSmallParagraphMediumText.copyWith(
-                            color: Colors.red[400],
-                          ),
+                              AppTheme().extraSmallParagraphMediumText.copyWith(
+                                    color: Colors.red[400],
+                                  ),
                         ),
                       ),
                       //),

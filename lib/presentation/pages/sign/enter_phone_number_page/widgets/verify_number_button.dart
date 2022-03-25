@@ -17,12 +17,12 @@ class VerifyNumberButton extends StatelessWidget {
         },
         text: "Continue",
         options: CustomButtonOptions(
-          width: 200.w,
-          height: 60.h,
-          color: AppTheme.primaryColor,
-          textStyle: AppTheme.paragraphRegularText.apply(
-            color: Colors.white,
-          ),
+          width: 230.w,
+          height: 50.h,
+          color: AppTheme().darkPrimaryColor,
+          textStyle: AppTheme().paragraphRegularText.apply(
+                color: Colors.white,
+              ),
           elevation: 3,
           borderSide: BorderSide(
             color: Colors.transparent,

@@ -46,7 +46,7 @@ class LikeSection extends StatelessWidget {
         ),
         Text(
           belowText,
-          style: AppTheme.extraSmallParagraphRegularText,
+          style: AppTheme().extraSmallParagraphRegularText,
         ),
       ],
     );

@@ -38,7 +38,7 @@ class TradingOfferDetailPage extends StatelessWidget {
           );
         }
         return Scaffold(
-          backgroundColor: AppTheme.whiteColor,
+          backgroundColor: AppTheme().whiteColor,
           body: Container(
             child: SafeArea(
               child: ListView(
@@ -85,7 +85,7 @@ class TradingOfferDetailPage extends StatelessWidget {
                   CurvedContainer(
                     radius: 20,
                     child: Container(
-                      color: AppTheme.whiteColor,
+                      color: AppTheme().whiteColor,
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Column(
@@ -113,7 +113,7 @@ class TradingOfferDetailPage extends StatelessWidget {
                             ),
                             Text(
                               offerModel.desc ?? '',
-                              style: AppTheme.smallParagraphRegularText,
+                              style: AppTheme().smallParagraphRegularText,
                             ),
                             Container(
                               height: 45.h,

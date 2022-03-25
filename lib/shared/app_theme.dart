@@ -2,64 +2,84 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static final primaryColor = Color.fromARGB(255, 255, 200, 58);
-  static final darkPrimaryColor = Color.fromRGBO(249, 176, 35, 1);
-  static final secondaryColor = Color.fromARGB(255, 252, 134, 90);
-  static final accentFirstColor = Color.fromARGB(255, 255, 212, 103);
-  static final accentSecondColor = Color.fromARGB(255, 77, 99, 34);
-  static final blackColor = Color.fromARGB(255, 55, 59, 66);
-  static final gray1Color = Color.fromARGB(255, 80, 85, 92);
-  static final gray2Color = Color.fromARGB(255, 168, 173, 180);
-  static final gray3Color = Color.fromARGB(255, 221, 221, 221);
-  static final gray4Color = Color.fromARGB(255, 245, 245, 245);
-  static final whiteColor = Color.fromARGB(255, 255, 255, 255);
-  static final bgColor = Color.fromARGB(255, 255, 255, 255);
+  static AppTheme? _instance;
 
-  static final headingText = GoogleFonts.inter(
+  AppTheme._();
+
+  factory AppTheme() => _instance ??= AppTheme._();
+
+  final primaryBlueColor = Color.fromARGB(255, 42, 75, 160);
+  final primaryDarkBlueColor = Color.fromARGB(255, 21, 48, 117);
+  final primaryColor = Color.fromARGB(255, 25, 202, 106);
+  final darkPrimaryColor = Color.fromARGB(255, 15, 163, 83);
+  final secondaryColor = Color.fromARGB(255, 252, 134, 90);
+  final accentFirstColor = Color.fromARGB(255, 255, 212, 103);
+  final accentSecondColor = Color.fromARGB(255, 77, 99, 34);
+  final blackColor = Color.fromARGB(255, 55, 59, 66);
+  final greyScale0 = Color.fromARGB(255, 30, 34, 43);
+  final greyScale1 = Color.alphaBlend(
+      Color.fromRGBO(0, 0, 0, 0.20), Color.fromARGB(255, 62, 69, 84));
+  final greyScale2 = Color.fromARGB(255, 97, 106, 125);
+  final greyScale3 = Color.fromARGB(255, 136, 145, 165);
+  final greyScale4 = Color.fromARGB(255, 178, 187, 206);
+  final greyScale5 = Color.fromARGB(255, 248, 249, 251);
+  final greyScale6 = Color.fromARGB(255, 250, 251, 253);
+  final lightBlueColor = Color.fromARGB(255, 209, 231, 237);
+  final whiteColor = Color.fromARGB(255, 255, 255, 255);
+  final bgColor = Color.fromARGB(255, 255, 255, 255);
+  final gradientPrimary = LinearGradient(
+    colors: [
+      Color.fromARGB(255, 15, 163, 83).withOpacity(0.85),
+      Color.fromARGB(255, 15, 163, 83).withOpacity(0.9),
+      Color.fromARGB(255, 15, 163, 83).withOpacity(1),
+    ],
+  );
+
+  final headingText = GoogleFonts.inter(
     fontSize: 30,
     fontWeight: FontWeight.w600,
   );
-  static final largeParagraphBoldText = GoogleFonts.inter(
+  final largeParagraphBoldText = GoogleFonts.inter(
     fontSize: 25,
     fontWeight: FontWeight.bold,
   );
-  static final paragraphBoldText = GoogleFonts.inter(
+  final paragraphBoldText = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
-  static final paragraphSemiBoldText = GoogleFonts.inter(
+  final paragraphSemiBoldText = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );
-  static final paragraphRegularText = GoogleFonts.inter(
+  final paragraphRegularText = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.w400,
   );
-  static final buttonText = GoogleFonts.inter(
+  final buttonText = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );
-  static final smallParagraphSemiBoldText = GoogleFonts.inter(
+  final smallParagraphSemiBoldText = GoogleFonts.inter(
     fontSize: 17,
     fontWeight: FontWeight.w600,
   );
-  static final smallParagraphRegularText = GoogleFonts.inter(
+  final smallParagraphRegularText = GoogleFonts.inter(
     fontSize: 17,
     fontWeight: FontWeight.w400,
   );
-  static final smallParagraphMediumText = GoogleFonts.inter(
+  final smallParagraphMediumText = GoogleFonts.inter(
     fontSize: 17,
     fontWeight: FontWeight.w500,
   );
-  static final extraSmallParagraphSemiBoldText = GoogleFonts.inter(
+  final extraSmallParagraphSemiBoldText = GoogleFonts.inter(
     fontSize: 15,
     fontWeight: FontWeight.w600,
   );
-  static final extraSmallParagraphRegularText = GoogleFonts.inter(
+  final extraSmallParagraphRegularText = GoogleFonts.inter(
     fontSize: 15,
     fontWeight: FontWeight.w400,
   );
-  static final extraSmallParagraphMediumText = GoogleFonts.inter(
+  final extraSmallParagraphMediumText = GoogleFonts.inter(
     fontSize: 15,
     fontWeight: FontWeight.w500,
   );

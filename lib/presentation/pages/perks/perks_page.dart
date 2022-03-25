@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
 import 'package:stipra/presentation/pages/barcode_scan/barcode_scan_page.dart';
 import 'package:stipra/presentation/pages/home/widgets/bottom_bar.dart';
 import 'package:stipra/presentation/pages/home/widgets/top_bar.dart';
+import 'package:stipra/presentation/pages/perks/widgets/perks_list.dart';
 import 'package:stipra/presentation/widgets/local_image_box.dart';
 
 import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
-import 'home_viewmodel.dart';
-import 'widgets/product_offer/product_offers_list.dart';
-import 'widgets/trading_point_offer/trading_point_offers_list.dart';
+import 'perks_viewmodel.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class PerksPage extends StatefulWidget {
+  const PerksPage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PerksPage> createState() => _PerksPageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _PerksPageState extends State<PerksPage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ViewModelBuilder<HomeViewModel>.reactive(
-      viewModelBuilder: () => HomeViewModel(),
+    return ViewModelBuilder<PerksViewModel>.reactive(
+      viewModelBuilder: () => PerksViewModel(),
       onModelReady: (viewModel) => viewModel.init(),
       builder: (context, viewModel, child) {
         return Scaffold(
@@ -63,11 +61,8 @@ class _HomePageState extends State<HomePage>
                                 Container(
                                   height: 25.h,
                                 ),
-                                TradingPointOffersList(
+                                PerksList(
                                   offers: viewModel.offers,
-                                ),
-                                ProductOffersList(
-                                  products: viewModel.products,
                                 ),
                                 Container(
                                   height: 25.h,

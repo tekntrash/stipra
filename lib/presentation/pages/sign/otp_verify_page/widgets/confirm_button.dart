@@ -29,14 +29,14 @@ class ConfirmButton extends StatelessWidget {
                 )
               : Text(
                   'Confirm',
-                  style: AppTheme.buttonText.copyWith(color: Colors.white),
+                  style: AppTheme().buttonText.copyWith(color: Colors.white),
                 ),
         ),
         options: CustomButtonOptions(
-          width: 200.w,
-          height: 60.h,
-          color: AppTheme.primaryColor,
-          textStyle: AppTheme.buttonText.apply(color: Colors.black),
+          width: 230.w,
+          height: 50.h,
+          color: AppTheme().darkPrimaryColor,
+          textStyle: AppTheme().buttonText.apply(color: Colors.black),
           elevation: 3,
           borderSide: BorderSide(
             color: Colors.transparent,

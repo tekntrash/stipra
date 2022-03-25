@@ -19,19 +19,20 @@ class PinCodeWidget extends StatelessWidget {
         color: Colors.black,
       ),
       showCursor: true,
-      length: 6,
+      length: 4,
       obscureText: false,
       obscuringCharacter: '*',
       blinkWhenObscuring: true,
       animationType: AnimationType.fade,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       validator: (v) {
         return null;
       },
       pinTheme: PinTheme(
         shape: PinCodeFieldShape.box,
         borderRadius: BorderRadius.circular(15),
-        fieldHeight: 50,
-        fieldWidth: 40,
+        fieldHeight: 52,
+        fieldWidth: 44,
         activeFillColor: Colors.white,
         inactiveFillColor: Colors.white,
         selectedFillColor: Colors.white,

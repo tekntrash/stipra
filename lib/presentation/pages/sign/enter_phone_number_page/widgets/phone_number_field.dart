@@ -28,14 +28,14 @@ class PhoneNumberField extends StatelessWidget {
         onInputValidated: (bool value) {
           //print(value);
         },
-        textStyle: AppTheme.smallParagraphMediumText.copyWith(
-          fontSize: 16,
-          color: AppTheme.blackColor,
-        ),
-        selectorTextStyle: AppTheme.smallParagraphMediumText.copyWith(
-          fontSize: 16,
-          color: AppTheme.blackColor,
-        ),
+        textStyle: AppTheme().smallParagraphMediumText.copyWith(
+              fontSize: 16,
+              color: AppTheme().blackColor,
+            ),
+        selectorTextStyle: AppTheme().smallParagraphMediumText.copyWith(
+              fontSize: 16,
+              color: AppTheme().blackColor,
+            ),
       ),
     );
   }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:stipra/core/utils/router/app_navigator.dart';
+import 'package:stipra/presentation/pages/product_detail/product_detail_page.dart';
 import 'package:stipra/presentation/widgets/image_box.dart';
 import 'package:stipra/presentation/widgets/local_image_box.dart';
 
 import '../../../../../data/models/product_model.dart';
 import '../../../../../shared/app_theme.dart';
-import 'product_offer_card.dart';
 
 class ProductOffersList extends StatelessWidget {
   final List<ProductModel> products;
@@ -43,98 +44,108 @@ class ProductOffersList extends StatelessWidget {
                 return Material(
                   elevation: 0.25,
                   borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color.fromRGBO(248, 249, 251, 1),
-                    ),
-                    width: 160.w,
-                    height: 200.h,
-                    child: Stack(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/images/image_box.svg',
-                              width: 64.w,
-                              height: 64.w,
-                              semanticsLabel: 'Image box',
-                            ),
-                            /*LocalImageBox(
-                              width: 64,
-                              height: 64,
-                              imgUrl: 'roblox.png',
-                            ),*/
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 12.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product.title!,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: AppTheme.smallParagraphSemiBoldText
-                                        .copyWith(
-                                      color: AppTheme.blackColor,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  Text(
-                                    '${product.awardPoint.toString()} Points',
-                                    style: AppTheme
-                                        .extraSmallParagraphRegularText
-                                        .copyWith(
-                                      fontSize: 13,
-                                      color: AppTheme.gray1Color,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 2,
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(right: 25.w),
-                                    child: Text(
-                                      product.desc!,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      AppNavigator.push(
+                        context: context,
+                        child: ProductDetailPage(productModel: product),
+                      );
+                    },
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppTheme().greyScale5,
+                      ),
+                      width: 160.w,
+                      height: 200.h,
+                      child: Stack(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/images/image_box.svg',
+                                width: 64.w,
+                                height: 64.w,
+                                semanticsLabel: 'Image box',
+                              ),
+                              /*LocalImageBox(
+                                width: 64,
+                                height: 64,
+                                imgUrl: 'roblox.png',
+                              ),*/
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 12.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      product.title!,
                                       overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: AppTheme
+                                      maxLines: 1,
+                                      style: AppTheme()
+                                          .smallParagraphSemiBoldText
+                                          .copyWith(
+                                            color: AppTheme().blackColor,
+                                            fontSize: 16,
+                                          ),
+                                    ),
+                                    SizedBox(
+                                      height: 2.h,
+                                    ),
+                                    Text(
+                                      '${product.awardPoint.toString()} Points',
+                                      style: AppTheme()
                                           .extraSmallParagraphRegularText
                                           .copyWith(
-                                        fontSize: 13,
-                                        color: AppTheme.gray1Color,
+                                            fontSize: 13,
+                                            color: AppTheme().greyScale0,
+                                          ),
+                                    ),
+                                    SizedBox(
+                                      height: 2,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(right: 25.w),
+                                      child: Text(
+                                        product.desc!,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: AppTheme()
+                                            .extraSmallParagraphRegularText
+                                            .copyWith(
+                                              fontSize: 13,
+                                              color: AppTheme().greyScale2,
+                                            ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: 5.h,
-                          right: 5.w,
-                          child: Container(
-                            width: 32.w,
-                            height: 32.w,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppTheme.primaryColor,
-                            ),
-                            child: Center(
-                              child: LocalImageBox(
-                                width: 18.w,
-                                height: 18.w,
-                                imgUrl: 'barcode.png',
+                            ],
+                          ),
+                          Positioned(
+                            bottom: 5.h,
+                            right: 5.w,
+                            child: Container(
+                              width: 32.w,
+                              height: 32.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppTheme().darkPrimaryColor,
+                              ),
+                              child: Center(
+                                child: LocalImageBox(
+                                  width: 18.w,
+                                  height: 18.w,
+                                  imgUrl: 'barcode.png',
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );

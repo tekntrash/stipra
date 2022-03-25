@@ -16,10 +16,10 @@ class TitleWidget extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Text(
                 'Verify your account',
-                style: AppTheme.paragraphRegularText.copyWith(
-                  fontSize: 27,
-                  color: Colors.black,
-                ),
+                style: AppTheme().paragraphRegularText.copyWith(
+                      fontSize: 27,
+                      color: Colors.black,
+                    ),
               ),
             ),
             SizedBox(
@@ -30,9 +30,9 @@ class TitleWidget extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Text(
                   'Enter the six-digit code that was sent via SMS to the phone number you provided',
-                  style: AppTheme.paragraphRegularText.copyWith(
-                    color: Colors.black,
-                  ),
+                  style: AppTheme().paragraphRegularText.copyWith(
+                        color: Colors.black,
+                      ),
                 ),
               ),
             ),

@@ -14,9 +14,9 @@ class _TopBar extends StatelessWidget {
       children: [
         Text(
           offerModel.title ?? '',
-          style: AppTheme.largeParagraphBoldText.copyWith(
-            color: AppTheme.blackColor,
-          ),
+          style: AppTheme().largeParagraphBoldText.copyWith(
+                color: AppTheme().blackColor,
+              ),
           overflow: TextOverflow.fade,
           maxLines: 2,
         ),
@@ -32,25 +32,25 @@ class _TopBar extends StatelessWidget {
                   WidgetSpan(
                     child: Icon(
                       Icons.access_time,
-                      color: AppTheme.gray2Color,
+                      color: AppTheme().greyScale0,
                       size: 22,
                     ),
                     alignment: PlaceholderAlignment.middle,
                   ),
                   TextSpan(
                     text: ' ${offerModel.endDate}',
-                    style: AppTheme.extraSmallParagraphRegularText.copyWith(
-                      color: AppTheme.gray2Color,
-                    ),
+                    style: AppTheme().extraSmallParagraphRegularText.copyWith(
+                          color: AppTheme().greyScale0,
+                        ),
                   ),
                 ],
               ),
             ),
             Text(
               'Level: ALL',
-              style: AppTheme.extraSmallParagraphRegularText.copyWith(
-                color: AppTheme.gray2Color,
-              ),
+              style: AppTheme().extraSmallParagraphRegularText.copyWith(
+                    color: AppTheme().greyScale0,
+                  ),
             ),
           ],
         ),

@@ -53,7 +53,7 @@ class FieldBuilderAuto extends StatelessWidget {
               padding: textPadding,
               child: ClassicText(
                 text: text,
-                style: titleStyle ?? AppTheme.buttonText.copyWith(),
+                style: titleStyle ?? AppTheme().buttonText.copyWith(),
               ),
             ),
           IntrinsicHeight(

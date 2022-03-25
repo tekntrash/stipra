@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/home/home_page.dart';
+import 'package:stipra/presentation/pages/tabbar_view_container.dart';
 
 import '../../../widgets/overlay/lock_overlay.dart';
 
@@ -48,7 +49,7 @@ class OtpVerifyViewModel extends BaseViewModel {
   }
 
   bool validatePinFieldsFilled() {
-    return currentPin.length == 6 && formKey.currentState!.validate();
+    return currentPin.length == 4 && formKey.currentState!.validate();
   }
 
   Future<void> onPinConfirmed(
@@ -64,7 +65,7 @@ class OtpVerifyViewModel extends BaseViewModel {
     //}
     //await HiveService().deleteAll();
     //await HiveService().addUser(user);
-    var routePage;
+
     /*if (UserService().getLoggedUser().isCompany ||
         UserService().getLoggedUser().isEmployee) {
       routePage = StaticBar();
@@ -73,9 +74,10 @@ class OtpVerifyViewModel extends BaseViewModel {
         customerId: customerId,
       );
     }*/
-    routePage = HomePage();
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => routePage),
+      MaterialPageRoute(
+        builder: (context) => TabBarViewContainer(),
+      ),
       (route) => false,
     );
   }

@@ -20,18 +20,9 @@ class BoardScreen extends StatefulWidget {
 
 class _BoardScreenState extends State<BoardScreen> {
   late List<PageViewModel> pageViewModels;
-  late bool isInited;
 
   @override
   void initState() {
-    isInited = false;
-    if (isInited != true) {
-      initApp();
-    }
-    super.initState();
-  }
-
-  void initApp() {
     pageViewModels = [
       PageViewModel(
         useScrollView: false,
@@ -116,29 +107,24 @@ class _BoardScreenState extends State<BoardScreen> {
       ),
     ];
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      setState(() {
-        isInited = true;
-        //
-      });
-    });
+    super.initState();
   }
 
   Widget buildTitle(String text) {
     return ClassicText(
       text: text,
-      style: AppTheme.paragraphSemiBoldText.copyWith(
-        color: Colors.black,
-      ),
+      style: AppTheme().paragraphSemiBoldText.copyWith(
+            color: AppTheme().greyScale0,
+          ),
     );
   }
 
   Widget buildSubTitle(String text) {
     return ClassicText(
       text: text,
-      style: AppTheme.smallParagraphRegularText.copyWith(
-        color: Colors.black,
-      ),
+      style: AppTheme().smallParagraphRegularText.copyWith(
+            color: AppTheme().greyScale2,
+          ),
       textAlign: TextAlign.center,
     );
   }
@@ -147,42 +133,40 @@ class _BoardScreenState extends State<BoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: AppTheme.gray4Color.withOpacity(0.01),
+        color: AppTheme().whiteColor,
         child: SafeArea(
           child: Column(
             children: [
               SizedBox(
                 height: 40.h,
               ),
-              (isInited == true)
-                  ? Expanded(
-                      child: IntroductionScreen(
-                        pages: pageViewModels,
-                        onDone: () {},
-                        controlsPadding: EdgeInsets.zero,
-                        globalBackgroundColor:
-                            AppTheme.gray4Color.withOpacity(0.01),
-                        showSkipButton: false,
-                        showDoneButton: false,
-                        showNextButton: false,
-                        dotsDecorator: DotsDecorator(
-                            size: const Size.square(10.0),
-                            activeSize: const Size(10.0, 10.0),
-                            activeColor: AppTheme.primaryColor,
-                            color: Colors.black26,
-                            spacing:
-                                const EdgeInsets.symmetric(horizontal: 3.0),
-                            activeShape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(500.0))),
-                      ),
-                    )
-                  : Expanded(
-                      child: Container(),
-                    ),
+              Expanded(
+                child: IntroductionScreen(
+                  pages: pageViewModels,
+                  onDone: () {},
+                  controlsPadding: EdgeInsets.zero,
+                  globalBackgroundColor:
+                      AppTheme().greyScale2.withOpacity(0.01),
+                  showSkipButton: false,
+                  showDoneButton: false,
+                  showNextButton: false,
+                  dotsDecorator: DotsDecorator(
+                      size: const Size.square(10.0),
+                      activeSize: const Size(10.0, 10.0),
+                      activeColor: AppTheme().primaryColor,
+                      color: Colors.black26,
+                      spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+                      activeShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(500.0))),
+                ),
+              ),
               SizedBox(
                 height: 40.h,
               ),
               ThemeButton(
+                  elevation: 5,
+                  width: 230.w,
+                  height: 45.h,
                   text: 'Login',
                   onTap: () {
                     AppNavigator.push(
@@ -194,6 +178,9 @@ class _BoardScreenState extends State<BoardScreen> {
                 height: 5.h,
               ),
               ThemeButton(
+                  width: 230.w,
+                  height: 45.h,
+                  elevation: 5,
                   text: 'Register',
                   onTap: () {
                     AppNavigator.push(
