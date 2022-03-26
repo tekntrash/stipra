@@ -1,17 +1,17 @@
 import 'package:dartz/dartz.dart';
-import 'package:stipra/core/errors/exception.dart';
 
 import '../../../../core/platform/network_info.dart';
+import '../../core/errors/exception.dart';
 import '../../core/errors/failure.dart';
 import '../../domain/entities/offer.dart';
 import '../../domain/entities/product.dart';
 import '../../domain/repositories/data_repository.dart';
-import '../datasources/local/local_data_source.dart';
-import '../datasources/remote/remote_data_source.dart';
+import '../../domain/repositories/local_data_repository.dart';
+import '../../domain/repositories/remote_data_repository.dart';
 
 class DataProvider implements DataRepository {
-  final RemoteDataSource remoteDataSource;
-  final LocalDataSource localDataSource;
+  final RemoteDataRepository remoteDataSource;
+  final LocalDataRepository localDataSource;
   final NetworkInfo networkInfo;
 
   DataProvider({
@@ -59,6 +59,16 @@ class DataProvider implements DataRepository {
       } on CacheException {
         return Left(CacheFailure());
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> sendBarcode(String barcode) async {
+    try {
+      final remoteData = await remoteDataSource.sendBarcode(barcode);
+      return Right(remoteData);
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 }

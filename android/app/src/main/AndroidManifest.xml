@@ -1,10 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.stipra">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />    
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.front" />
+    <uses-feature android:name="android.hardware.camera2" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
    <application
         android:label="stipra"
         android:icon="@mipmap/ic_launcher">
+        <service
+            android:name="changjoopark.com.flutter_foreground_plugin.FlutterForegroundService"
+            android:enabled="true"
+            android:exported="true"
+            android:stopWithTask="true"
+            android:foregroundServiceType="mediaProjection" />
+        <!-- <service android:name="com.changjoopark.flutter_foreground_plugin.FlutterForegroundService" android:foregroundServiceType="mediaProjection "/>
+        -->
         <activity
             android:exported="true"
             android:name=".MainActivity"

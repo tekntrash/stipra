@@ -8,4 +8,6 @@ abstract class DataRepository {
   Future<Either<Failure, List<Offer>>> getOffers();
 
   Future<Either<Failure, List<Product>>> getProducts();
+
+  Future<Either<Failure, void>> sendBarcode(String barcode);
 }

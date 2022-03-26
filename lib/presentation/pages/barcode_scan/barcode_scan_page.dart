@@ -1,31 +1,89 @@
+import 'dart:developer';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screen_recording/flutter_screen_recording.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:stipra/domain/repositories/data_repository.dart';
+import 'package:stipra/injection_container.dart';
 import 'package:stipra/presentation/widgets/mobile_scanner_fixed.dart';
+import 'package:stipra/presentation/widgets/overlay/lock_overlay.dart';
 import 'package:stipra/shared/app_theme.dart';
+import 'package:video_player/video_player.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-class BarcodeScanPage extends StatelessWidget {
+class BarcodeScanPage extends StatefulWidget {
   BarcodeScanPage({Key? key}) : super(key: key);
 
-  final MobileScannerController cameraController = MobileScannerController();
+  @override
+  State<BarcodeScanPage> createState() => _BarcodeScanPageState();
+}
+
+class _BarcodeScanPageState extends State<BarcodeScanPage> {
+  MobileScannerController? cameraController;
+  late bool? isStarted;
+
+  String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
+  late List<BarcodeTimeStampModel> barcodeTimeStamps;
+
+  @override
+  void initState() {
+    isStarted = false;
+    barcodeTimeStamps = [];
+    cameraController = MobileScannerController();
+    requestPermissions();
+
+    super.initState();
+  }
+
+  requestPermissions() async {
+    if (await Permission.camera.request().isGranted) {
+      // Either the permission was already granted before or the user just granted it.
+    }
+
+    if (await Permission.storage.request().isGranted) {
+      //
+      print('Record started $isStarted');
+    }
+    WidgetsBinding.instance?.addPostFrameCallback((_) async {
+      await Future.delayed(Duration(seconds: 3));
+      isStarted = await FlutterScreenRecording.startRecordScreen(
+        'testname${Random().nextInt(9999999) + 50000}',
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          MobileScannerFixed(
-            allowDuplicates: false,
-            controller: cameraController,
-            onDetect: (barcode, args) async {
-              final String? code = barcode.rawValue;
-              debugPrint('Barcode found! $code');
-              /*ScaffoldMessenger.of(context).showSnackBar(
+          (cameraController != null)
+              ? MobileScannerFixed(
+                  allowDuplicates: false,
+                  controller: cameraController,
+                  onDetect: (barcode, args) async {
+                    if (isStarted != true) {
+                      return;
+                    }
+                    final String? code = barcode.rawValue;
+                    if (code != null) {
+                      barcodeTimeStamps.add(
+                        BarcodeTimeStampModel(
+                            timeStamp: timestamp(), barcode: code),
+                      );
+                      locator<DataRepository>().sendBarcode(code);
+                      debugPrint('Barcode found! $code sent');
+                    }
+                    /*ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Barcode found: $code'),
                 ),
               );*/
-              await showDialog(
+                    /*await showDialog(
                 context: context,
                 builder: (context) {
                   return Center(
@@ -48,10 +106,11 @@ class BarcodeScanPage extends StatelessWidget {
                     ),
                   );
                 },
-              );
-              await Future.delayed(Duration(seconds: 2));
-            },
-          ),
+              );*/
+                    await Future.delayed(Duration(seconds: 1));
+                  },
+                )
+              : Container(),
           Positioned(
             top: 5,
             right: 15,
@@ -93,7 +152,9 @@ class BarcodeScanPage extends StatelessWidget {
                         color: Colors.white,
                         icon: Icon(Icons.close_rounded),
                         iconSize: 32.0,
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () async {
+                          await stopCapture(pop: true);
+                        },
                       ),
                       Text(
                         'Exit',
@@ -110,7 +171,8 @@ class BarcodeScanPage extends StatelessWidget {
                     children: [
                       IconButton(
                         color: Colors.white,
-                        icon: ValueListenableBuilder(
+                        icon: Icon(Icons.stop),
+                        /*ValueListenableBuilder(
                           valueListenable: cameraController.cameraFacingState,
                           builder: (context, state, child) {
                             switch (state as CameraFacing) {
@@ -120,12 +182,14 @@ class BarcodeScanPage extends StatelessWidget {
                                 return const Icon(Icons.camera_rear);
                             }
                           },
-                        ),
+                        ),*/
                         iconSize: 32.0,
-                        onPressed: () => cameraController.switchCamera(),
+                        onPressed: () async {
+                          await stopCapture();
+                        }, //cameraController.switchCamera(),
                       ),
                       Text(
-                        'Switch',
+                        'Stop Record',
                         style:
                             AppTheme().extraSmallParagraphSemiBoldText.copyWith(
                                   color: Colors.white,
@@ -139,8 +203,9 @@ class BarcodeScanPage extends StatelessWidget {
                     children: [
                       IconButton(
                         color: Colors.white,
-                        icon: ValueListenableBuilder(
-                          valueListenable: cameraController.torchState,
+                        icon: ValueListenableBuilder<TorchState>(
+                          valueListenable: cameraController?.torchState ??
+                              ValueNotifier(TorchState.off),
                           builder: (context, state, child) {
                             switch (state as TorchState) {
                               case TorchState.off:
@@ -153,7 +218,7 @@ class BarcodeScanPage extends StatelessWidget {
                           },
                         ),
                         iconSize: 32.0,
-                        onPressed: () => cameraController.toggleTorch(),
+                        onPressed: () => cameraController?.toggleTorch(),
                       ),
                       Text(
                         'Light',
@@ -173,6 +238,27 @@ class BarcodeScanPage extends StatelessWidget {
     );
   }
 
+  Future<void> stopCapture({bool pop: false}) async {
+    final _lastStart = isStarted;
+    isStarted = false;
+    if (_lastStart == true) {
+      LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
+      final path = await FlutterScreenRecording.stopRecordScreen;
+      LockOverlay().closeOverlay();
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return VideoApp(path, barcodeTimeStamps);
+        },
+      );
+      Navigator.of(context).pop();
+    } else {
+      if (pop) {
+        Navigator.pop(context);
+      }
+    }
+  }
+
   Widget wrapWithShadowContainer({required Widget child}) {
     return Container(
       decoration: BoxDecoration(
@@ -186,4 +272,108 @@ class BarcodeScanPage extends StatelessWidget {
       child: child,
     );
   }
+}
+
+class VideoApp extends StatefulWidget {
+  final String path;
+  final List<BarcodeTimeStampModel> barcodeTimeStamps;
+  VideoApp(this.path, this.barcodeTimeStamps);
+  @override
+  _VideoAppState createState() => _VideoAppState();
+}
+
+class _VideoAppState extends State<VideoApp> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.file(File(widget.path))
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      })
+      ..addListener(() {
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Center(
+            child: _controller.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  )
+                : Container(),
+          ),
+          Positioned(
+            bottom: 0,
+            child: Material(
+              elevation: 5,
+              color: AppTheme().greyScale1.withOpacity(0.55),
+              child: Container(
+                margin: EdgeInsets.only(left: 15, top: 10),
+                width: 1.sw,
+                height: 100,
+                child: ListView(
+                  children: [
+                    Text(
+                      'Barcode TimeStamps',
+                      style: AppTheme()
+                          .smallParagraphSemiBoldText
+                          .copyWith(color: Colors.white),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget.barcodeTimeStamps.length,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Text(
+                          '${widget.barcodeTimeStamps[index].barcode} - ${widget.barcodeTimeStamps[index].timeStamp}',
+                          style: AppTheme()
+                              .smallParagraphRegularText
+                              .copyWith(color: Colors.white),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppTheme().primaryColor,
+        onPressed: () {
+          setState(() {
+            _controller.value.isPlaying
+                ? _controller.pause()
+                : _controller.play();
+          });
+        },
+        child: Icon(
+          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+}
+
+class BarcodeTimeStampModel {
+  String timeStamp;
+  String barcode;
+  BarcodeTimeStampModel({required this.timeStamp, required this.barcode});
 }

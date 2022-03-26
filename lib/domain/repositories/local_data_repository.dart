@@ -1,7 +1,7 @@
-import '../../models/offer_model.dart';
-import '../../models/product_model.dart';
+import '../../data/models/offer_model.dart';
+import '../../data/models/product_model.dart';
 
-abstract class LocalDataSource {
+abstract class LocalDataRepository {
   Future<List<OfferModel>> getLastOffers();
 
   Future<void> cacheOffers(List<OfferModel> offerModel);
