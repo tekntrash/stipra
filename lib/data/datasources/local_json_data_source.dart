@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:stipra/core/errors/exception.dart';
+import 'package:stipra/data/models/scanned_video_model.dart';
 import 'package:stipra/domain/repositories/local_data_repository.dart';
 
 import '../models/offer_model.dart';
@@ -42,6 +43,24 @@ class JsonLocalDataSource implements LocalDataRepository {
 
   @override
   Future<void> cacheProducts(List<ProductModel> productModel) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ScannedVideoModel>> getScannedVideos() {
+    // TODO: implement getScannedVideos
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveScannedVideo(ScannedVideoModel videoPath) {
+    // TODO: implement saveScannedVideo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateIsUploaded(String path, bool isUploaded) {
+    // TODO: implement updateIsUploaded
     throw UnimplementedError();
   }
 }

@@ -7,4 +7,6 @@ abstract class RemoteDataRepository {
   Future<List<ProductModel>> getProducts();
 
   Future<void> sendBarcode(String barcode);
+
+  Future<bool> sendScannedVideo(String videoPath);
 }

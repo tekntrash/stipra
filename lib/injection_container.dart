@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:stipra/core/services/scanned_video_service.dart';
+import 'package:stipra/data/datasources/hive_data_source.dart';
 
 import 'core/platform/network_info.dart';
 import 'data/datasources/http_data_source.dart';
@@ -11,7 +13,7 @@ import 'domain/repositories/remote_data_repository.dart';
 
 final locator = GetIt.instance;
 
-void init() {
+Future<void> init() async {
   //!Features
   //Usecases
   //locator.registerLazySingleton(() => GetOffers(locator()));
@@ -27,9 +29,12 @@ void init() {
   );
 
   //Data
+  final hiveDataSource = HiveDataSource();
+  await hiveDataSource.init();
   locator.registerLazySingleton<LocalDataRepository>(
-    () => JsonLocalDataSource(),
+    () => hiveDataSource,
   );
+
   locator.registerLazySingleton<RemoteDataRepository>(
     () => HttpDataSource(),
   );
@@ -37,6 +42,9 @@ void init() {
   //!Core
   locator.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(locator()),
+  );
+  locator.registerLazySingleton<ScannedVideoService>(
+    () => ScannedVideoService(),
   );
 
   //!External

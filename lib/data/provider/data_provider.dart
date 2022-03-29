@@ -71,4 +71,14 @@ class DataProvider implements DataRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> sendScannedVideo(String videoPath) async {
+    try {
+      final remoteData = await remoteDataSource.sendScannedVideo(videoPath);
+      return Right(remoteData);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }

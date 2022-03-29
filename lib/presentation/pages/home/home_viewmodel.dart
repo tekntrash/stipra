@@ -1,10 +1,20 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/core/platform/network_info.dart';
+import 'package:stipra/core/services/scanned_video_service.dart';
+import 'package:stipra/presentation/widgets/overlay/lock_overlay_dialog.dart';
+import 'package:stipra/presentation/widgets/theme_button.dart';
+import 'package:stipra/shared/app_theme.dart';
 
 import '../../../data/models/offer_model.dart';
 import '../../../data/models/product_model.dart';
 import '../../../domain/repositories/data_repository.dart';
+import '../../../domain/repositories/local_data_repository.dart';
 import '../../../injection_container.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeViewModel extends BaseViewModel {
   late bool isInited;
@@ -17,9 +27,15 @@ class HomeViewModel extends BaseViewModel {
     await Future.wait([
       getProducts(),
       getOffers(),
+      informAboutUploadedVideo(),
     ]);
     isInited = true;
     notifyListeners();
+  }
+
+  Future<void> informAboutUploadedVideo() async {
+    locator<ScannedVideoService>().listenInternetForInformation();
+    //await locator<ScannedVideoService>().informAboutUploadedVideo();
   }
 
   Future getProducts() async {

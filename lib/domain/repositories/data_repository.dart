@@ -10,4 +10,6 @@ abstract class DataRepository {
   Future<Either<Failure, List<Product>>> getProducts();
 
   Future<Either<Failure, void>> sendBarcode(String barcode);
+
+  Future<Either<Failure, bool>> sendScannedVideo(String videoPath);
 }

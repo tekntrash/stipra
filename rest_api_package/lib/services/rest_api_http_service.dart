@@ -83,6 +83,57 @@ class RespApiHttpService {
     return resp;
   }
 
+  Future<Response> requestFile(
+    RestApiRequest apiRequest, {
+    required String fileFieldName,
+    required File file,
+    Function(int, int)? onSendProgress,
+  }) async {
+    Response resp;
+    String url = apiRequest.endPoint;
+
+    Options options = await prepareOptions(authorize: apiRequest.authorize);
+
+    var mfile = MultipartFile.fromBytes(
+      file.readAsBytesSync(),
+      filename: file.path.split('/').last,
+    );
+    var formData = FormData();
+
+    formData.files.add(MapEntry(fileFieldName, mfile));
+
+    apiRequest.body.forEach((key, value) {
+      formData.fields.add(MapEntry(key, value));
+    });
+
+    try {
+      if (apiRequest.requestMethod == RequestMethod.PUT) {
+        resp = await Dio().put(
+          url,
+          options: options,
+          data: formData,
+          queryParameters: apiRequest.queryParameters,
+        );
+      } else if (apiRequest.requestMethod == RequestMethod.POST) {
+        resp = await Dio().post(
+          url,
+          options: options,
+          data: formData,
+          queryParameters: apiRequest.queryParameters,
+          onSendProgress: onSendProgress,
+        );
+      } else {
+        throw Exception("Error this request's method is undefined");
+      }
+    } on DioError catch (e) {
+      if (e.response != null) {
+        return e.response!;
+      }
+      throw Exception('DIO Error: $e');
+    }
+    return resp;
+  }
+
   T handleResponse<T>(Response response, {required dynamic parseModel}) {
     if (response.statusCode == 200 || response.statusCode == 201) {
       try {
