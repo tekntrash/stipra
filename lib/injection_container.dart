@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:stipra/core/services/location_service.dart';
 import 'package:stipra/core/services/scanned_video_service.dart';
 import 'package:stipra/data/datasources/hive_data_source.dart';
 
@@ -45,6 +46,9 @@ Future<void> init() async {
   );
   locator.registerLazySingleton<ScannedVideoService>(
     () => ScannedVideoService(),
+  );
+  locator.registerLazySingleton<LocationService>(
+    () => LocationServiceImpl(),
   );
 
   //!External

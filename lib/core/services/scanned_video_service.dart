@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stipra/core/errors/failure.dart';
+import 'package:stipra/core/services/location_service.dart';
 import 'package:stipra/presentation/widgets/scanned_video/upload_inform_box.dart';
 
 import '../../data/models/scanned_video_model.dart';
@@ -61,18 +62,47 @@ class ScannedVideoService {
     }
   }
 
+  ///First index is latitude and second is longitude
+  Future<List<double>?> getLocationWithPermRequest(
+      {Function()? onRequestGranted}) async {
+    double latitude, longitude;
+    final isLocationAccessGranted =
+        await locator<LocationService>().isAccessGranted;
+    if (isLocationAccessGranted) {
+      final position = await locator<LocationService>().getCurrentLocation();
+      latitude = position.latitude;
+      longitude = position.longitude;
+      return [latitude, longitude];
+    } else {
+      await locator<LocationService>()
+          .requestPermission(onRequestGranted: onRequestGranted);
+      return null;
+    }
+  }
+
   Future<void> uploadScannedVideos(
       List<ScannedVideoModel> scannedVideos) async {
+    final location = await getLocationWithPermRequest(onRequestGranted: () {
+      uploadScannedVideos(scannedVideos);
+    });
+    if (location == null) {
+      return;
+    }
     final dataRepository = locator<DataRepository>();
     var futureList = List.from(scannedVideos)
         .map<Future<Either<Failure, bool>>>((scannedVideo) async {
       final barcodeTimeStamps =
           (scannedVideo as ScannedVideoModel).barcodeTimeStamps;
-      final path = (scannedVideo as ScannedVideoModel).videoPath;
+      final path = scannedVideo.videoPath;
       final isExists = await File(path).exists();
       if (isExists) {
         Future.wait(barcodeTimeStamps.map((barcodeTimeStamp) async {
-          await locator<DataRepository>().sendBarcode(barcodeTimeStamp.barcode);
+          await locator<DataRepository>().sendBarcode(
+            barcodeTimeStamp.barcode,
+            barcodeTimeStamp.videoName,
+            location[0],
+            location[1],
+          );
         }));
         final data = await dataRepository.sendScannedVideo(path);
         if (data is Right) {
@@ -81,7 +111,7 @@ class ScannedVideoService {
           return Left(data as Failure);
         }
       } else {
-        return Left(ServerFailure());
+        return Left(DeletedFileFailure());
       }
     }).toList();
     await Future.wait(futureList).then((list) {
@@ -95,6 +125,15 @@ class ScannedVideoService {
           File(path).delete().then((value) {
             log('Deleted video path: $path');
           });
+        }
+        if (either.isLeft()) {
+          var failure = (either as Left).value;
+          if (failure is ServerFailure) {
+            log('ServerFailure');
+          } else if (failure is DeletedFileFailure) {
+            log('DeletedFileFailure path: ${scannedVideos[i].videoPath}');
+            scannedVideos[i].delete();
+          }
         }
         i++;
       });

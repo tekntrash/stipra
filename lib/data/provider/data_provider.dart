@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:stipra/domain/entities/barcode_timestamp.dart';
 
 import '../../../../core/platform/network_info.dart';
 import '../../core/errors/exception.dart';
@@ -63,9 +64,11 @@ class DataProvider implements DataRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendBarcode(String barcode) async {
+  Future<Either<Failure, void>> sendBarcode(String barcode, String videoName,
+      double latitude, double longitude) async {
     try {
-      final remoteData = await remoteDataSource.sendBarcode(barcode);
+      final remoteData = await remoteDataSource.sendBarcode(
+          barcode, videoName, latitude, longitude);
       return Right(remoteData);
     } on ServerException {
       return Left(ServerFailure());

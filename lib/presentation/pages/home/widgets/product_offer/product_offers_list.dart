@@ -59,89 +59,65 @@ class ProductOffersList extends StatelessWidget {
                       ),
                       width: 160.w,
                       height: 200.h,
-                      child: Stack(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/image_box.svg',
-                                width: 64.w,
-                                height: 64.w,
-                                semanticsLabel: 'Image box',
-                              ),
-                              /*LocalImageBox(
+                          SvgPicture.asset(
+                            'assets/images/image_box.svg',
+                            width: 64.w,
+                            height: 64.w,
+                            semanticsLabel: 'Image box',
+                          ),
+                          /*LocalImageBox(
                                 width: 64,
                                 height: 64,
                                 imgUrl: 'roblox.png',
                               ),*/
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: 12.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      product.title!,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                      style: AppTheme()
-                                          .smallParagraphSemiBoldText
-                                          .copyWith(
-                                            color: AppTheme().blackColor,
-                                            fontSize: 16,
-                                          ),
-                                    ),
-                                    SizedBox(
-                                      height: 2.h,
-                                    ),
-                                    Text(
-                                      '${product.awardPoint.toString()} Points',
-                                      style: AppTheme()
-                                          .extraSmallParagraphRegularText
-                                          .copyWith(
-                                            fontSize: 13,
-                                            color: AppTheme().greyScale0,
-                                          ),
-                                    ),
-                                    SizedBox(
-                                      height: 2,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(right: 25.w),
-                                      child: Text(
-                                        product.desc!,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: AppTheme()
-                                            .extraSmallParagraphRegularText
-                                            .copyWith(
-                                              fontSize: 13,
-                                              color: AppTheme().greyScale2,
-                                            ),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 12.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  product.title!,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: AppTheme()
+                                      .smallParagraphSemiBoldText
+                                      .copyWith(
+                                        color: AppTheme().blackColor,
+                                        fontSize: 16,
                                       ),
-                                    ),
-                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                          Positioned(
-                            bottom: 5.h,
-                            right: 5.w,
-                            child: Container(
-                              width: 32.w,
-                              height: 32.w,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppTheme().darkPrimaryColor,
-                              ),
-                              child: Center(
-                                child: LocalImageBox(
-                                  width: 18.w,
-                                  height: 18.w,
-                                  imgUrl: 'barcode.png',
+                                SizedBox(
+                                  height: 2.h,
                                 ),
-                              ),
+                                Text(
+                                  '${product.awardPoint.toString()} Points',
+                                  style: AppTheme()
+                                      .extraSmallParagraphRegularText
+                                      .copyWith(
+                                        fontSize: 13,
+                                        color: AppTheme().greyScale0,
+                                      ),
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Container(
+                                  child: Text(
+                                    product.desc!,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: AppTheme()
+                                        .extraSmallParagraphRegularText
+                                        .copyWith(
+                                          fontSize: 13,
+                                          color: AppTheme().greyScale2,
+                                        ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],

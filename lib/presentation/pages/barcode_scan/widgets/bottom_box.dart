@@ -1,13 +1,17 @@
 part of '../barcode_scan_page.dart';
 
 class BottomBox extends StatelessWidget {
+  final bool? isStarted;
   final Function(BuildContext context, {bool pop}) stopCapture;
-  final MobileScannerController cameraController;
+  final Function() startCapture;
+  final MobileScannerController? cameraController;
 
   const BottomBox({
     Key? key,
+    required this.startCapture,
     required this.stopCapture,
     required this.cameraController,
+    required this.isStarted,
   }) : super(key: key);
 
   @override
@@ -44,14 +48,24 @@ class BottomBox extends StatelessWidget {
               children: [
                 IconButton(
                   color: Colors.white,
-                  icon: Icon(Icons.stop),
+                  icon: Icon((isStarted == true)
+                      ? Icons.stop
+                      : Icons.play_arrow_rounded),
                   iconSize: 32.0,
                   onPressed: () async {
-                    await stopCapture(context);
+                    if (isStarted == false) {
+                      await startCapture();
+                    } else if (isStarted == true) {
+                      await stopCapture(context);
+                    }
                   },
                 ),
                 Text(
-                  'Stop Record',
+                  (isStarted == true)
+                      ? 'Stop Record'
+                      : (isStarted == false)
+                          ? 'Start Record'
+                          : 'Record Starting',
                   style: AppTheme().extraSmallParagraphSemiBoldText.copyWith(
                         color: Colors.white,
                       ),
@@ -65,7 +79,8 @@ class BottomBox extends StatelessWidget {
                 IconButton(
                   color: Colors.white,
                   icon: ValueListenableBuilder<TorchState>(
-                    valueListenable: cameraController.torchState,
+                    valueListenable: cameraController?.torchState ??
+                        ValueNotifier(TorchState.off),
                     builder: (context, state, child) {
                       switch (state) {
                         case TorchState.off:
@@ -78,7 +93,7 @@ class BottomBox extends StatelessWidget {
                     },
                   ),
                   iconSize: 32.0,
-                  onPressed: () => cameraController.toggleTorch(),
+                  onPressed: () => cameraController?.toggleTorch(),
                 ),
                 Text(
                   'Light',

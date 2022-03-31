@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stipra/shared/app_theme.dart';
 
 import '../../../shared/app_images.dart';
 
@@ -14,13 +15,18 @@ class ClassicLoadingOverlay extends StatelessWidget {
       right: 0,
       child: SafeArea(
         child: Material(
-          color: Colors.transparent,
+          color: Colors.black26,
           child: Center(
             child: Center(
-              child: buildImage(
-                width: 96,
-                height: 96,
-                imgUrl: AppImages.loading,
+              child: Container(
+                width: 48,
+                height: 48,
+                child: CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.transparent,
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(AppTheme().whiteColor),
+                  strokeWidth: 3.25,
+                ),
               ),
             ),
           ),

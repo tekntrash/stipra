@@ -8,19 +8,24 @@ class BarcodeTimeStampModel extends BarcodeTimeStamp with HiveObjectMixin {
   final String timeStamp;
   @HiveField(1)
   final String barcode;
+  @HiveField(2)
+  final String videoName;
 
   BarcodeTimeStampModel({
     required this.timeStamp,
     required this.barcode,
+    required this.videoName,
   }) : super(
           timeStamp: timeStamp,
           barcode: barcode,
+          videoName: videoName,
         );
 
   factory BarcodeTimeStampModel.fromJson(Map<String, dynamic> json) {
     return BarcodeTimeStampModel(
       timeStamp: json['timeStamp'] as String,
       barcode: json['barcode'] as String,
+      videoName: json['videoName'] as String,
     );
   }
 
@@ -28,6 +33,7 @@ class BarcodeTimeStampModel extends BarcodeTimeStamp with HiveObjectMixin {
     return {
       'timeStamp': timeStamp,
       'barcode': barcode,
+      'videoName': videoName,
     };
   }
 }

@@ -26,13 +26,16 @@ class HttpDataSource implements RemoteDataRepository {
   }
 
   @override
-  Future<void> sendBarcode(String barcode) async {
+  Future<void> sendBarcode(String barcode, String videoName, double latitude,
+      double longitude) async {
     final result = await RespApiHttpService().request(
       RestApiRequest(
           endPoint: baseUrl + 'barcode.php',
           requestMethod: RequestMethod.GET,
           queryParameters: {
             'b': barcode,
+            'v': videoName,
+            'g': '$latitude,$longitude',
           }),
       removeBaseUrl: true,
     );

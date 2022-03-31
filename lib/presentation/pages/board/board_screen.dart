@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:stipra/core/platform/app_info.dart';
 
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../shared/app_images.dart';
@@ -203,7 +204,12 @@ class _BoardScreenState extends State<BoardScreen> {
     return Container(
       padding: EdgeInsets.only(bottom: 10.h),
       alignment: Alignment.bottomCenter,
-      child: Text('Stipra all rights reserved'),
+      child: Text(
+        'Stipra all rights reserved ${AppInfo.version} + ${AppInfo.buildNumber}',
+        style: AppTheme().smallParagraphRegularText.copyWith(
+              color: AppTheme().greyScale2,
+            ),
+      ),
     );
   }
 }

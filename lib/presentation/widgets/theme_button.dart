@@ -14,6 +14,7 @@ class ThemeButton extends StatelessWidget {
   final Widget? child;
   final bool isEnabled;
   final double width, height;
+  final Color? textColor;
   const ThemeButton({
     Key? key,
     this.text,
@@ -26,6 +27,7 @@ class ThemeButton extends StatelessWidget {
     this.isEnabled: true,
     this.width: 200,
     this.height: 50,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -41,7 +43,7 @@ class ThemeButton extends StatelessWidget {
           height: height,
           color: color ?? AppTheme().darkPrimaryColor,
           textStyle: AppTheme().paragraphRegularText.apply(
-                color: Colors.white,
+                color: textColor ?? Colors.white,
               ),
           elevation: elevation,
           borderSide: BorderSide(

@@ -7,7 +7,7 @@ import 'package:video_player/video_player.dart';
 import '../../../../data/models/barcode_timestamp_model.dart';
 import '../../../../shared/app_theme.dart';
 import '../barcode_scan_viewmodel.dart';
-
+/*
 class VideoBox extends StatefulWidget {
   final String path;
   final List<BarcodeTimeStampModel> barcodeTimeStamps;
@@ -105,3 +105,4 @@ class _VideoBoxState extends State<VideoBox> {
     _controller.dispose();
   }
 }
+*/
