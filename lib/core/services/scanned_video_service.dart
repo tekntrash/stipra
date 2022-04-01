@@ -52,13 +52,14 @@ class ScannedVideoService {
     final isConnected = await locator<NetworkInfo>().isConnected;
     if (isNeedUpload && isConnected) {
       log('informAboutUploadedVideo: true');
-      LockOverlayDialog().showCustomOverlay(
+      uploadScannedVideos(unUploadedScannedVideos);
+      /*LockOverlayDialog().showCustomOverlay(
         child: UploadInformBox(
           onTapUpload: () {
             uploadScannedVideos(unUploadedScannedVideos);
           },
         ),
-      );
+      );*/
     }
   }
 
@@ -99,7 +100,7 @@ class ScannedVideoService {
         Future.wait(barcodeTimeStamps.map((barcodeTimeStamp) async {
           await locator<DataRepository>().sendBarcode(
             barcodeTimeStamp.barcode,
-            barcodeTimeStamp.videoName,
+            path,
             location[0],
             location[1],
           );

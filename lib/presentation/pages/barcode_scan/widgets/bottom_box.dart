@@ -4,13 +4,13 @@ class BottomBox extends StatelessWidget {
   final bool? isStarted;
   final Function(BuildContext context, {bool pop}) stopCapture;
   final Function() startCapture;
-  final MobileScannerController? cameraController;
+  //final MobileScannerController? cameraController;
 
   const BottomBox({
     Key? key,
     required this.startCapture,
     required this.stopCapture,
-    required this.cameraController,
+    //required this.cameraController,
     required this.isStarted,
   }) : super(key: key);
 
@@ -76,7 +76,7 @@ class BottomBox extends StatelessWidget {
           wrapWithShadowContainer(
             child: Column(
               children: [
-                IconButton(
+                /*IconButton(
                   color: Colors.white,
                   icon: ValueListenableBuilder<TorchState>(
                     valueListenable: cameraController?.torchState ??
@@ -94,7 +94,7 @@ class BottomBox extends StatelessWidget {
                   ),
                   iconSize: 32.0,
                   onPressed: () => cameraController?.toggleTorch(),
-                ),
+                ),*/
                 Text(
                   'Light',
                   style: AppTheme().extraSmallParagraphSemiBoldText.copyWith(

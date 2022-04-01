@@ -1,10 +1,14 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screen_recording/flutter_screen_recording.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/platform/network_info.dart';
-import 'package:stipra/core/utils/router/app_navigator.dart';
+import 'package:stipra/presentation/pages/barcode_scan/widgets/barcode_detector_painter.dart';
 
 import '../../../core/services/scanned_video_service.dart';
 import '../../../data/models/barcode_timestamp_model.dart';
@@ -14,25 +18,35 @@ import '../../../domain/repositories/local_data_repository.dart';
 import '../../../domain/repositories/remote_data_repository.dart';
 import '../../../injection_container.dart';
 import '../../widgets/overlay/lock_overlay.dart';
-import 'widgets/video_box.dart';
+import 'package:flutter/foundation.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 
 class BarcodeScanViewModel extends BaseViewModel {
+  CameraController? controller;
+  int _cameraIndex = 0;
+  double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
+  List<CameraDescription> cameras = [];
+  late bool isStopped;
+
+  BarcodeScanner barcodeScanner = GoogleMlKit.vision.barcodeScanner();
+  CustomPaint? customPaint;
+
   final int _maxRecordTime = 60;
   final int _countDownTime = 3;
-  MobileScannerController? cameraController;
   late BuildContext _context;
   bool? isStarted;
-  String? videoName;
   late List<BarcodeTimeStampModel> barcodeTimeStamps;
   late ValueNotifier<int> timeDuration;
   late ValueNotifier<int> countDownDuration;
 
   void init(BuildContext context) async {
     _context = context;
+    isStopped = false;
     timeDuration = ValueNotifier<int>(_maxRecordTime);
     countDownDuration = ValueNotifier<int>(_countDownTime);
     barcodeTimeStamps = [];
 
+    cameras = await availableCameras();
     await requestPermissions();
   }
 
@@ -43,19 +57,13 @@ class BarcodeScanViewModel extends BaseViewModel {
       countDownTimer();
     } else {
       if (disposed) return;
-      videoName = 'scanned_$timeStamp';
-      isStarted = await FlutterScreenRecording.startRecordScreen(
-        videoName!,
-      );
-      if (isStarted == true) {
-        timerListener();
-      }
+      await startCapture();
       notifyListeners();
     }
   }
 
   timerListener() async {
-    if (isStarted != true) {
+    if (isStarted != true || isStopped) {
       return;
     }
     await Future.delayed(Duration(seconds: 1));
@@ -68,69 +76,101 @@ class BarcodeScanViewModel extends BaseViewModel {
   }
 
   requestPermissions() async {
+    final camera = cameras[_cameraIndex];
+    controller = CameraController(
+      camera,
+      ResolutionPreset.high,
+      enableAudio: false,
+    );
+    await controller?.initialize();
+    if (cameras.any(
+      (element) =>
+          element.lensDirection == CameraLensDirection.back &&
+          element.sensorOrientation == 90,
+    )) {
+      _cameraIndex = cameras.indexOf(
+        cameras.firstWhere((element) =>
+            element.lensDirection == CameraLensDirection.back &&
+            element.sensorOrientation == 90),
+      );
+    } else {
+      _cameraIndex = cameras.indexOf(
+        cameras.firstWhere(
+          (element) => element.lensDirection == CameraLensDirection.back,
+        ),
+      );
+    }
+
     if (await Permission.camera.request().isGranted) {
       // Either the permission was already granted before or the user just granted it.
     }
-    cameraController = MobileScannerController();
 
     if (await Permission.storage.request().isGranted) {
       //
       print('Record started $isStarted');
     }
-    if (await Permission.manageExternalStorage.request().isGranted) {
+    /*if (await Permission.manageExternalStorage.request().isGranted) {
       //
       print('Record started $isStarted');
-    }
+    }*/
     notifyListeners();
     countDownTimer();
   }
 
-  Future<void> startCapture() async {
-    if (isStarted == true) {
+  Future startCapture() async {
+    if (disposed) {
       return;
     }
-    if (await Permission.camera.request().isGranted) {
-      timeDuration.value = _maxRecordTime;
-      videoName = 'scanned_$timeStamp';
-      isStarted = await FlutterScreenRecording.startRecordScreen(
-        videoName!,
-      );
-      if (isStarted == true) {
-        timerListener();
-      }
-      notifyListeners();
-    } else {
-      //Handle permission denied for camera, ask user to enable it from settings?
-    }
+    isStopped = false;
+    isStarted = true;
+    timeDuration.value = _maxRecordTime;
+    /*controller?.getMinZoomLevel().then((value) {
+      zoomLevel = value;
+      minZoomLevel = value;
+    });
+    controller?.getMaxZoomLevel().then((value) {
+      maxZoomLevel = value;
+    });*/
+    await controller?.startImageStream(_processCameraImage);
+    await controller?.startVideoRecording();
+    timerListener();
+    notifyListeners();
   }
 
   String get timeStamp => DateTime.now().millisecondsSinceEpoch.toString();
 
   Future<void> stopCapture(BuildContext context, {bool pop: false}) async {
-    final _lastStart = isStarted;
-    isStarted = false;
-    if (_lastStart == true) {
-      LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
-      final path = await FlutterScreenRecording.stopRecordScreen;
-      locator<LocalDataRepository>().saveScannedVideo(
-        ScannedVideoModel(
-          timeStamp: int.parse(timeStamp),
-          videoPath: path,
-          isUploaded: false,
-          barcodeTimeStamps: barcodeTimeStamps,
-        ),
-      );
-      final isConnected = await locator<NetworkInfo>().isConnected;
-      if (isConnected) {
-        await _sendVideoAndBarcodes(path);
-      }
-      LockOverlay().closeOverlay();
-      Navigator.of(context).pop();
-    } else {
-      if (pop) {
-        Navigator.pop(context);
-      }
+    if (disposed || isStopped) {
+      return;
     }
+    isStopped = true;
+    LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
+    if (controller == null) return;
+    await controller?.stopImageStream();
+    XFile? fileVideo = await controller?.stopVideoRecording();
+
+    locator<LocalDataRepository>().saveScannedVideo(
+      ScannedVideoModel(
+        timeStamp: int.parse(timeStamp),
+        videoPath: fileVideo!.path,
+        isUploaded: false,
+        barcodeTimeStamps: barcodeTimeStamps,
+      ),
+    );
+    final isConnected = await locator<NetworkInfo>().isConnected;
+    log('isConnected $isConnected');
+    if (isConnected) {
+      await _sendVideoAndBarcodes(fileVideo.path);
+    }
+    await controller?.dispose();
+    controller = null;
+    notifyListeners();
+    LockOverlay().closeOverlay();
+    Navigator.of(context).pop();
+
+    log('Video saved to ${fileVideo.path}');
+
+    return;
   }
 
   Future<void> _sendVideoAndBarcodes(String path) async {
@@ -144,7 +184,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     barcodeTimeStamps.forEach((element) {
       locator<DataRepository>().sendBarcode(
         element.barcode,
-        element.videoName,
+        path,
         location[0],
         location[1],
       );
@@ -159,25 +199,99 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
   }
 
-  Future<void> onDetect(Barcode barcode, MobileScannerArguments? args) async {
+  Future _processCameraImage(CameraImage image) async {
+    final WriteBuffer allBytes = WriteBuffer();
+    for (final Plane plane in image.planes) {
+      allBytes.putUint8List(plane.bytes);
+    }
+    final bytes = allBytes.done().buffer.asUint8List();
+
+    final Size imageSize =
+        Size(image.width.toDouble(), image.height.toDouble());
+
+    final camera = cameras[_cameraIndex];
+    final imageRotation =
+        InputImageRotationMethods.fromRawValue(camera.sensorOrientation) ??
+            InputImageRotation.Rotation_0deg;
+
+    final inputImageFormat =
+        InputImageFormatMethods.fromRawValue(image.format.raw) ??
+            InputImageFormat.NV21;
+
+    final planeData = image.planes.map(
+      (Plane plane) {
+        return InputImagePlaneMetadata(
+          bytesPerRow: plane.bytesPerRow,
+          height: plane.height,
+          width: plane.width,
+        );
+      },
+    ).toList();
+
+    final inputImageData = InputImageData(
+      size: imageSize,
+      imageRotation: imageRotation,
+      inputImageFormat: inputImageFormat,
+      planeData: planeData,
+    );
+
+    final inputImage =
+        InputImage.fromBytes(bytes: bytes, inputImageData: inputImageData);
+
+    processImage(inputImage);
+  }
+
+  bool isBusy = false;
+  Future<void> processImage(InputImage inputImage) async {
+    if (isBusy) return;
+    isBusy = true;
+    final barcodes = await barcodeScanner.processImage(inputImage);
+    print('Found ${barcodes.length} barcodes');
+
     if (isStarted != true) {
       return;
     }
-    final String? code = barcode.rawValue;
-    if (code != null) {
-      if (barcodeTimeStamps.any((element) => element.barcode == code)) {
-        return;
+    for (final barcode in barcodes) {
+      final String? code = barcode.value.rawValue;
+      if (code != null) {
+        if (barcodeTimeStamps.any((element) => element.barcode == code)) {
+          return;
+        }
+        barcodeTimeStamps.add(
+          BarcodeTimeStampModel(
+            timeStamp: timeStamp,
+            barcode: code,
+          ),
+        );
+        HapticFeedback.lightImpact();
+        /*ScaffoldMessenger.of(_context).showSnackBar(SnackBar(
+          content: Text('Product found! Show next one please'),
+          duration: Duration(seconds: 3),
+        ));*/
+        debugPrint('Barcode found! $code sent');
       }
-      barcodeTimeStamps.add(
-        BarcodeTimeStampModel(
-            timeStamp: timeStamp, barcode: code, videoName: videoName!),
-      );
-      ScaffoldMessenger.of(_context).showSnackBar(SnackBar(
-        content: Text('Product found! Show next one please'),
-        duration: Duration(seconds: 3),
-      ));
-      debugPrint('Barcode found! $code sent');
     }
-    await Future.delayed(Duration(seconds: 1));
+
+    /*if (inputImage.inputImageData?.size != null &&
+        inputImage.inputImageData?.imageRotation != null) {
+      final painter = BarcodeDetectorPainter(
+          barcodes,
+          inputImage.inputImageData!.size,
+          inputImage.inputImageData!.imageRotation);
+      customPaint = CustomPaint(painter: painter);
+    } else {
+      customPaint = null;
+    }*/
+    isBusy = false;
+    if (!disposed) {
+      notifyListeners();
+    }
+  }
+
+  @override
+  void dispose() {
+    controller?.dispose();
+    if (disposed) return;
+    super.dispose();
   }
 }

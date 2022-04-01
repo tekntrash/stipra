@@ -19,20 +19,17 @@ class BarcodeTimeStampModelAdapter extends TypeAdapter<BarcodeTimeStampModel> {
     return BarcodeTimeStampModel(
       timeStamp: fields[0] as String,
       barcode: fields[1] as String,
-      videoName: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, BarcodeTimeStampModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.timeStamp)
       ..writeByte(1)
-      ..write(obj.barcode)
-      ..writeByte(2)
-      ..write(obj.videoName);
+      ..write(obj.barcode);
   }
 
   @override

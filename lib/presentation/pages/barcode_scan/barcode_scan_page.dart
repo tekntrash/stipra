@@ -1,6 +1,6 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../data/models/barcode_timestamp_model.dart';
@@ -20,19 +20,51 @@ class BarcodeScanPage extends StatelessWidget {
     return ViewModelBuilder<BarcodeScanViewModel>.reactive(
         viewModelBuilder: () => BarcodeScanViewModel(),
         onModelReady: (model) => model.init(context),
+        onDispose: (model) => model.dispose(),
         builder: (context, viewModel, child) {
+          //final size = MediaQuery.of(context).size;
+
           return Scaffold(
             body: Stack(
               children: <Widget>[
-                viewModel.cameraController == null
-                    ? Container()
-                    : MobileScannerFixed(
-                        allowDuplicates: false,
-                        controller: viewModel.cameraController,
-                        onDetect: (barcode, args) async {
-                          viewModel.onDetect(barcode, args);
-                        },
-                      ),
+                IgnorePointer(
+                  ignoring: true,
+                  child: viewModel.controller == null
+                      ? Container()
+                      : Container(
+                          color: Colors.black,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: <Widget>[
+                              Center(
+                                child: CameraPreview(viewModel.controller!),
+                              ),
+                              if (viewModel.customPaint != null)
+                                viewModel.customPaint!,
+                              /*Positioned(
+                              bottom: 100,
+                              left: 50,
+                              right: 50,
+                              child: Slider(
+                                value: viewModel.zoomLevel,
+                                min: viewModel.minZoomLevel,
+                                max: viewModel.maxZoomLevel,
+                                onChanged: (newSliderValue) {
+                                  viewModel.zoomLevel = newSliderValue;
+                                  viewModel.controller!
+                                      .setZoomLevel(viewModel.zoomLevel);
+                                  viewModel.notifyListeners();
+                                },
+                                divisions:
+                                    (viewModel.maxZoomLevel - 1).toInt() < 1
+                                        ? null
+                                        : (viewModel.maxZoomLevel - 1).toInt(),
+                              ),
+                            )*/
+                            ],
+                          ),
+                        ),
+                ),
                 Positioned.fill(
                   top: 0,
                   left: 0,
@@ -129,7 +161,7 @@ class BarcodeScanPage extends StatelessWidget {
                 BottomBox(
                   startCapture: viewModel.startCapture,
                   stopCapture: viewModel.stopCapture,
-                  cameraController: viewModel.cameraController,
+                  //cameraController: viewModel.cameraController,
                   isStarted: viewModel.isStarted,
                 ),
               ],

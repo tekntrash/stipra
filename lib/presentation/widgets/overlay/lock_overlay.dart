@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:stipra/core/utils/router/app_router.dart';
 
@@ -16,6 +18,7 @@ class LockOverlay {
   factory LockOverlay() => _instance ?? LockOverlay._internal();
 
   void showClassicLoadingOverlay({bool buildAfterRebuild: false}) {
+    log('showClassicLoadingOverlay');
     if (haveOverlay) return;
     //final String myKey = _uniqueKey;
     if (buildAfterRebuild) {
