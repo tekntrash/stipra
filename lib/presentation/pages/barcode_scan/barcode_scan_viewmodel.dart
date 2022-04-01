@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:google_mlkit_barcode_scanning/barcode_scanner.dart';
+import 'package:google_mlkit_commons/commons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
@@ -19,7 +22,6 @@ import '../../../domain/repositories/remote_data_repository.dart';
 import '../../../injection_container.dart';
 import '../../widgets/overlay/lock_overlay.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
 
 class BarcodeScanViewModel extends BaseViewModel {
   CameraController? controller;
@@ -28,7 +30,7 @@ class BarcodeScanViewModel extends BaseViewModel {
   List<CameraDescription> cameras = [];
   late bool isStopped;
 
-  BarcodeScanner barcodeScanner = GoogleMlKit.vision.barcodeScanner();
+  BarcodeScanner barcodeScanner = BarcodeScanner();
   CustomPaint? customPaint;
 
   final int _maxRecordTime = 60;
@@ -145,7 +147,8 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
     isStopped = true;
     LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
-    if (controller == null) return;
+    if (controller == null || (controller?.value.isRecordingVideo != true))
+      return;
     await controller?.stopImageStream();
     XFile? fileVideo = await controller?.stopVideoRecording();
 
@@ -211,12 +214,12 @@ class BarcodeScanViewModel extends BaseViewModel {
 
     final camera = cameras[_cameraIndex];
     final imageRotation =
-        InputImageRotationMethods.fromRawValue(camera.sensorOrientation) ??
-            InputImageRotation.Rotation_0deg;
+        InputImageRotationValue.fromRawValue(camera.sensorOrientation) ??
+            InputImageRotation.rotation0deg;
 
     final inputImageFormat =
-        InputImageFormatMethods.fromRawValue(image.format.raw) ??
-            InputImageFormat.NV21;
+        InputImageFormatValue.fromRawValue(image.format.raw) ??
+            InputImageFormat.nv21;
 
     final planeData = image.planes.map(
       (Plane plane) {
@@ -243,10 +246,10 @@ class BarcodeScanViewModel extends BaseViewModel {
 
   bool isBusy = false;
   Future<void> processImage(InputImage inputImage) async {
-    if (isBusy) return;
+    if (isBusy || isStopped) return;
     isBusy = true;
     final barcodes = await barcodeScanner.processImage(inputImage);
-    print('Found ${barcodes.length} barcodes');
+    log('Found ${barcodes.length} barcodes');
 
     if (isStarted != true) {
       return;
@@ -255,6 +258,10 @@ class BarcodeScanViewModel extends BaseViewModel {
       final String? code = barcode.value.rawValue;
       if (code != null) {
         if (barcodeTimeStamps.any((element) => element.barcode == code)) {
+          isBusy = false;
+          if (!disposed) {
+            notifyListeners();
+          }
           return;
         }
         barcodeTimeStamps.add(
@@ -263,12 +270,12 @@ class BarcodeScanViewModel extends BaseViewModel {
             barcode: code,
           ),
         );
-        HapticFeedback.lightImpact();
-        /*ScaffoldMessenger.of(_context).showSnackBar(SnackBar(
+        Vibrate.feedback(FeedbackType.light);
+        ScaffoldMessenger.of(_context).showSnackBar(SnackBar(
           content: Text('Product found! Show next one please'),
           duration: Duration(seconds: 3),
-        ));*/
-        debugPrint('Barcode found! $code sent');
+        ));
+        log('Barcode found! $code sent');
       }
     }
 
