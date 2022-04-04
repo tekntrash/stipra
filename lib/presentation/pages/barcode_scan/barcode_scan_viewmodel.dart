@@ -58,7 +58,7 @@ class BarcodeScanViewModel extends BaseViewModel {
       countDownDuration.value--;
       countDownTimer();
     } else {
-      if (disposed) return;
+      if (disposed || isStopped) return;
       await startCapture();
       notifyListeners();
     }
@@ -84,7 +84,11 @@ class BarcodeScanViewModel extends BaseViewModel {
       ResolutionPreset.high,
       enableAudio: false,
     );
+    if (await Permission.camera.request().isGranted) {}
+
+    if (await Permission.storage.request().isGranted) {}
     await controller?.initialize();
+    controller?.setFlashMode(FlashMode.off);
     if (cameras.any(
       (element) =>
           element.lensDirection == CameraLensDirection.back &&
@@ -103,18 +107,6 @@ class BarcodeScanViewModel extends BaseViewModel {
       );
     }
 
-    if (await Permission.camera.request().isGranted) {
-      // Either the permission was already granted before or the user just granted it.
-    }
-
-    if (await Permission.storage.request().isGranted) {
-      //
-      print('Record started $isStarted');
-    }
-    /*if (await Permission.manageExternalStorage.request().isGranted) {
-      //
-      print('Record started $isStarted');
-    }*/
     notifyListeners();
     countDownTimer();
   }
@@ -146,10 +138,16 @@ class BarcodeScanViewModel extends BaseViewModel {
       return;
     }
     isStopped = true;
+    log('Is stopped: $isStopped and is started: $isStarted');
+    if (isStarted != true) {
+      Navigator.of(context).pop();
+      return;
+    }
     LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
     if (controller == null || (controller?.value.isRecordingVideo != true))
       return;
     await controller?.stopImageStream();
+    await Future.delayed(Duration(milliseconds: 100));
     XFile? fileVideo = await controller?.stopVideoRecording();
 
     locator<LocalDataRepository>().saveScannedVideo(
@@ -160,6 +158,7 @@ class BarcodeScanViewModel extends BaseViewModel {
         barcodeTimeStamps: barcodeTimeStamps,
       ),
     );
+    notifyListeners();
     final isConnected = await locator<NetworkInfo>().isConnected;
     log('isConnected $isConnected');
     if (isConnected) {
@@ -167,7 +166,6 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
     await controller?.dispose();
     controller = null;
-    notifyListeners();
     LockOverlay().closeOverlay();
     Navigator.of(context).pop();
 

@@ -16,7 +16,7 @@ class SplashViewModel extends BaseViewModel {
     await Future.delayed(Duration(milliseconds: 250));
     AppNavigator.pushReplacement(
       context: context,
-      child: TabBarViewContainer(),
+      child: BoardScreen(),
     );
   }
 }

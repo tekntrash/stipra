@@ -161,8 +161,9 @@ class BarcodeScanPage extends StatelessWidget {
                 BottomBox(
                   startCapture: viewModel.startCapture,
                   stopCapture: viewModel.stopCapture,
-                  //cameraController: viewModel.cameraController,
+                  cameraController: viewModel.controller,
                   isStarted: viewModel.isStarted,
+                  isStopped: viewModel.isStopped,
                 ),
               ],
             ),
