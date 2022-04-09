@@ -13,6 +13,8 @@ class VerifyNumberButton extends StatelessWidget {
       margin: EdgeInsets.all(5.w),
       child: CustomButton(
         onPressed: () {
+          SystemChannels.textInput.invokeMethod('TextInput.hide');
+          FocusScope.of(context).unfocus();
           viewModel.verifyNumber(context);
         },
         text: "Continue",

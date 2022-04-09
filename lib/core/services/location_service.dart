@@ -12,6 +12,8 @@ abstract class LocationService {
 
   Future<Position> getCurrentLocation();
 
+  Future<String> getCurrentLocationAsString();
+
   void showLocationPermissionDialog({Function()? onRequestGranted});
 }
 
@@ -93,5 +95,12 @@ class LocationServiceImpl extends LocationService {
         desiredAccuracy: LocationAccuracy.high);
     log('Current location: ${position.latitude}, ${position.longitude}');
     return position;
+  }
+
+  @override
+  Future<String> getCurrentLocationAsString() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    return '${position.latitude},${position.longitude}';
   }
 }

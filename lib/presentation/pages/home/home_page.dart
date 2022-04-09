@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
+import 'package:stipra/domain/repositories/local_data_repository.dart';
+import 'package:stipra/injection_container.dart';
 import 'package:stipra/presentation/pages/barcode_scan/barcode_scan_page.dart';
 import 'package:stipra/presentation/pages/home/widgets/bottom_bar.dart';
 import 'package:stipra/presentation/pages/home/widgets/top_bar.dart';
@@ -50,11 +52,19 @@ class _HomePageState extends State<HomePage>
                     child: Container(
                       color: AppTheme().whiteColor,
                       child: (!viewModel.isInited)
-                          ? Center(
-                              child: Container(
-                                width: 64.w,
-                                height: 64.w,
-                                child: CircularProgressIndicator.adaptive(),
+                          ? Container(
+                              height: 0.75.sh,
+                              child: Center(
+                                child: Container(
+                                  width: 48.w,
+                                  height: 48.w,
+                                  child: CircularProgressIndicator.adaptive(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      AppTheme().darkPrimaryColor,
+                                    ),
+                                    strokeWidth: 3,
+                                  ),
+                                ),
                               ),
                             )
                           : Column(

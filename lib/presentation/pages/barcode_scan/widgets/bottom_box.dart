@@ -106,7 +106,7 @@ class BottomBox extends StatelessWidget {
                     iconSize: 32.0,
                     onPressed: () => cameraController?.setFlashMode(
                       cameraController?.value.flashMode == FlashMode.off
-                          ? FlashMode.always
+                          ? FlashMode.torch
                           : FlashMode.off,
                     ),
                   ),

@@ -27,48 +27,56 @@ class _BottomBarState extends State<BottomBar> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            IconButton(
-                icon: Icon(
-                  Icons.sell_outlined,
-                  size: 28,
-                  color: getSelectedColor(0),
+            Expanded(
+              child: IconButton(
+                  icon: Icon(
+                    Icons.sell_outlined,
+                    size: 28,
+                    color: getSelectedColor(0),
+                  ),
+                  onPressed: () {
+                    AppRouter().tabController.index = 0;
+                    print('Current index: ${AppRouter().tabController.index} ');
+                    setState(() {});
+                  }),
+            ),
+            Expanded(
+              child: IconButton(
+                  icon: Icon(
+                    Icons.storefront,
+                    size: 28,
+                    color: getSelectedColor(1),
+                  ),
+                  onPressed: () {
+                    AppRouter().tabController.index = 1;
+                    setState(() {});
+                  }),
+            ),
+            Expanded(child: SizedBox()),
+            Expanded(
+              child: IconButton(
+                  icon: Icon(
+                    Icons.person_outline_outlined,
+                    size: 32,
+                    color: getSelectedColor(2),
+                  ),
+                  onPressed: () {
+                    AppRouter().tabController.index = 2;
+                    setState(() {});
+                  }),
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  //
+                },
+                child: SvgPicture.asset(
+                  'assets/images/info.svg',
+                  width: 24,
+                  height: 24,
+                  color: getSelectedColor(3),
+                  semanticsLabel: 'Info box',
                 ),
-                onPressed: () {
-                  AppRouter().tabController.index = 0;
-                  print('Current index: ${AppRouter().tabController.index} ');
-                  setState(() {});
-                }),
-            IconButton(
-                icon: Icon(
-                  Icons.storefront,
-                  size: 28,
-                  color: getSelectedColor(1),
-                ),
-                onPressed: () {
-                  AppRouter().tabController.index = 1;
-                  setState(() {});
-                }),
-            SizedBox(width: 40), // The dummy child
-            IconButton(
-                icon: Icon(
-                  Icons.person_outline_outlined,
-                  size: 32,
-                  color: getSelectedColor(2),
-                ),
-                onPressed: () {
-                  AppRouter().tabController.index = 2;
-                  setState(() {});
-                }),
-            InkWell(
-              onTap: () {
-                //
-              },
-              child: SvgPicture.asset(
-                'assets/images/info.svg',
-                width: 24,
-                height: 24,
-                color: getSelectedColor(3),
-                semanticsLabel: 'Info box',
               ),
             ),
             /* IconButton(

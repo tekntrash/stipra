@@ -1,0 +1,4 @@
+enum ResetPasswordActionType {
+  sendemail,
+  resetpassword,
+}

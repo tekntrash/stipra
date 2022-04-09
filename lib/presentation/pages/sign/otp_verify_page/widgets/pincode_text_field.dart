@@ -1,7 +1,7 @@
 part of '../otp_verify_page.dart';
 
 class PinCodeWidget extends StatelessWidget {
-  final OtpVerifyViewModel viewModel;
+  final dynamic viewModel;
   const PinCodeWidget({
     Key? key,
     required this.viewModel,

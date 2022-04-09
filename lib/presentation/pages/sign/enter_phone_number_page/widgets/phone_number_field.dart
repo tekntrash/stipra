@@ -24,6 +24,7 @@ class PhoneNumberField extends StatelessWidget {
         onInputChanged: (PhoneNumber number) {
           print(number.phoneNumber);
           viewModel.phoneNumber = number.phoneNumber;
+          viewModel.dialCode = number.dialCode;
         },
         onInputValidated: (bool value) {
           //print(value);

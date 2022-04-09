@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:stipra/data/models/user_model.dart';
 
 import '../../core/errors/exception.dart';
 import '../../domain/repositories/local_data_repository.dart';
@@ -13,11 +14,17 @@ import '../models/scanned_video_model.dart';
 
 class HiveDataSource implements LocalDataRepository {
   final _scannedVideosBoxName = 'scanned_videos';
+  final _userBoxName = 'users';
   Future init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(BarcodeTimeStampModelAdapter());
     Hive.registerAdapter(ScannedVideoModelAdapter());
+    Hive.registerAdapter(UserModelAdapter());
     await Hive.openBox<ScannedVideoModel>(_scannedVideosBoxName);
+    await Hive.openBox<UserModel>(_userBoxName);
+    if (Hive.box<UserModel>(_userBoxName).values.length <= 0) {
+      await cacheUser(UserModel());
+    }
   }
 
   @override
@@ -99,5 +106,24 @@ class HiveDataSource implements LocalDataRepository {
     } else {
       throw CacheException();
     }
+  }
+
+  @override
+  Future<void> cacheUser(UserModel userModel) async {
+    var box = Hive.box<UserModel>(_userBoxName);
+
+    if (box.length > 0) {
+      box.values.first.updateFromJson(userModel.toJson());
+      await box.values.first.save();
+      return;
+    }
+
+    await box.add(userModel);
+  }
+
+  @override
+  UserModel getUser() {
+    var box = Hive.box<UserModel>(_userBoxName);
+    return box.values.first;
   }
 }

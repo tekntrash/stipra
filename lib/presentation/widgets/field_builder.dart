@@ -137,10 +137,9 @@ class FieldBuilder extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 5, left: 11.w, top: 5),
                         child: ClassicText(
                           text: error ?? '',
-                          style:
-                              AppTheme().extraSmallParagraphMediumText.copyWith(
-                                    color: Colors.red[400],
-                                  ),
+                          style: AppTheme().smallParagraphRegularText.copyWith(
+                                color: Colors.red[400],
+                              ),
                         ),
                       ),
                       //),

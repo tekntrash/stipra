@@ -49,8 +49,9 @@ class ScannedVideoService {
     final unUploadedScannedVideos = scannedVideos.where((scannedVideo) {
       return scannedVideo.isUploaded != true;
     }).toList();
-    final isConnected = await locator<NetworkInfo>().isConnected;
-    if (isNeedUpload && isConnected) {
+    final isConnectedForUpload =
+        await locator<NetworkInfo>().isConnectedForUpload;
+    if (isNeedUpload && isConnectedForUpload) {
       log('informAboutUploadedVideo: true');
       uploadScannedVideos(unUploadedScannedVideos);
       /*LockOverlayDialog().showCustomOverlay(
@@ -105,7 +106,11 @@ class ScannedVideoService {
             location[1],
           );
         }));
-        final data = await dataRepository.sendScannedVideo(path);
+        final data = await dataRepository.sendScannedVideo(
+          path,
+          location[0],
+          location[1],
+        );
         if (data is Right) {
           return Right(true);
         } else {

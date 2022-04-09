@@ -1,7 +1,7 @@
 part of '../otp_verify_page.dart';
 
 class ConfirmButton extends StatelessWidget {
-  final OtpVerifyViewModel viewModel;
+  final dynamic viewModel;
   const ConfirmButton({
     Key? key,
     required this.viewModel,

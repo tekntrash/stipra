@@ -11,7 +11,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/platform/network_info.dart';
+import 'package:stipra/core/utils/router/app_navigator.dart';
+import 'package:stipra/core/utils/router/app_router.dart';
+import 'package:stipra/data/datasources/hive_data_source.dart';
 import 'package:stipra/presentation/pages/barcode_scan/widgets/barcode_detector_painter.dart';
+import 'package:stipra/presentation/pages/sign/enter_phone_number_page/enter_phone_number_page.dart';
+import 'package:stipra/presentation/widgets/overlay/lock_overlay_dialog.dart';
+import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
+import 'package:stipra/presentation/widgets/overlay/widgets/save_video_dialog.dart';
+import 'package:stipra/shared/app_theme.dart';
 
 import '../../../core/services/scanned_video_service.dart';
 import '../../../data/models/barcode_timestamp_model.dart';
@@ -22,6 +30,7 @@ import '../../../domain/repositories/remote_data_repository.dart';
 import '../../../injection_container.dart';
 import '../../widgets/overlay/lock_overlay.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart' as path;
 
 class BarcodeScanViewModel extends BaseViewModel {
   CameraController? controller;
@@ -146,32 +155,107 @@ class BarcodeScanViewModel extends BaseViewModel {
     LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
     if (controller == null || (controller?.value.isRecordingVideo != true))
       return;
+
     await controller?.stopImageStream();
     await Future.delayed(Duration(milliseconds: 100));
-    XFile? fileVideo = await controller?.stopVideoRecording();
+    XFile? originalFileVideo = await controller?.stopVideoRecording();
 
-    locator<LocalDataRepository>().saveScannedVideo(
-      ScannedVideoModel(
-        timeStamp: int.parse(timeStamp),
-        videoPath: fileVideo!.path,
-        isUploaded: false,
-        barcodeTimeStamps: barcodeTimeStamps,
-      ),
-    );
-    notifyListeners();
-    final isConnected = await locator<NetworkInfo>().isConnected;
-    log('isConnected $isConnected');
-    if (isConnected) {
-      await _sendVideoAndBarcodes(fileVideo.path);
+    var isExit = false;
+    if (pop) {
+      LockOverlay().closeOverlay();
+      isExit = await showExitOrSaveDialog();
+    }
+    if (!isExit) {
+      LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
+      final fileVideo = changeFileNameOnlySync(
+        File(originalFileVideo!.path),
+        '${timeStamp}${locator<LocalDataRepository>().getUser().alogin}.mp4',
+      );
+      showSnackbarForInformation(context);
+
+      locator<LocalDataRepository>().saveScannedVideo(
+        ScannedVideoModel(
+          timeStamp: int.parse(timeStamp),
+          videoPath: fileVideo.path,
+          isUploaded: false,
+          barcodeTimeStamps: barcodeTimeStamps,
+        ),
+      );
+      final isConnectedForUpload =
+          await locator<NetworkInfo>().isConnectedForUpload;
+      log('isConnectedForUpload $isConnectedForUpload');
+      if (isConnectedForUpload) {
+        _sendVideoAndBarcodes(fileVideo.path);
+      }
+      log('Video saved to ${fileVideo.path}');
     }
     await controller?.dispose();
     controller = null;
     LockOverlay().closeOverlay();
     Navigator.of(context).pop();
 
-    log('Video saved to ${fileVideo.path}');
-
     return;
+  }
+
+  Future<bool> showExitOrSaveDialog() async {
+    return await showDialog(
+      context: _context,
+      builder: (contextdialog) {
+        return SaveVideoDialog(
+          button1Text: 'Save',
+          onButton1Tap: () {
+            Navigator.of(contextdialog).pop(false);
+          },
+          button2Text: 'Exit',
+          onButton2Tap: () {
+            Navigator.of(contextdialog).pop(true);
+          },
+        );
+      },
+    );
+  }
+
+  File changeFileNameOnlySync(File file, String newFileName) {
+    var path = file.path;
+    var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
+    var newPath = path.substring(0, lastSeparator + 1) + newFileName;
+    return file.renameSync(newPath);
+  }
+
+  void showSnackbarForInformation(BuildContext context) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    if (locator<LocalDataRepository>().getUser().alogin != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppTheme().blackColor,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          content: Text(
+            'Thank you! Video will be sent and analyzed and you will receive an email with your points.',
+            style: AppTheme().extraSmallParagraphRegularText,
+          ),
+        ),
+      );
+    } else {
+      SnackbarOverlay().show(
+        addFrameCallback: true,
+        onTap: () {
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            AppNavigator.push(
+              context: AppRouter().mainNavigatorKey!.currentState!.context,
+              child: EnterPhoneNumberScreen(isSignIn: true),
+            );
+          });
+          SnackbarOverlay().closeCustomOverlay();
+        },
+        text: 'Thank you for receive points, you need to log in.',
+        buttonText: 'LOGIN',
+      );
+      Future.delayed(Duration(seconds: 8))
+          .then((value) => SnackbarOverlay().closeCustomOverlay());
+    }
   }
 
   Future<void> _sendVideoAndBarcodes(String path) async {
@@ -194,6 +278,8 @@ class BarcodeScanViewModel extends BaseViewModel {
     final bool? isUploaded =
         await locator<RemoteDataRepository>().sendScannedVideo(
       path,
+      location[0],
+      location[1],
     );
     if (isUploaded == true) {
       locator<LocalDataRepository>().updateIsUploaded(path, true);

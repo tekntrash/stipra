@@ -39,7 +39,7 @@ class SignTextFormField extends StatefulWidget {
     this.isEnabled = true,
     this.prefixIcon,
     this.suffixIcon,
-    this.obscureIconColor: const Color(0x80FFFFFF),
+    this.obscureIconColor: const Color(0xFF000000),
     this.obscureIconSize: 22,
     this.validatorEmptyMessage: 'This field can not be empty.',
     this.validator,
@@ -180,22 +180,20 @@ class _SignTextFormFieldState extends State<SignTextFormField> {
           contentPadding: EdgeInsets.fromLTRB(12, 16, 12, 16),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           prefixIcon: widget.prefixIcon,
-          suffixIcon:
-              /*widget.obscureVisibility
-            ? InkWell(
-                onTap: () => setState(
-                  () => obscureVisible = !obscureVisible,
-                ),
-                child: Icon(
-                  obscureVisible
-                      ? Icons.visibility_outlined
-                      : Icons.visibility_off_outlined,
-                  color: widget.obscureIconColor,
-                  size: widget.obscureIconSize,
-                ),
-              )
-            : */
-              widget.suffixIcon,
+          suffixIcon: widget.obscureVisibility
+              ? InkWell(
+                  onTap: () => setState(
+                    () => obscureVisible = !obscureVisible,
+                  ),
+                  child: Icon(
+                    obscureVisible
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    color: widget.obscureIconColor,
+                    size: widget.obscureIconSize,
+                  ),
+                )
+              : widget.suffixIcon,
         ),
         style: widget.style ??
             AppTheme().smallParagraphRegularText.copyWith(

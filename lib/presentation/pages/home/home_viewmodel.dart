@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/platform/network_info.dart';
 import 'package:stipra/core/services/scanned_video_service.dart';
 import 'package:stipra/presentation/widgets/overlay/lock_overlay_dialog.dart';
+import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
 import 'package:stipra/presentation/widgets/theme_button.dart';
 import 'package:stipra/shared/app_theme.dart';
 
@@ -25,12 +27,21 @@ class HomeViewModel extends BaseViewModel {
     products = [];
     isInited = false;
     await Future.wait([
+      requestPermisisons(),
       getProducts(),
       getOffers(),
       informAboutUploadedVideo(),
     ]);
     isInited = true;
     notifyListeners();
+  }
+
+  Future<void> requestPermisisons() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      Permission.storage,
+      Permission.location,
+    ].request();
   }
 
   Future<void> informAboutUploadedVideo() async {

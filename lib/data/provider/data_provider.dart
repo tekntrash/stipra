@@ -1,5 +1,12 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
+import 'package:stipra/data/enums/change_password_action_type.dart';
+import 'package:stipra/data/enums/reset_password_action_type.dart';
+import 'package:stipra/data/enums/sms_action_type.dart';
+import 'package:stipra/data/models/user_model.dart';
 import 'package:stipra/domain/entities/barcode_timestamp.dart';
+import 'package:stipra/domain/entities/user.dart';
 
 import '../../../../core/platform/network_info.dart';
 import '../../core/errors/exception.dart';
@@ -76,9 +83,129 @@ class DataProvider implements DataRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> sendScannedVideo(String videoPath) async {
+  Future<Either<Failure, bool>> sendScannedVideo(
+      String videoPath, double latitude, double longitude) async {
     try {
-      final remoteData = await remoteDataSource.sendScannedVideo(videoPath);
+      final remoteData = await remoteDataSource.sendScannedVideo(
+          videoPath, latitude, longitude);
+      return Right(remoteData);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> login(String emailAddress, String password,
+      bool? stayLoggedIn, String geo) async {
+    try {
+      final remoteData = await remoteDataSource.login(
+          emailAddress, password, stayLoggedIn, geo);
+      return Right(remoteData);
+    } catch (e) {
+      if (e is ServerFailure) {
+        return Left(e);
+      } else if (e is PhoneVerifyFailure) {
+        return Left(e);
+      }
+      throw e;
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> register(
+    String emailAddress,
+    String password,
+    String name,
+    String mobile,
+    String countrycode,
+    bool? stayLoggedIn,
+    double latitude,
+    double longitude,
+  ) async {
+    try {
+      final remoteData = await remoteDataSource.register(emailAddress, password,
+          name, mobile, countrycode, stayLoggedIn, latitude, longitude);
+      return Right(remoteData);
+    } catch (e) {
+      if (e is ServerFailure) {
+        return Left(e);
+      }
+      throw e;
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> smsConfirm(
+    SmsActionType action,
+    String emailAddres,
+    String userId,
+  ) async {
+    try {
+      final remoteData =
+          await remoteDataSource.smsConfirm(action, emailAddres, userId);
+      return Right(remoteData);
+    } catch (e) {
+      if (e is ServerFailure) {
+        return Left(e);
+      } else if (e is PhoneSmsExceededLimit) {
+        return Left(e);
+      }
+      throw e;
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> resetPassword(
+    ResetPasswordActionType action,
+    String emailAddress, {
+    String? password,
+  }) async {
+    try {
+      final remoteData = await remoteDataSource
+          .resetPassword(action, emailAddress, password: password);
+      return Right(remoteData);
+    } catch (e) {
+      if (e is ServerFailure) {
+        return Left(e);
+      } else if (e is PhoneSmsExceededLimit) {
+        return Left(e);
+      } else if (e is PhoneVerifyFailure) {
+        return Left(e);
+      }
+      throw e;
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> changePassword(
+    ChangePasswordActionType action,
+    String emailAddress,
+    String userId, {
+    String? newpassword,
+  }) async {
+    try {
+      final remoteData = await remoteDataSource.changePassword(
+          action, emailAddress, userId,
+          newpassword: newpassword);
+      return Right(remoteData);
+    } catch (e) {
+      if (e is ServerFailure) {
+        return Left(e);
+      } else if (e is PhoneSmsExceededLimit) {
+        return Left(e);
+      } else if (e is PhoneVerifyFailure) {
+        return Left(e);
+      }
+      throw e;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> callPythonForScannedVideo(
+      String videoPath, double latitude, double longitude) async {
+    try {
+      final remoteData = await remoteDataSource.sendScannedVideo(
+          videoPath, latitude, longitude);
       return Right(remoteData);
     } on ServerException {
       return Left(ServerFailure());

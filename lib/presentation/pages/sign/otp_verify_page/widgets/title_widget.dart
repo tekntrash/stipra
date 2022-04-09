@@ -29,7 +29,7 @@ class TitleWidget extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Text(
-                  'Enter the six-digit code that was sent via SMS to the phone number you provided',
+                  'Enter the four-digit code that was sent via SMS to the phone number you provided',
                   style: AppTheme().paragraphRegularText.copyWith(
                         color: Colors.black,
                       ),

@@ -20,6 +20,7 @@ import 'package:intl_phone_number_input/src/utils/widget_view.dart';
 // ignore: implementation_imports
 import 'package:intl_phone_number_input/src/widgets/selector_button.dart';
 import 'package:stipra/core/services/validator_service.dart';
+import 'package:stipra/shared/app_theme.dart';
 
 import '../../../data/models/validator_model.dart';
 import '../../widgets/field_builder.dart';
@@ -391,7 +392,10 @@ class _InputWidgetView
     return Container(
       child: FieldBuilder(
         controller: widget.phonevalidator.textController,
-        text: '',
+        text: 'Phone Number',
+        titleStyle: AppTheme().smallParagraphMediumText.copyWith(
+              fontSize: AppTheme().paragraphSemiBoldText.fontSize,
+            ),
         hint: widget.hintText!,
         notifier: widget.phonevalidator.errorNotifier,
         validator: () {},
@@ -411,7 +415,6 @@ class _InputWidgetView
 
           return true;
         },
-        textPadding: EdgeInsets.zero,
         keyboardType: TextInputType.number,
         fieldPadding: EdgeInsets.zero,
         margin: EdgeInsets.zero,

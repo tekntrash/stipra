@@ -1,5 +1,9 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:rest_api_package/rest_api_package.dart';
 import 'package:stipra/core/services/location_service.dart';
 import 'package:stipra/core/services/scanned_video_service.dart';
 import 'package:stipra/data/datasources/hive_data_source.dart';
@@ -42,13 +46,18 @@ Future<void> init() async {
 
   //!Core
   locator.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(locator()),
+    () => NetworkInfoImpl(locator(), [
+      ConnectivityResult.wifi,
+    ]),
   );
   locator.registerLazySingleton<ScannedVideoService>(
     () => ScannedVideoService(),
   );
   locator.registerLazySingleton<LocationService>(
     () => LocationServiceImpl(),
+  );
+  locator.registerLazySingleton<RestApiHttpService>(
+    () => RestApiHttpService(Dio(), DefaultCookieJar()),
   );
 
   //!External

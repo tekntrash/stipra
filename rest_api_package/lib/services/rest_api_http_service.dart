@@ -1,6 +1,15 @@
 part of '../rest_api_package.dart';
 
-class RespApiHttpService {
+class RestApiHttpService {
+  Map<String, String> publicHeaders = <String, String>{};
+  Dio dio;
+  DefaultCookieJar cookieJar;
+  RestApiHttpService(this.dio, this.cookieJar) {
+    log('Cookie interceptor adding');
+    dio.interceptors.add(CookieManager(cookieJar));
+    log('Cookie interceptor added');
+  }
+
   Future<Options> prepareOptions({bool authorize = false}) async {
     final Map<String, String> headers = <String, String>{};
     headers.putIfAbsent(
@@ -22,9 +31,11 @@ class RespApiHttpService {
     RestApiRequest apiRequest, {
     bool removeBaseUrl = false,
     required dynamic parseModel,
+    bool isRawJson = false,
   }) async {
     Response response = await request(apiRequest, removeBaseUrl: removeBaseUrl);
-    return handleResponse<T>(response, parseModel: parseModel);
+    return handleResponse<T>(response,
+        parseModel: parseModel, isRawJson: isRawJson);
   }
 
   Future<List<T>> requestAndHandleList<T>(
@@ -45,31 +56,88 @@ class RespApiHttpService {
 
     try {
       if (apiRequest.requestMethod == RequestMethod.GET) {
-        resp = await Dio().get(
+        resp = await dio.get(
           url,
           options: options,
           queryParameters: apiRequest.queryParameters,
         );
       } else if (apiRequest.requestMethod == RequestMethod.PUT) {
-        resp = await Dio().put(
+        resp = await dio.put(
           url,
           options: options,
           data: apiRequest.body,
           queryParameters: apiRequest.queryParameters,
         );
       } else if (apiRequest.requestMethod == RequestMethod.POST) {
-        resp = await Dio().post(
+        resp = await dio.post(
           url,
           options: options,
           data: apiRequest.body,
           queryParameters: apiRequest.queryParameters,
         );
       } else if (apiRequest.requestMethod == RequestMethod.DELETE) {
-        resp = await Dio().delete(
+        resp = await dio.delete(
           url,
           options: options,
           queryParameters: apiRequest.queryParameters,
           data: apiRequest.body,
+        );
+      } else {
+        throw Exception("Error this request's method is undefined");
+      }
+    } on DioError catch (e) {
+      if (e.response != null) {
+        return e.response!;
+      }
+      throw Exception('DIO Error: $e');
+    }
+    return resp;
+  }
+
+  Future<T> requestFormAndHandle<T>(
+    RestApiRequest apiRequest, {
+    required dynamic parseModel,
+    bool isRawJson = false,
+  }) async {
+    Response response = await requestForm(apiRequest);
+    return handleResponse<T>(response,
+        parseModel: parseModel, isRawJson: isRawJson);
+  }
+
+  Future<Response> requestForm(
+    RestApiRequest apiRequest,
+  ) async {
+    Response resp;
+    String url = apiRequest.endPoint;
+
+    Options options = await prepareOptions(authorize: apiRequest.authorize);
+
+    var formData = FormData();
+
+    apiRequest.body.forEach((key, value) {
+      formData.fields.add(MapEntry(key, value));
+    });
+
+    try {
+      if (apiRequest.requestMethod == RequestMethod.GET) {
+        resp = await dio.get(
+          url,
+          options: options,
+          queryParameters: apiRequest.queryParameters,
+        );
+      } else if (apiRequest.requestMethod == RequestMethod.PUT) {
+        resp = await dio.put(
+          url,
+          options: options,
+          data: formData,
+          queryParameters: apiRequest.queryParameters,
+        );
+      } else if (apiRequest.requestMethod == RequestMethod.POST) {
+        resp = await dio.post(
+          url,
+          options: options,
+          data: formData,
+          queryParameters: apiRequest.queryParameters,
         );
       } else {
         throw Exception("Error this request's method is undefined");
@@ -134,16 +202,20 @@ class RespApiHttpService {
     return resp;
   }
 
-  T handleResponse<T>(Response response, {required dynamic parseModel}) {
+  T handleResponse<T>(Response response,
+      {required dynamic parseModel, required bool isRawJson}) {
     if (response.statusCode == 200 || response.statusCode == 201) {
       try {
         final data = response.data;
+        if (isRawJson) {
+          return parseModel.fromRawJson(data);
+        }
         return parseModel.fromJson(data);
       } catch (e) {
-        return parseModel.fromJson({});
+        throw response;
       }
     } else {
-      return parseModel.fromJson({});
+      throw response;
     }
   }
 

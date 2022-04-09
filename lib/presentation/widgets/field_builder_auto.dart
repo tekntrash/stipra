@@ -18,6 +18,7 @@ class FieldBuilderAuto extends StatelessWidget {
   final Function(String?)? onChanged;
   final String? helperText;
   final bool autovalidateMode;
+  final bool obscureVisibility;
 
   const FieldBuilderAuto({
     Key? key,
@@ -38,6 +39,7 @@ class FieldBuilderAuto extends StatelessWidget {
     this.onChanged,
     this.helperText,
     this.autovalidateMode: false,
+    this.obscureVisibility: false,
   }) : super(key: key);
 
   @override
@@ -64,9 +66,9 @@ class FieldBuilderAuto extends StatelessWidget {
                     textController: controller,
                     labelText: '',
                     hintText: hint,
-                    obscureVisibility: false,
+                    obscureVisibility: obscureVisibility,
                     keyboardType: keyboardType,
-                    borderColor: Colors.transparent,
+                    borderColor: Colors.black,
                     fillColor: Colors.white,
                     hintColor: Colors.black,
                     borderRadius: 8,

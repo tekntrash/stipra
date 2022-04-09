@@ -1,26 +1,47 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/core/errors/failure.dart';
+import 'package:stipra/data/enums/sms_action_type.dart';
+import 'package:stipra/domain/repositories/data_repository.dart';
+import 'package:stipra/domain/repositories/local_data_repository.dart';
 import 'package:stipra/presentation/pages/home/home_page.dart';
 import 'package:stipra/presentation/pages/tabbar_view_container.dart';
+import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
 
+import '../../../../injection_container.dart';
 import '../../../widgets/overlay/lock_overlay.dart';
 
 class OtpVerifyViewModel extends BaseViewModel {
-  OtpVerifyViewModel();
+  String otp;
+  OtpVerifyViewModel({
+    required this.otp,
+  });
 
   TextEditingController textEditingController = TextEditingController();
 
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController =
       StreamController<ErrorAnimationType>();
-
+  ValueNotifier<int> waitBeforeResend = ValueNotifier(0);
+  bool resendingOtp = false;
   bool hasError = false;
   String currentPin = "";
   final formKey = GlobalKey<FormState>();
   bool isCheckingPin = false;
+  bool reachedLimit = false;
+
+  init() {
+    /*locator<DataRepository>().smsConfirm(
+      SmsActionType.send,
+      locator<LocalDataRepository>().getUser().alogin ?? '',
+      locator<LocalDataRepository>().getUser().userid ?? '',
+    );*/
+  }
 
   @override
   void dispose() {
@@ -33,14 +54,9 @@ class OtpVerifyViewModel extends BaseViewModel {
   ) async {
     if (validatePinFieldsFilled()) {
       updateIsCheckingPinStatus(true);
-      LockOverlay().showClassicLoadingOverlay();
-      //Response _response = await getUserRole();
-      //var _isPinConfirmed = isPinCorrect(_response);
-      var _isPinConfirmed = true;
-      LockOverlay().closeOverlay();
+      await Future.delayed(Duration(milliseconds: 150));
       updateIsCheckingPinStatus(false);
-      if (_isPinConfirmed) {
-        //onPinConfirmed(context, response: _response);
+      if (isPinCorrect) {
         onPinConfirmed(context);
         return;
       }
@@ -57,29 +73,58 @@ class OtpVerifyViewModel extends BaseViewModel {
   ) async {
     hasError = false;
     notifyListeners();
-    //final user = User.fromRawJson(response.data);
-    //final ifRoleHaveError = user.role == null;
-    //if (ifRoleHaveError) {
-    //  SnackbarShow.showAndClear(context, 'An error occured, please try again.');
-    //  return;
-    //}
-    //await HiveService().deleteAll();
-    //await HiveService().addUser(user);
-
-    /*if (UserService().getLoggedUser().isCompany ||
-        UserService().getLoggedUser().isEmployee) {
-      routePage = StaticBar();
-    } else {
-      routePage = UserUpgradePage(
-        customerId: customerId,
-      );
-    }*/
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => TabBarViewContainer(),
-      ),
-      (route) => false,
+    await locator<DataRepository>().smsConfirm(
+      SmsActionType.confirm,
+      locator<LocalDataRepository>().getUser().alogin ?? '',
+      locator<LocalDataRepository>().getUser().userid ?? '',
     );
+    Navigator.of(context).pop(true);
+  }
+
+  void resendOtp({bool force: false}) async {
+    if ((resendingOtp || waitBeforeResend.value != 0) && !force) return;
+    resendingOtp = true;
+    notifyListeners();
+    final result = await locator<DataRepository>().smsConfirm(
+      reachedLimit ? SmsActionType.confirmemail : SmsActionType.send,
+      locator<LocalDataRepository>().getUser().alogin ?? '',
+      locator<LocalDataRepository>().getUser().userid ?? '',
+    );
+    log('message: $result');
+    waitBeforeResend.value = 60;
+    if (result is Left) {
+      if ((result as Left).value is PhoneSmsExceededLimit) {
+        reachedLimit = true;
+      }
+      SnackbarOverlay().show(
+        text: '${(result as Left).value.errorMessage}',
+        buttonText: 'OK',
+        buttonTextColor: Colors.red,
+        addFrameCallback: true,
+        onTap: () {
+          timer?.cancel();
+          resendOtp(force: true);
+          SnackbarOverlay().closeCustomOverlay();
+        },
+        removeDuration: Duration(seconds: 10),
+        forceOverlay: true,
+      );
+    }
+    countDownResend();
+    resendingOtp = false;
+    notifyListeners();
+  }
+
+  Timer? timer;
+  countDownResend() {
+    timer = Timer.periodic(Duration(seconds: 1), (_timer) {
+      if (waitBeforeResend.value > 0) {
+        waitBeforeResend.value--;
+      } else {
+        _timer.cancel();
+        notifyListeners();
+      }
+    });
   }
 
   void shakePinFieldsForNotCorrect() {
@@ -88,21 +133,7 @@ class OtpVerifyViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  /*Future<Response> getUserRole() async {
-    Response response = await DataProvider().request(
-      VerifyPhoneNumberRequest(
-        code: currentPin,
-        customerId: customerId,
-      ),
-    );
-    return response;
-  }*/
-
-  /*bool isPinCorrect(Response response) {
-    print('Pin result: ${response.data}');
-    var _isPinCorrect = response.data != 'fail';
-    return _isPinCorrect;
-  }*/
+  bool get isPinCorrect => currentPin == otp;
 
   void updateIsCheckingPinStatus(bool newStatus) {
     isCheckingPin = newStatus;

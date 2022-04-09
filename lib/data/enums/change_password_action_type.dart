@@ -1,0 +1,4 @@
+enum ChangePasswordActionType {
+  changepassword,
+  confirmchangepassword,
+}

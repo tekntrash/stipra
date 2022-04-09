@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/widgets/overlay/lock_overlay.dart';
 
 import '../../../data/models/barcode_timestamp_model.dart';
 import '../../../domain/repositories/data_repository.dart';

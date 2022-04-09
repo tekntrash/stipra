@@ -9,7 +9,26 @@ abstract class Failure extends Equatable {
 }
 
 // General failures
-class ServerFailure extends Failure {}
+class ServerFailure extends Failure {
+  final String? errorMessage;
+  ServerFailure({this.errorMessage}) : super([errorMessage]);
+}
+
+class PhoneVerifyFailure extends Failure {
+  final String? errorMessage;
+  final dynamic userModel;
+  PhoneVerifyFailure({this.errorMessage, required this.userModel})
+      : super([errorMessage, userModel]);
+}
+
+class PhoneSmsExceededLimit extends Failure {
+  final String? errorMessage;
+  PhoneSmsExceededLimit({
+    this.errorMessage,
+  }) : super([
+          errorMessage,
+        ]);
+}
 
 class CacheFailure extends Failure {}
 
