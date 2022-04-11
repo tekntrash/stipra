@@ -181,12 +181,13 @@ class DataProvider implements DataRepository {
     ChangePasswordActionType action,
     String emailAddress,
     String userId, {
+    String? oldpassword,
     String? newpassword,
   }) async {
     try {
       final remoteData = await remoteDataSource.changePassword(
           action, emailAddress, userId,
-          newpassword: newpassword);
+          oldpassword: oldpassword, newpassword: newpassword);
       return Right(remoteData);
     } catch (e) {
       if (e is ServerFailure) {

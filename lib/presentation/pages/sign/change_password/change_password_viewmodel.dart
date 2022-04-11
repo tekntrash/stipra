@@ -45,6 +45,7 @@ class ChangePasswordViewModel extends BaseViewModel {
         ChangePasswordActionType.changepassword,
         userModel.alogin ?? '',
         userModel.userid ?? '',
+        oldpassword: oldPassword.textController.text,
         newpassword: newPassword.textController.text,
       );
       if (result is Right) {

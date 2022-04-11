@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
@@ -8,6 +11,7 @@ import 'package:stipra/presentation/pages/profile/profile_viewmodel.dart';
 import 'package:stipra/presentation/pages/sign/enter_phone_number_page/enter_phone_number_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stipra/presentation/pages/sign/otp_verify_page/otp_verify_page.dart';
+import 'package:stipra/presentation/pages/take_picture/take_picture_page.dart';
 import 'package:stipra/presentation/widgets/classic_text.dart';
 import 'package:stipra/presentation/widgets/curved_container.dart';
 import 'package:stipra/presentation/widgets/local_image_box.dart';
@@ -101,21 +105,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           context);
                                                 },
                                               ),
-                                              SizedBox(
-                                                height: 30.h,
-                                              ),
-                                              buildButtonTitle('Support'),
-                                              SizedBox(
-                                                height: 20.h,
+                                              buildProfileButton(
+                                                'Configuration',
+                                                onTap: () {},
                                               ),
                                               buildProfileButton(
-                                                'Terms and Conditions',
-                                              ),
-                                              buildProfileButton(
-                                                'Privacy Policy',
+                                                'Logout',
+                                                onTap: () {
+                                                  viewModel.logout(context);
+                                                  setState(() {});
+                                                },
                                               ),
                                               Container(
-                                                height: 40.h,
+                                                height: 100.h,
                                               ),
                                             ],
                                           ),
@@ -145,6 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
           );
   }
 
+  File? selectedImage;
   Widget buildTopBar() {
     return Align(
       alignment: Alignment.bottomCenter,
@@ -155,13 +158,25 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(50),
-              onTap: () {
-                //
+              onTap: () async {
+                final result = await AppNavigator.push(
+                  context: context,
+                  child: TakePicturePage(),
+                );
+                if (result != null) {
+                  selectedImage = result;
+                  setState(() {});
+                  log('File found lets change avatar!');
+                } else {
+                  //do nothing
+                }
               },
               child: Ink(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/roblox.png'),
+                    image: selectedImage != null
+                        ? FileImage(selectedImage!) as ImageProvider
+                        : AssetImage('assets/images/roblox.png'),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(50),

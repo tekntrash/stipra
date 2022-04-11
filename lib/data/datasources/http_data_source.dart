@@ -59,7 +59,7 @@ class HttpDataSource implements RemoteDataRepository {
 
     final result = await locator<RestApiHttpService>().requestFile(
       RestApiRequest(
-        endPoint: baseUrl + 'upload.php',
+        endPoint: baseUrl + 'newapp/upload.php',
         requestMethod: RequestMethod.POST,
         body: {
           'video-filename':
@@ -310,34 +310,37 @@ class HttpDataSource implements RemoteDataRepository {
     ChangePasswordActionType action,
     String emailAddress,
     String userId, {
+    String? oldpassword,
     String? newpassword,
   }) async {
     try {
       final response = await locator<RestApiHttpService>().requestForm(
         RestApiRequest(
-            endPoint: baseUrl + 'newapp/changepassword.php',
-            requestMethod: RequestMethod.GET,
-            queryParameters: {
-              'action': action.name,
-              'userid': userId,
-              'alogin': emailAddress,
-              'newpassword': newpassword,
-            }),
+          endPoint: baseUrl + 'newapp/changepassword.php',
+          requestMethod: RequestMethod.POST,
+          queryParameters: {
+            'action': action.name,
+            'userid': userId,
+            'alogin': emailAddress,
+          },
+          body: {
+            'oldpassword': oldpassword,
+            'newpassword': newpassword,
+          },
+        ),
       );
-      log('Response resetpassword: $response');
+      log('Response changePassword: $response');
       log('QP: ${response.requestOptions.queryParameters}');
       Map<String, dynamic> result = json.decode(response.data);
-      log('Response resetpassword 2: $result');
+      log('Response changePassword 2: $result');
       final status = result['status'];
-      final oldpassword = result['oldpassword'];
-      //final code = result['code'];
-      if (status == 'verified' || oldpassword != null) {
-        return oldpassword ?? '';
+      if (status == 'password changed') {
+        return 'success';
       } else {
-        if (status == 'Tries exceeded') {
-          throw PhoneSmsExceededLimit(
+        if (status == 'password mismatch') {
+          throw ServerFailure(
               errorMessage:
-                  'Mmm... This is not working. Click here and we will send you an email instead.');
+                  'The old password you entered is incorrect, check it and try again.');
         } else if (status == 'User not found') {
           throw ServerFailure(
               errorMessage: 'Email is not registered, please try again.');

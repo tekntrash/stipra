@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart' as intl;
 import 'package:intl/intl.dart';
 
+String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
+
 String formatDateHm(
   int timeAgo, {
   required bool isMilliSeconds,

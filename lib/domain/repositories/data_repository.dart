@@ -46,6 +46,10 @@ abstract class DataRepository {
       {String? password});
 
   Future<Either<Failure, String>> changePassword(
-      ChangePasswordActionType action, String emailAddress, String userId,
-      {String? newpassword});
+    ChangePasswordActionType action,
+    String emailAddress,
+    String userId, {
+    String? oldpassword,
+    String? newpassword,
+  });
 }
