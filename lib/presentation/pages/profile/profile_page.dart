@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -95,9 +96,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                               ),
                                               buildProfileButton(
                                                 'Edit Profile',
+                                                onTap: () {
+                                                  viewModel.routeToEditProfile(
+                                                      context);
+                                                },
                                               ),
                                               buildProfileButton(
-                                                'Your Email',
+                                                'Change Email',
+                                                onTap: () {
+                                                  viewModel.routeToChangeEmail(
+                                                      context);
+                                                },
                                               ),
                                               buildProfileButton(
                                                 'Change Password',
@@ -152,6 +161,9 @@ class _ProfilePageState extends State<ProfilePage> {
   File? selectedImage;
   bool uploading = false;
   Widget buildTopBar() {
+    final user = locator<LocalDataRepository>().getUser();
+    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+    final imageUrl = stringToBase64.encode(user.image ?? '');
     return Align(
       alignment: Alignment.bottomCenter,
       child: Column(
@@ -174,6 +186,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   log('Result of upload: $uploadResult');
                   if (uploadResult is dartz.Right) {
                     selectedImage = result;
+                    //locator<LocalDataRepository>().getUser().image = result;
+                    //await locator<LocalDataRepository>().getUser().save();
                   }
                   uploading = false;
                   setState(() {});
@@ -217,8 +231,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               : DecorationImage(
                                   image: selectedImage != null
                                       ? FileImage(selectedImage!)
-                                          as ImageProvider
-                                      : AssetImage('assets/images/roblox.png'),
+                                      : user.image != null
+                                          ? NetworkImage(
+                                                  'https://api.stipra.com/newapp/showpic.php?image=${imageUrl}')
+                                              as ImageProvider
+                                          : AssetImage(
+                                              'assets/images/roblox.png'),
                                   fit: BoxFit.cover,
                                 ),
                           borderRadius: BorderRadius.circular(50),

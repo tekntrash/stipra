@@ -1,10 +1,13 @@
 import 'package:dartz/dartz.dart';
+import 'package:stipra/data/enums/change_email_action_type.dart';
 import 'package:stipra/data/enums/change_password_action_type.dart';
 import 'package:stipra/data/enums/reset_password_action_type.dart';
 import 'package:stipra/data/enums/sms_action_type.dart';
+import 'package:stipra/domain/entities/profile.dart';
 import 'package:stipra/domain/entities/user.dart';
 
 import '../../core/errors/failure.dart';
+import '../../data/enums/change_profile_action_type.dart';
 import '../entities/offer.dart';
 import '../entities/product.dart';
 
@@ -54,4 +57,14 @@ abstract class DataRepository {
   });
 
   Future<Either<Failure, bool>> changeProfilePicture(String imagePath);
+
+  Future<Either<Failure, String>> changeEmail(
+    ChangeEmailActionType action,
+    String emailAddress,
+    String userId,
+    String newEmail,
+  );
+
+  Future<Either<Failure, Profile>> changeProfile(
+      ChangeProfileActionType action, dynamic profile);
 }

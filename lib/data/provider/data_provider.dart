@@ -1,9 +1,12 @@
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:stipra/data/enums/change_email_action_type.dart';
 import 'package:stipra/data/enums/change_password_action_type.dart';
+import 'package:stipra/data/enums/change_profile_action_type.dart';
 import 'package:stipra/data/enums/reset_password_action_type.dart';
 import 'package:stipra/data/enums/sms_action_type.dart';
+import 'package:stipra/data/models/profile_model.dart';
 import 'package:stipra/data/models/user_model.dart';
 import 'package:stipra/domain/entities/barcode_timestamp.dart';
 import 'package:stipra/domain/entities/user.dart';
@@ -222,6 +225,44 @@ class DataProvider implements DataRepository {
       return Right(remoteData);
     } on ServerException {
       return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> changeEmail(
+    ChangeEmailActionType action,
+    String emailAddress,
+    String userId,
+    String newEmail,
+  ) async {
+    try {
+      final remoteData = await remoteDataSource.changeEmail(
+        action,
+        emailAddress,
+        userId,
+        newEmail,
+      );
+      return Right(remoteData);
+    } on ServerException {
+      return Left(ServerFailure());
+    } on EmailVerifyFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProfileModel>> changeProfile(
+    ChangeProfileActionType action,
+    dynamic profile,
+  ) async {
+    try {
+      final remoteData = await remoteDataSource.changeProfile(
+        action,
+        profile,
+      );
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
     }
   }
 }

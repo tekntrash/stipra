@@ -23,6 +23,7 @@ class FieldBuilder extends StatelessWidget {
   final bool disableValidator;
   final bool disableDecoration;
   final Radius? borderRadiusTopLeft, borderRadiusBottomLeft;
+  final Color? borderColor;
 
   const FieldBuilder({
     Key? key,
@@ -49,6 +50,7 @@ class FieldBuilder extends StatelessWidget {
     this.disableDecoration: false,
     this.borderRadiusBottomLeft,
     this.borderRadiusTopLeft,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -68,51 +70,61 @@ class FieldBuilder extends StatelessWidget {
               ),
             ),
           IntrinsicHeight(
-            child: Row(
-              children: [
-                if (leftWidget != null) leftWidget!,
-                Expanded(
-                  child: Container(
-                    padding: fieldPadding,
-                    decoration: disableDecoration
-                        ? null
-                        : BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  if (leftWidget != null) leftWidget!,
+                  Expanded(
+                    child: Container(
+                      padding: fieldPadding,
+                      decoration: disableDecoration
+                          ? null
+                          : BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 1,
+                              ),
                             ),
-                          ),
-                    child: SignTextFormField(
-                      textController: controller,
-                      autovalidateMode: true,
-                      labelText: '',
-                      hintText: hint,
-                      obscureVisibility: false,
-                      keyboardType: keyboardType,
-                      borderColor: Colors.transparent,
-                      fillColor: Colors.white,
-                      hintColor: Colors.black,
-                      borderRadius: 8,
-                      disableValidator: disableValidator,
-                      onChanged: (text) {
-                        if (onChanged != null) onChanged!(text);
-                        validator();
-                      },
-                      validatorEmptyMessage: 'Can not be empty',
-                      suffixIcon: suffixIcon,
-                      style: style,
-                      isEnabled: isEnabled,
-                      disabledTextColor: disabledTextColor,
-                      textColor: textColor,
-                      borderRadiusBottomLeft: borderRadiusBottomLeft,
-                      borderRadiusTopLeft: borderRadiusTopLeft,
+                      child: SignTextFormField(
+                        textController: controller,
+                        autovalidateMode: true,
+                        labelText: '',
+                        hintText: hint,
+                        obscureVisibility: false,
+                        keyboardType: keyboardType,
+                        borderColor: Colors.transparent,
+                        fillColor: Colors.white,
+                        hintColor: Colors.black,
+                        borderRadius: 8,
+                        disableValidator: disableValidator,
+                        onChanged: (text) {
+                          if (onChanged != null) onChanged!(text);
+                          validator();
+                        },
+                        validatorEmptyMessage: 'Can not be empty',
+                        suffixIcon: suffixIcon,
+                        style: style,
+                        isEnabled: isEnabled,
+                        disabledTextColor: disabledTextColor,
+                        textColor: textColor,
+                        borderRadiusBottomLeft: borderRadiusBottomLeft,
+                        borderRadiusTopLeft: borderRadiusTopLeft,
+                      ),
                     ),
                   ),
-                ),
-                if (rightWidget != null) rightWidget!,
-              ],
+                  if (rightWidget != null) rightWidget!,
+                ],
+              ),
             ),
           ),
           ValueListenableBuilder(

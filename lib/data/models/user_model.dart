@@ -13,12 +13,14 @@ class UserModel extends User with HiveObjectMixin {
     this.userid,
     this.stayLoggedIn,
     this.otp,
+    this.image,
   }) : super(
           alogin: alogin,
           name: name,
           userid: userid,
           stayLoggedIn: stayLoggedIn,
           otp: otp,
+          image: image,
         );
 
   @HiveField(0)
@@ -31,6 +33,8 @@ class UserModel extends User with HiveObjectMixin {
   bool? stayLoggedIn;
   @HiveField(4)
   String? otp;
+  @HiveField(5)
+  String? image;
 
   fromRawJson(String str) => fromJson(json.decode(str));
 
@@ -42,6 +46,7 @@ class UserModel extends User with HiveObjectMixin {
     userid = json["userid"] ?? userid;
     stayLoggedIn = json["stayLoggedIn"] ?? stayLoggedIn;
     otp = json["otp"] ?? otp;
+    image = json["image"] ?? image;
   }
 
   fromJson(Map<String, dynamic> json) => UserModel(
@@ -51,6 +56,7 @@ class UserModel extends User with HiveObjectMixin {
         stayLoggedIn:
             json["stayLoggedIn"] == null ? null : json["stayLoggedIn"],
         otp: json["otp"] == null ? null : json["otp"],
+        image: json["image"] == null ? null : json["image"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -59,5 +65,6 @@ class UserModel extends User with HiveObjectMixin {
         "userid": userid == null ? null : userid,
         "stayLoggedIn": stayLoggedIn == null ? null : stayLoggedIn,
         "otp": otp == null ? null : otp,
+        "image": image == null ? null : image,
       };
 }

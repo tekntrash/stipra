@@ -79,6 +79,7 @@ dependencies:
   flutter_image_compress: ^1.0.0
   image_picker: ^0.8.5
   gesture_x_detector: ^1.0.0
+  dropdown_button2: ^1.4.0
   #camera: any
 
 dev_dependencies:

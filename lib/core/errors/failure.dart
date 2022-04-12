@@ -21,6 +21,13 @@ class PhoneVerifyFailure extends Failure {
       : super([errorMessage, userModel]);
 }
 
+class EmailVerifyFailure extends Failure {
+  final String? errorMessage;
+  final String otp;
+  EmailVerifyFailure({this.errorMessage, required this.otp})
+      : super([errorMessage, otp]);
+}
+
 class PhoneSmsExceededLimit extends Failure {
   final String? errorMessage;
   PhoneSmsExceededLimit({

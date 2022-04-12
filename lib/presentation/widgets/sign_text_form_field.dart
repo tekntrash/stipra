@@ -27,6 +27,7 @@ class SignTextFormField extends StatefulWidget {
   final String? helperText;
   final bool autovalidateMode;
   final Radius? borderRadiusTopLeft, borderRadiusBottomLeft;
+  final InputBorder? customBorder;
   const SignTextFormField({
     Key? key,
     required this.textController,
@@ -54,6 +55,7 @@ class SignTextFormField extends StatefulWidget {
     this.style,
     this.helperText,
     this.autovalidateMode: false,
+    this.customBorder,
   }) : super(key: key);
 
   @override
@@ -161,20 +163,21 @@ class _SignTextFormFieldState extends State<SignTextFormField> {
               topRight: Radius.circular(widget.borderRadius),
             ),
           ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: widget.borderColor,
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              bottomLeft: widget.borderRadiusBottomLeft ??
-                  Radius.circular(widget.borderRadius),
-              bottomRight: Radius.circular(widget.borderRadius),
-              topLeft: widget.borderRadiusTopLeft ??
-                  Radius.circular(widget.borderRadius),
-              topRight: Radius.circular(widget.borderRadius),
-            ),
-          ),
+          border: widget.customBorder ??
+              OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: widget.borderColor,
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: widget.borderRadiusBottomLeft ??
+                      Radius.circular(widget.borderRadius),
+                  bottomRight: Radius.circular(widget.borderRadius),
+                  topLeft: widget.borderRadiusTopLeft ??
+                      Radius.circular(widget.borderRadius),
+                  topRight: Radius.circular(widget.borderRadius),
+                ),
+              ),
           filled: true,
           fillColor: widget.fillColor,
           contentPadding: EdgeInsets.fromLTRB(12, 16, 12, 16),

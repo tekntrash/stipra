@@ -1,10 +1,13 @@
+import 'package:stipra/data/enums/change_email_action_type.dart';
 import 'package:stipra/data/enums/change_password_action_type.dart';
 import 'package:stipra/data/enums/reset_password_action_type.dart';
 import 'package:stipra/data/enums/sms_action_type.dart';
+import 'package:stipra/data/models/profile_model.dart';
 import 'package:stipra/data/models/user_model.dart';
 import 'package:stipra/domain/entities/barcode_timestamp.dart';
 import 'package:stipra/domain/entities/user.dart';
 
+import '../../data/enums/change_profile_action_type.dart';
 import '../../data/models/offer_model.dart';
 import '../../data/models/product_model.dart';
 
@@ -53,4 +56,14 @@ abstract class RemoteDataRepository {
   });
 
   Future<bool> changeProfilePicture(String imagePath);
+
+  Future<String> changeEmail(
+    ChangeEmailActionType action,
+    String emailAddress,
+    String userId,
+    String newEmail,
+  );
+
+  Future<ProfileModel> changeProfile(
+      ChangeProfileActionType action, dynamic profile);
 }

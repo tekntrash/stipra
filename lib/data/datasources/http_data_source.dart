@@ -5,9 +5,12 @@ import 'dart:io';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
+import 'package:stipra/data/enums/change_email_action_type.dart';
 import 'package:stipra/data/enums/change_password_action_type.dart';
+import 'package:stipra/data/enums/change_profile_action_type.dart';
 import 'package:stipra/data/enums/reset_password_action_type.dart';
 import 'package:stipra/data/enums/sms_action_type.dart';
+import 'package:stipra/data/models/profile_model.dart';
 
 import '../../core/errors/exception.dart';
 import '../../core/errors/failure.dart';
@@ -413,6 +416,100 @@ class HttpDataSource implements RemoteDataRepository {
       return true;
     } else {
       throw ServerException();
+    }
+  }
+
+  @override
+  Future<String> changeEmail(
+    ChangeEmailActionType action,
+    String emailAddress,
+    String userId,
+    String newEmail,
+  ) async {
+    try {
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/changeemail.php',
+          requestMethod: RequestMethod.POST,
+          queryParameters: {
+            'action': action.name,
+            'userid': userId,
+            'alogin': emailAddress,
+            'newemail': newEmail,
+          },
+        ),
+      );
+      log('Response changeEmail: $response');
+      log('QP: ${response.requestOptions.queryParameters}');
+      Map<String, dynamic> result = json.decode(response.data);
+      log('Response changeEmail 2: $result');
+      final status = result['status'];
+      if (status == 'email changed') {
+        return 'success';
+      } else {
+        if (status == 'Email sent' && result['otp'] != null) {
+          throw EmailVerifyFailure(
+            errorMessage:
+                'You need to confirm your new email address. We will send code to your new email address.',
+            otp: '${result['otp']}',
+          );
+        } else if (status == 'User not found') {
+          throw ServerFailure(
+              errorMessage: 'Email is not registered, please try again.');
+        } else if (status == 'password not changed') {
+          throw ServerFailure(
+              errorMessage: 'Password didn\'t change, please try again.');
+        } else if (status == 'No email') {
+          throw ServerFailure(
+              errorMessage:
+                  'We couldn\'t find your account, please try again.');
+        }
+        throw ServerFailure(errorMessage: 'Error in confirmation.');
+      }
+    } catch (e) {
+      log('e : $e');
+      throw e;
+    }
+  }
+
+  @override
+  Future<ProfileModel> changeProfile(
+    ChangeProfileActionType action,
+    dynamic profile,
+  ) async {
+    try {
+      final user = locator<LocalDataRepository>().getUser();
+      log('Requesting changeProfile and tthe profile is: ${profile?.toJson()}');
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/changeprofile.php',
+          requestMethod: RequestMethod.POST,
+          queryParameters: {
+            'action': action.name,
+            'userid': user.userid,
+            'alogin': user.alogin,
+          },
+          body: profile?.toJson() ?? {},
+        ),
+      );
+      log('Response of request changeProfile: $response');
+      final profileModel =
+          locator<RestApiHttpService>().handleResponse<ProfileModel>(
+        response,
+        parseModel: ProfileModel(),
+        isRawJson: true,
+      );
+      Map<String, dynamic> result = json.decode(response.data);
+
+      final status = result['status'];
+      if (status == 'No zipcode') {
+        throw ServerFailure(errorMessage: 'Please input a zipcode to process.');
+      } else {
+        return profileModel;
+      }
+    } catch (e) {
+      log('e : $e');
+      throw e;
     }
   }
 }
