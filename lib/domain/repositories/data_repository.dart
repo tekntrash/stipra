@@ -52,4 +52,6 @@ abstract class DataRepository {
     String? oldpassword,
     String? newpassword,
   });
+
+  Future<Either<Failure, bool>> changeProfilePicture(String imagePath);
 }

@@ -382,4 +382,37 @@ class HttpDataSource implements RemoteDataRepository {
       throw ServerException();
     }
   }
+
+  @override
+  Future<bool> changeProfilePicture(String imagePath) async {
+    var file = File(imagePath);
+
+    final result = await locator<RestApiHttpService>().requestFile(
+      RestApiRequest(
+        endPoint: baseUrl + 'newapp/savepic.php',
+        requestMethod: RequestMethod.POST,
+        queryParameters: {
+          'alogin': locator<LocalDataRepository>().getUser().alogin,
+          'userid': locator<LocalDataRepository>().getUser().userid,
+          'submit': '',
+        },
+        body: {
+          'submit': '',
+        },
+      ),
+      fileFieldName: 'fileToUpload',
+      file: file,
+      onSendProgress: (int sent, int total) {
+        log('onSendProgress: $sent/$total');
+      },
+    );
+
+    log('changeProfilePicture result: $result');
+    if (result.data != null && result.data.toString().contains('File saved')) {
+      log('sendScannedVideo result: $result');
+      return true;
+    } else {
+      throw ServerException();
+    }
+  }
 }

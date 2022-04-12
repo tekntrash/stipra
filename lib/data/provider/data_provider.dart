@@ -212,4 +212,16 @@ class DataProvider implements DataRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> changeProfilePicture(String imagePath) async {
+    try {
+      final remoteData = await remoteDataSource.changeProfilePicture(
+        imagePath,
+      );
+      return Right(remoteData);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }

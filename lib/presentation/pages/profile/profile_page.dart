@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
 import 'package:stipra/data/models/user_model.dart';
+import 'package:stipra/domain/repositories/data_repository.dart';
 import 'package:stipra/domain/repositories/local_data_repository.dart';
 import 'package:stipra/injection_container.dart';
 import 'package:stipra/presentation/pages/profile/profile_viewmodel.dart';
@@ -17,6 +18,7 @@ import 'package:stipra/presentation/widgets/curved_container.dart';
 import 'package:stipra/presentation/widgets/local_image_box.dart';
 import 'package:stipra/shared/app_images.dart';
 import 'package:stipra/shared/app_theme.dart';
+import 'package:dartz/dartz.dart' as dartz;
 
 part 'widgets/top_bar.dart';
 
@@ -148,6 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   File? selectedImage;
+  bool uploading = false;
   Widget buildTopBar() {
     return Align(
       alignment: Alignment.bottomCenter,
@@ -164,25 +167,65 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: TakePicturePage(),
                 );
                 if (result != null) {
-                  selectedImage = result;
+                  uploading = true;
+                  setState(() {});
+                  final uploadResult = await locator<DataRepository>()
+                      .changeProfilePicture(result.path);
+                  log('Result of upload: $uploadResult');
+                  if (uploadResult is dartz.Right) {
+                    selectedImage = result;
+                  }
+                  uploading = false;
                   setState(() {});
                   log('File found lets change avatar!');
                 } else {
                   //do nothing
                 }
               },
-              child: Ink(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: selectedImage != null
-                        ? FileImage(selectedImage!) as ImageProvider
-                        : AssetImage('assets/images/roblox.png'),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(50),
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: child,
                 ),
-                width: 96,
-                height: 96,
+                child: uploading
+                    ? Ink(
+                        key: GlobalKey(),
+                        width: 96,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme().greyScale5,
+                        ),
+                        child: Center(
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                AppTheme().darkPrimaryColor,
+                              ),
+                              strokeWidth: 3,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Ink(
+                        decoration: BoxDecoration(
+                          image: uploading
+                              ? null
+                              : DecorationImage(
+                                  image: selectedImage != null
+                                      ? FileImage(selectedImage!)
+                                          as ImageProvider
+                                      : AssetImage('assets/images/roblox.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        width: 96,
+                        height: 96,
+                      ),
               ),
             ),
           ),

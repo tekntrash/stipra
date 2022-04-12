@@ -51,4 +51,6 @@ abstract class RemoteDataRepository {
     String? oldpassword,
     String? newpassword,
   });
+
+  Future<bool> changeProfilePicture(String imagePath);
 }
