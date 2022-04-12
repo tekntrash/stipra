@@ -82,6 +82,15 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
   Future<void> sendBackendSignInRequest(BuildContext context) async {
     bool? isStayLoggedIn =
         locator<LocalDataRepository>().getUser().stayLoggedIn;
+    final isHavePermission = await locator<LocationService>().isAccessGranted;
+    if (!isHavePermission) {
+      locator<LocationService>().requestPermission(
+        onRequestGranted: () {
+          sendBackendSignInRequest(context);
+        },
+      );
+      return;
+    }
     final geo = await locator<LocationService>().getCurrentLocationAsString();
     final response = await locator<DataRepository>().login(
       email.textController.text,
