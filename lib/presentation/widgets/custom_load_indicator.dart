@@ -8,14 +8,17 @@ class CustomLoadIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 48.w,
-      height: 48.w,
-      child: CircularProgressIndicator.adaptive(
-        valueColor: AlwaysStoppedAnimation<Color>(
-          AppTheme().darkPrimaryColor,
+    return Center(
+      child: Container(
+        width: 48.w,
+        height: 48.w,
+        margin: EdgeInsets.only(top: 24.w),
+        child: CircularProgressIndicator.adaptive(
+          valueColor: AlwaysStoppedAnimation<Color>(
+            AppTheme().darkPrimaryColor,
+          ),
+          strokeWidth: 3,
         ),
-        strokeWidth: 3,
       ),
     );
   }

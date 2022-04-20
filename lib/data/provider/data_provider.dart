@@ -277,11 +277,14 @@ class DataProvider implements DataRepository {
   }
 
   @override
-  Future<Either<Failure, List<WinItem>>> getWinPoints(WinPointCategory category,
-      WinPointDirection direction, bool expired) async {
+  Future<Either<Failure, List<WinItem>>> getWinPoints(
+      WinPointCategory category,
+      WinPointDirection direction,
+      bool expired,
+      List<double> coordinates) async {
     try {
-      final remoteData =
-          await remoteDataSource.getWinPoints(category, direction, expired);
+      final remoteData = await remoteDataSource.getWinPoints(
+          category, direction, expired, coordinates);
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

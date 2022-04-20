@@ -72,6 +72,6 @@ abstract class DataRepository {
       ChangeProfileActionType action, dynamic profile);
 
   Future<Either<Failure, List<TradeItem>>> getTradePoints();
-  Future<Either<Failure, List<WinItem>>> getWinPoints(
-      WinPointCategory category, WinPointDirection direction, bool expired);
+  Future<Either<Failure, List<WinItem>>> getWinPoints(WinPointCategory category,
+      WinPointDirection direction, bool expired, List<double> coordinates);
 }

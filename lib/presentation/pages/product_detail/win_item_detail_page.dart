@@ -80,8 +80,8 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                 child: IconButton(
                   icon: Icon(
-                    Icons.favorite,
-                    color: Colors.redAccent[400],
+                    Icons.public,
+                    color: Colors.white,
                     size: 26,
                   ),
                   onPressed: () {

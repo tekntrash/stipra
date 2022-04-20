@@ -81,6 +81,7 @@ dependencies:
   gesture_x_detector: ^1.0.0
   dropdown_button2: ^1.4.0
   barcode_widget: ^2.0.2
+  app_settings: ^4.1.5
   #camera: any
 
 dev_dependencies:

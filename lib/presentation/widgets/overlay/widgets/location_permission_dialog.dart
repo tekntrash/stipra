@@ -8,7 +8,7 @@ import '../lock_overlay_dialog.dart';
 
 class LocationPermissionDialog extends StatefulWidget {
   final String button1Text, button2Text, descriptionText;
-  final Function()? onButton1Tap, onButton2Tap, onResume;
+  final Function()? onButton1Tap, onButton2Tap, onResume, onClickOutside;
   const LocationPermissionDialog({
     Key? key,
     this.descriptionText = 'We need your location to verify your videos.',
@@ -17,6 +17,7 @@ class LocationPermissionDialog extends StatefulWidget {
     this.onButton1Tap,
     this.onButton2Tap,
     this.onResume,
+    this.onClickOutside,
   }) : super(key: key);
 
   @override
@@ -58,6 +59,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        if (widget.onClickOutside != null) widget.onClickOutside!();
         LockOverlayDialog().closeOverlay();
       },
       child: Material(

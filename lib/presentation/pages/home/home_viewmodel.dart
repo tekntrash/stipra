@@ -1,25 +1,15 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/core/services/permission_service.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 import 'package:stipra/data/models/win_item_model.dart';
-import 'package:stipra/presentation/pages/home/widgets/win_point_category_list.dart';
-import '../../../core/platform/network_info.dart';
 import '../../../core/services/scanned_video_service.dart';
-import '../../widgets/overlay/lock_overlay_dialog.dart';
-import '../../widgets/overlay/snackbar_overlay.dart';
-import '../../widgets/theme_button.dart';
-import '../../../shared/app_theme.dart';
 
 import '../../../data/models/offer_model.dart';
-import '../../../data/models/product_model.dart';
 import '../../../domain/repositories/data_repository.dart';
-import '../../../domain/repositories/local_data_repository.dart';
 import '../../../injection_container.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widgets/overlay/lock_overlay_dialog.dart';
 
 class HomeViewModel extends BaseViewModel {
   late bool isInited;
@@ -39,9 +29,6 @@ class HomeViewModel extends BaseViewModel {
     selectedDirection = WinPointDirection.asc;
     await Future.wait([
       requestPermisisons(),
-      getWinItems(),
-      getOffers(),
-      informAboutUploadedVideo(),
     ]);
     isInited = true;
     isLoading = false;
@@ -76,11 +63,55 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> requestPermisisons() async {
-    Map<Permission, PermissionStatus> statuses = await [
+    /*Map<Permission, PermissionStatus> statuses = await [
       Permission.camera,
       Permission.storage,
       Permission.location,
-    ].request();
+    ].request();*/
+    askForCameraPermission();
+    //if camera is not granted
+  }
+
+  Future<void> askForCameraPermission() async {
+    await locator<PermissionService>().requestPermission(
+      Permission.camera,
+      description: 'We need to access your camera to scan your barcodes.',
+      onRequestGranted: () {
+        LockOverlayDialog().closeOverlay();
+        askForStoragePermission();
+      },
+      onDenied: () {
+        askForCameraPermission();
+      },
+    );
+  }
+
+  Future<void> askForStoragePermission() async {
+    await locator<PermissionService>().requestPermission(
+      Permission.storage,
+      description: 'We need to access your storage to save your videos.',
+      onRequestGranted: () {
+        askForLocationPermission();
+      },
+      onDenied: () {
+        askForStoragePermission();
+      },
+    );
+  }
+
+  Future<void> askForLocationPermission() async {
+    await locator<PermissionService>().requestPermission(Permission.location,
+        description: 'We need your location to verify your videos.',
+        onDenied: () {
+      askForLocationPermission();
+    }, onRequestGranted: () async {
+      await Future.wait([
+        getWinItems(),
+        getOffers(),
+        informAboutUploadedVideo(),
+      ]);
+      notifyListeners();
+    });
   }
 
   Future<void> informAboutUploadedVideo() async {
@@ -89,8 +120,14 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future getWinItems() async {
-    final data = await locator<DataRepository>()
-        .getWinPoints(selectedCategory, selectedDirection, selectedExpire);
+    final location =
+        await locator<ScannedVideoService>().getLocationWithPermRequest();
+    final data = await locator<DataRepository>().getWinPoints(
+      selectedCategory,
+      selectedDirection,
+      selectedExpire,
+      location!,
+    );
     if (data is Right) {
       winItems = (data as Right).value;
     } else {

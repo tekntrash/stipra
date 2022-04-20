@@ -540,8 +540,11 @@ class HttpDataSource implements RemoteDataRepository {
   }
 
   @override
-  Future<List<WinItemModel>> getWinPoints(WinPointCategory category,
-      WinPointDirection direction, bool expired) async {
+  Future<List<WinItemModel>> getWinPoints(
+      WinPointCategory category,
+      WinPointDirection direction,
+      bool expired,
+      List<double> coordinates) async {
     try {
       final response = await locator<RestApiHttpService>()
           .requestFormAndHandleList<WinItemModel>(
@@ -553,6 +556,8 @@ class HttpDataSource implements RemoteDataRepository {
             'category': category.index,
             'direction': direction.name,
             'includeexpired': expired ? 'yes' : 'no',
+            'latitude': coordinates[0],
+            'longitude': coordinates[1],
           },
         ),
         parseModel: WinItemModel(),

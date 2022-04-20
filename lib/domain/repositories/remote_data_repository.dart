@@ -72,6 +72,6 @@ abstract class RemoteDataRepository {
       ChangeProfileActionType action, dynamic profile);
 
   Future<List<TradeItemModel>> getTradePoints();
-  Future<List<WinItemModel>> getWinPoints(
-      WinPointCategory category, WinPointDirection direction, bool expired);
+  Future<List<WinItemModel>> getWinPoints(WinPointCategory category,
+      WinPointDirection direction, bool expired, List<double> coordinates);
 }
