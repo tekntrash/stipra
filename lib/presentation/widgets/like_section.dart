@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LikeSection extends StatelessWidget {

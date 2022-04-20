@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:stipra/core/errors/exception.dart';
-import 'package:stipra/data/models/scanned_video_model.dart';
-import 'package:stipra/data/models/user_model.dart';
-import 'package:stipra/domain/repositories/local_data_repository.dart';
+import '../../core/errors/exception.dart';
+import '../models/scanned_video_model.dart';
+import '../models/user_model.dart';
+import '../../domain/repositories/local_data_repository.dart';
 
 import '../models/offer_model.dart';
 import '../models/product_model.dart';

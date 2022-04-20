@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/data/models/user_model.dart';
-import 'package:stipra/presentation/pages/sign/otp_verify_page/forgot_password_otp_viewmodel.dart';
-import 'package:stipra/presentation/widgets/custom_button.dart';
-import 'package:stipra/presentation/widgets/field_builder_auto.dart';
-import 'package:stipra/presentation/widgets/overlay/lock_overlay.dart';
+import '../../../../data/models/user_model.dart';
+import 'forgot_password_otp_viewmodel.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/field_builder_auto.dart';
+import '../../../widgets/overlay/lock_overlay.dart';
 
 import '../../../../shared/app_theme.dart';
 import 'otp_verify_viewmodel.dart';

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:stipra/core/utils/router/app_router.dart';
+import '../../../core/utils/router/app_router.dart';
 
 import 'classic_loading_overlay.dart';
 

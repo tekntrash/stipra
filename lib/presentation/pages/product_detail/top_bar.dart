@@ -1,10 +1,10 @@
-part of 'product_detail_page.dart';
+part of 'win_item_detail_page.dart';
 
 class _TopBar extends StatelessWidget {
-  final ProductModel productModel;
+  final WinItemModel winItem;
   const _TopBar({
     Key? key,
-    required this.productModel,
+    required this.winItem,
   }) : super(key: key);
 
   @override
@@ -17,12 +17,12 @@ class _TopBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      productModel.title ?? '',
+                      winItem.name ?? '',
                       style: AppTheme().paragraphSemiBoldText.copyWith(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -31,7 +31,7 @@ class _TopBar extends StatelessWidget {
                       height: 5.h,
                     ),
                     Text(
-                      '200 Points',
+                      '${winItem.points?.toString()} Points',
                       style: AppTheme().smallParagraphSemiBoldText.copyWith(
                             color: AppTheme().primaryColor,
                           ),
@@ -44,7 +44,45 @@ class _TopBar extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Row(
+                    Text(
+                      'Valid until',
+                      style: AppTheme().smallParagraphSemiBoldText.copyWith(),
+                    ),
+                    Text(
+                      '${winItem.enddate?.toString() ?? ''}',
+                      style: AppTheme().smallParagraphRegularText.copyWith(
+                            color: AppTheme().greyScale2,
+                            fontSize: AppTheme()
+                                    .smallParagraphSemiBoldText
+                                    .fontSize! *
+                                0.8,
+                          ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    BarcodeWidget(
+                      barcode: Barcode.ean13(),
+                      data: winItem.barcode ?? '',
+                      drawText: false,
+                      height: 20.w,
+                      margin: EdgeInsets.only(left: 10.w),
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: Text(
+                        '${winItem.barcode?.toString() ?? ''}',
+                        style: AppTheme().smallParagraphRegularText.copyWith(
+                              color: AppTheme().greyScale2,
+                              fontSize: AppTheme()
+                                      .smallParagraphSemiBoldText
+                                      .fontSize! *
+                                  0.55,
+                            ),
+                      ),
+                    ),
+                    /*Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -72,7 +110,7 @@ class _TopBar extends StatelessWidget {
                                   fontSize: 10,
                                 ),
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               )

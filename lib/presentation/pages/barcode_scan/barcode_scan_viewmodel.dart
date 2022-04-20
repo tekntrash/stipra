@@ -10,16 +10,16 @@ import 'package:google_mlkit_commons/commons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/core/platform/network_info.dart';
-import 'package:stipra/core/utils/router/app_navigator.dart';
-import 'package:stipra/core/utils/router/app_router.dart';
-import 'package:stipra/data/datasources/hive_data_source.dart';
-import 'package:stipra/presentation/pages/barcode_scan/widgets/barcode_detector_painter.dart';
-import 'package:stipra/presentation/pages/sign/enter_phone_number_page/enter_phone_number_page.dart';
-import 'package:stipra/presentation/widgets/overlay/lock_overlay_dialog.dart';
-import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
-import 'package:stipra/presentation/widgets/overlay/widgets/save_video_dialog.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../../../core/platform/network_info.dart';
+import '../../../core/utils/router/app_navigator.dart';
+import '../../../core/utils/router/app_router.dart';
+import '../../../data/datasources/hive_data_source.dart';
+import 'widgets/barcode_detector_painter.dart';
+import '../sign/enter_phone_number_page/enter_phone_number_page.dart';
+import '../../widgets/overlay/lock_overlay_dialog.dart';
+import '../../widgets/overlay/snackbar_overlay.dart';
+import '../../widgets/overlay/widgets/save_video_dialog.dart';
+import '../../../shared/app_theme.dart';
 
 import '../../../core/services/scanned_video_service.dart';
 import '../../../data/models/barcode_timestamp_model.dart';
@@ -33,6 +33,13 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 
 class BarcodeScanViewModel extends BaseViewModel {
+  int? maxBarcodeLength;
+  String? findBarcode;
+  BarcodeScanViewModel({
+    this.maxBarcodeLength,
+    this.findBarcode,
+  });
+
   CameraController? controller;
   int _cameraIndex = 0;
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
@@ -331,6 +338,7 @@ class BarcodeScanViewModel extends BaseViewModel {
   bool isBusy = false;
   Future<void> processImage(InputImage inputImage) async {
     if (isBusy || isStopped) return;
+    if ((maxBarcodeLength ?? 0) <= barcodeTimeStamps.length) return;
     isBusy = true;
     final barcodes = await barcodeScanner.processImage(inputImage);
     log('Found ${barcodes.length} barcodes');
@@ -341,7 +349,9 @@ class BarcodeScanViewModel extends BaseViewModel {
     for (final barcode in barcodes) {
       final String? code = barcode.value.rawValue;
       if (code != null) {
-        if (barcodeTimeStamps.any((element) => element.barcode == code)) {
+        final isSearchedBarcode = (code == findBarcode) && findBarcode != null;
+        if (barcodeTimeStamps.any((element) => element.barcode == code) ||
+            !isSearchedBarcode) {
           isBusy = false;
           if (!disposed) {
             notifyListeners();
@@ -359,6 +369,9 @@ class BarcodeScanViewModel extends BaseViewModel {
           content: Text('Product found! Show next one please'),
           duration: Duration(seconds: 3),
         ));
+        if ((maxBarcodeLength ?? 0) <= barcodeTimeStamps.length) {
+          stopCapture(_context);
+        }
         log('Barcode found! $code sent');
       }
     }

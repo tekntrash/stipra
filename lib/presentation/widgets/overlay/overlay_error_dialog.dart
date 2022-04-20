@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:stipra/presentation/widgets/custom_button.dart';
+import '../custom_button.dart';
 
 import '../../../shared/app_theme.dart';
 import '../classic_text.dart';

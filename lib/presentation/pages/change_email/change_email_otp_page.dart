@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/presentation/pages/change_email/change_email_otp_viewmodel.dart';
-import 'package:stipra/presentation/pages/sign/otp_verify_page/otp_verify_page.dart';
-import 'package:stipra/presentation/widgets/field_builder_auto.dart';
+import 'change_email_otp_viewmodel.dart';
+import '../sign/otp_verify_page/otp_verify_page.dart';
+import '../../widgets/field_builder_auto.dart';
 
 import '../../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

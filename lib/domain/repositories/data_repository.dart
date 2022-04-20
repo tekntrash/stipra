@@ -1,10 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:stipra/data/enums/change_email_action_type.dart';
-import 'package:stipra/data/enums/change_password_action_type.dart';
-import 'package:stipra/data/enums/reset_password_action_type.dart';
-import 'package:stipra/data/enums/sms_action_type.dart';
-import 'package:stipra/domain/entities/profile.dart';
-import 'package:stipra/domain/entities/user.dart';
+import 'package:stipra/domain/entities/win_item.dart';
+import '../../data/enums/change_email_action_type.dart';
+import '../../data/enums/change_password_action_type.dart';
+import '../../data/enums/reset_password_action_type.dart';
+import '../../data/enums/sms_action_type.dart';
+import '../../data/enums/win_point_category.dart';
+import '../entities/profile.dart';
+import '../entities/trade_item.dart';
+import '../entities/user.dart';
 
 import '../../core/errors/failure.dart';
 import '../../data/enums/change_profile_action_type.dart';
@@ -67,4 +70,8 @@ abstract class DataRepository {
 
   Future<Either<Failure, Profile>> changeProfile(
       ChangeProfileActionType action, dynamic profile);
+
+  Future<Either<Failure, List<TradeItem>>> getTradePoints();
+  Future<Either<Failure, List<WinItem>>> getWinPoints(
+      WinPointCategory category, WinPointDirection direction, bool expired);
 }

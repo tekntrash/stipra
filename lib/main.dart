@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:stipra/domain/repositories/local_data_repository.dart';
-import 'package:stipra/presentation/pages/splash/splash_page.dart';
-import 'package:stipra/shared/app_theme.dart';
+import 'domain/repositories/local_data_repository.dart';
+import 'presentation/pages/splash/splash_page.dart';
+import 'shared/app_theme.dart';
 
 import 'core/utils/router/app_router.dart';
 import 'injection_container.dart' as di;

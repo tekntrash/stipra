@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:stipra/core/utils/router/app_navigator.dart';
-import 'package:stipra/presentation/pages/search/search_page.dart';
-import 'package:stipra/presentation/widgets/image_box.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../../../../core/utils/router/app_navigator.dart';
+import '../../search/search_page.dart';
+import '../../../widgets/image_box.dart';
+import '../../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TopBar extends StatelessWidget {

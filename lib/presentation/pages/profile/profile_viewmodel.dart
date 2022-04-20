@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/core/utils/router/app_navigator.dart';
-import 'package:stipra/domain/repositories/local_data_repository.dart';
-import 'package:stipra/injection_container.dart';
-import 'package:stipra/presentation/pages/board/board_screen.dart';
-import 'package:stipra/presentation/pages/change_email/change_email_page.dart';
-import 'package:stipra/presentation/pages/edit_profile_page/edit_profile_page.dart';
-import 'package:stipra/presentation/pages/sign/change_password/change_password_page.dart';
+import '../../../core/utils/router/app_navigator.dart';
+import '../../../domain/repositories/local_data_repository.dart';
+import '../../../injection_container.dart';
+import '../board/board_screen.dart';
+import '../change_email/change_email_page.dart';
+import '../edit_profile_page/edit_profile_page.dart';
+import '../sign/change_password/change_password_page.dart';
 
 class ProfileViewModel extends BaseViewModel {
   late bool isInited;

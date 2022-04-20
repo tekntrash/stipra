@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/data/models/validator_model.dart';
+import '../../../data/models/validator_model.dart';
 
 import '../../../../injection_container.dart';
 import '../../../core/services/validator_service.dart';

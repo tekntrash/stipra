@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:stipra/data/models/user_model.dart';
+import '../models/user_model.dart';
 
 import '../../core/errors/exception.dart';
 import '../../domain/repositories/local_data_repository.dart';

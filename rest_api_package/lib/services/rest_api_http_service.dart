@@ -42,9 +42,14 @@ class RestApiHttpService {
     RestApiRequest apiRequest, {
     bool removeBaseUrl = false,
     required dynamic parseModel,
+    bool isRawJson = false,
   }) async {
     Response response = await request(apiRequest, removeBaseUrl: removeBaseUrl);
-    return handleResponseList<T>(response, parseModel: parseModel);
+    return handleResponseList<T>(
+      response,
+      parseModel: parseModel,
+      isRawJson: isRawJson,
+    );
   }
 
   Future<Response> request(RestApiRequest apiRequest,
@@ -101,6 +106,16 @@ class RestApiHttpService {
   }) async {
     Response response = await requestForm(apiRequest);
     return handleResponse<T>(response,
+        parseModel: parseModel, isRawJson: isRawJson);
+  }
+
+  Future<List<T>> requestFormAndHandleList<T>(
+    RestApiRequest apiRequest, {
+    required dynamic parseModel,
+    bool isRawJson = false,
+  }) async {
+    Response response = await requestForm(apiRequest);
+    return handleResponseList<T>(response,
         parseModel: parseModel, isRawJson: isRawJson);
   }
 
@@ -220,10 +235,15 @@ class RestApiHttpService {
   }
 
   List<T> handleResponseList<T>(Response response,
-      {required dynamic parseModel}) {
+      {required dynamic parseModel, required bool isRawJson}) {
     if (response.statusCode == 200 || response.statusCode == 201) {
       try {
         final data = response.data;
+        log('Response data: $data');
+        if (isRawJson) {
+          final list = json.decode(data) as List;
+          return List<T>.from(list.map((x) => parseModel.fromJson(x)));
+        }
         return List<T>.from(data.map((x) => parseModel.fromJson(x)));
       } catch (e) {
         return parseModel.fromJson({});

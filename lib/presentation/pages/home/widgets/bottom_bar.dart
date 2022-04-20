@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:stipra/core/utils/router/app_navigator.dart';
-import 'package:stipra/core/utils/router/app_router.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../../../../core/utils/router/app_navigator.dart';
+import '../../../../core/utils/router/app_router.dart';
+import '../../../../shared/app_theme.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({

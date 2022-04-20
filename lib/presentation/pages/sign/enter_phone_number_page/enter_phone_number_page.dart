@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/domain/repositories/data_repository.dart';
-import 'package:stipra/injection_container.dart';
-import 'package:stipra/presentation/widgets/classic_text.dart';
-import 'package:stipra/presentation/widgets/custom_button.dart';
-import 'package:stipra/presentation/widgets/overlay/lock_overlay.dart';
-import 'package:stipra/presentation/widgets/square_checkbox.dart';
+import '../../../../domain/repositories/data_repository.dart';
+import '../../../../injection_container.dart';
+import '../../../widgets/classic_text.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/overlay/lock_overlay.dart';
+import '../../../widgets/square_checkbox.dart';
 
 import '../../../../data/provider/data_provider.dart';
 import '../../../../domain/repositories/local_data_repository.dart';

@@ -24,6 +24,7 @@ class FieldBuilder extends StatelessWidget {
   final bool disableDecoration;
   final Radius? borderRadiusTopLeft, borderRadiusBottomLeft;
   final Color? borderColor;
+  final bool disableAllBorder;
 
   const FieldBuilder({
     Key? key,
@@ -51,6 +52,7 @@ class FieldBuilder extends StatelessWidget {
     this.borderRadiusBottomLeft,
     this.borderRadiusTopLeft,
     this.borderColor,
+    this.disableAllBorder: false,
   }) : super(key: key);
 
   @override
@@ -71,14 +73,16 @@ class FieldBuilder extends StatelessWidget {
             ),
           IntrinsicHeight(
             child: Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1,
-                ),
-              ),
+              decoration: disableAllBorder
+                  ? null
+                  : BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 1,
+                      ),
+                    ),
               child: Row(
                 children: [
                   if (leftWidget != null) leftWidget!,

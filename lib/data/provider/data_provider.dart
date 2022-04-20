@@ -1,15 +1,15 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
-import 'package:stipra/data/enums/change_email_action_type.dart';
-import 'package:stipra/data/enums/change_password_action_type.dart';
-import 'package:stipra/data/enums/change_profile_action_type.dart';
-import 'package:stipra/data/enums/reset_password_action_type.dart';
-import 'package:stipra/data/enums/sms_action_type.dart';
-import 'package:stipra/data/models/profile_model.dart';
-import 'package:stipra/data/models/user_model.dart';
-import 'package:stipra/domain/entities/barcode_timestamp.dart';
-import 'package:stipra/domain/entities/user.dart';
+import 'package:stipra/domain/entities/win_item.dart';
+import '../../domain/entities/trade_item.dart';
+import '../enums/change_email_action_type.dart';
+import '../enums/change_password_action_type.dart';
+import '../enums/change_profile_action_type.dart';
+import '../enums/reset_password_action_type.dart';
+import '../enums/sms_action_type.dart';
+import '../enums/win_point_category.dart';
+import '../models/profile_model.dart';
+import '../models/trade_item_model.dart';
+import '../models/user_model.dart';
 
 import '../../../../core/platform/network_info.dart';
 import '../../core/errors/exception.dart';
@@ -260,6 +260,28 @@ class DataProvider implements DataRepository {
         action,
         profile,
       );
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<TradeItem>>> getTradePoints() async {
+    try {
+      final remoteData = await remoteDataSource.getTradePoints();
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<WinItem>>> getWinPoints(WinPointCategory category,
+      WinPointDirection direction, bool expired) async {
+    try {
+      final remoteData =
+          await remoteDataSource.getWinPoints(category, direction, expired);
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

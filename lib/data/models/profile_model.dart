@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:stipra/domain/entities/profile.dart';
+import '../../domain/entities/profile.dart';
 
 class ProfileModel extends Profile {
   ProfileModel({

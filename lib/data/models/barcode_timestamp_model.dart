@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:stipra/domain/entities/barcode_timestamp.dart';
+import '../../domain/entities/barcode_timestamp.dart';
 part 'barcode_timestamp_model.g.dart';
 
 @HiveType(typeId: 2)

@@ -4,9 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:rest_api_package/rest_api_package.dart';
-import 'package:stipra/core/services/location_service.dart';
-import 'package:stipra/core/services/scanned_video_service.dart';
-import 'package:stipra/data/datasources/hive_data_source.dart';
+import 'core/services/location_service.dart';
+import 'core/services/scanned_video_service.dart';
+import 'data/datasources/hive_data_source.dart';
 
 import 'core/platform/network_info.dart';
 import 'data/datasources/http_data_source.dart';

@@ -1,38 +1,30 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/data/models/trade_item_model.dart';
 
-import '../../../data/models/offer_model.dart';
-import '../../../data/models/product_model.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
 
 class PerksViewModel extends BaseViewModel {
   late bool isInited;
-  late List<ProductModel> products;
-  late List<OfferModel> offers;
+  late List<TradeItemModel> tradeItems;
   init() async {
-    offers = [];
-    products = [];
+    tradeItems = [];
     isInited = false;
     await Future.wait([
-      getProducts(),
-      getOffers(),
+      getTradePoints(),
     ]);
     isInited = true;
     notifyListeners();
   }
 
-  Future getProducts() async {
-    final data = await locator<DataRepository>().getProducts();
+  Future getTradePoints() async {
+    final data = await locator<DataRepository>().getTradePoints();
     if (data is Right) {
-      products = (data as Right).value;
+      tradeItems = (data as Right).value;
     }
-  }
-
-  Future getOffers() async {
-    final data = await locator<DataRepository>().getOffers();
-    if (data is Right) {
-      offers = (data as Right).value;
-    }
+    log('Trade items: $tradeItems');
   }
 }

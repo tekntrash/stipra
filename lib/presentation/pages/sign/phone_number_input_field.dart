@@ -20,6 +20,7 @@ import 'package:intl_phone_number_input/src/utils/widget_view.dart';
 // ignore: implementation_imports
 import 'package:intl_phone_number_input/src/widgets/selector_button.dart';
 import 'package:stipra/core/services/validator_service.dart';
+import 'package:stipra/presentation/widgets/country_selector/countries.dart';
 import 'package:stipra/shared/app_theme.dart';
 
 import '../../../data/models/validator_model.dart';
@@ -192,11 +193,23 @@ class _InputWidgetState extends State<PhoneNumberInputField> {
     }
   }
 
+  List<Country> getCountriesData({required List<String>? countries}) {
+    List jsonList = CountriesCustom.countryList;
+
+    if (countries == null || countries.isEmpty) {
+      return jsonList.map((country) => Country.fromJson(country)).toList();
+    }
+    List filteredList = jsonList.where((country) {
+      return countries.contains(country[PropertyName]);
+    }).toList();
+
+    return filteredList.map((country) => Country.fromJson(country)).toList();
+  }
+
   /// loads countries from [Countries.countryList] and selected Country
   void loadCountries({Country? previouslySelectedCountry}) {
     if (this.mounted) {
-      List<Country> countries =
-          CountryProvider.getCountriesData(countries: widget.countries);
+      List<Country> countries = getCountriesData(countries: widget.countries);
 
       Country country = previouslySelectedCountry ??
           Utils.getInitialSelectedCountry(
@@ -415,10 +428,12 @@ class _InputWidgetView
 
           return true;
         },
+        disableAllBorder: true,
         keyboardType: TextInputType.number,
         fieldPadding: EdgeInsets.zero,
         margin: EdgeInsets.zero,
         isEnabled: true,
+        //disableDecoration: true,
         disableValidator: true,
         disabledTextColor: Colors.grey[700],
         leftWidget: Container(

@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/presentation/widgets/country_selector/country_selector_button.dart';
-import 'package:stipra/presentation/widgets/date_field.dart';
+import '../../widgets/country_selector/country_selector_button.dart';
+import '../../widgets/date_field.dart';
 
 import '../../../../shared/app_theme.dart';
 import '../../../data/models/auto_validator_model.dart';

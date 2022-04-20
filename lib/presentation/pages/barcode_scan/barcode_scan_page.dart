@@ -2,7 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/presentation/widgets/overlay/lock_overlay.dart';
+import '../../widgets/overlay/lock_overlay.dart';
 
 import '../../../data/models/barcode_timestamp_model.dart';
 import '../../../domain/repositories/data_repository.dart';
@@ -14,12 +14,21 @@ import 'barcode_scan_viewmodel.dart';
 part 'widgets/bottom_box.dart';
 
 class BarcodeScanPage extends StatelessWidget {
-  BarcodeScanPage({Key? key}) : super(key: key);
+  final int? maxBarcodeLength;
+  final String? findBarcode;
+  BarcodeScanPage({
+    Key? key,
+    this.maxBarcodeLength,
+    this.findBarcode,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<BarcodeScanViewModel>.reactive(
-        viewModelBuilder: () => BarcodeScanViewModel(),
+        viewModelBuilder: () => BarcodeScanViewModel(
+              maxBarcodeLength: maxBarcodeLength,
+              findBarcode: findBarcode,
+            ),
         onModelReady: (model) => model.init(context),
         onDispose: (model) => model.dispose(),
         builder: (context, viewModel, child) {

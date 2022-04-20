@@ -5,12 +5,15 @@ import 'dart:io';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
-import 'package:stipra/data/enums/change_email_action_type.dart';
-import 'package:stipra/data/enums/change_password_action_type.dart';
-import 'package:stipra/data/enums/change_profile_action_type.dart';
-import 'package:stipra/data/enums/reset_password_action_type.dart';
-import 'package:stipra/data/enums/sms_action_type.dart';
-import 'package:stipra/data/models/profile_model.dart';
+import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/data/models/trade_item_model.dart';
+import 'package:stipra/data/models/win_item_model.dart';
+import '../enums/change_email_action_type.dart';
+import '../enums/change_password_action_type.dart';
+import '../enums/change_profile_action_type.dart';
+import '../enums/reset_password_action_type.dart';
+import '../enums/sms_action_type.dart';
+import '../models/profile_model.dart';
 
 import '../../core/errors/exception.dart';
 import '../../core/errors/failure.dart';
@@ -510,6 +513,56 @@ class HttpDataSource implements RemoteDataRepository {
     } catch (e) {
       log('e : $e');
       throw e;
+    }
+  }
+
+  @override
+  Future<List<TradeItemModel>> getTradePoints() async {
+    try {
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandleList<TradeItemModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/tradepoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'show',
+          },
+        ),
+        parseModel: TradeItemModel(),
+        isRawJson: true,
+      );
+
+      return response;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<List<WinItemModel>> getWinPoints(WinPointCategory category,
+      WinPointDirection direction, bool expired) async {
+    try {
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandleList<WinItemModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/winpoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'show',
+            'category': category.index,
+            'direction': direction.name,
+            'includeexpired': expired ? 'yes' : 'no',
+          },
+        ),
+        parseModel: WinItemModel(),
+        isRawJson: true,
+      );
+
+      return response;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
     }
   }
 }

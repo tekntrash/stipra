@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/data/models/user_model.dart';
-import 'package:stipra/presentation/widgets/custom_button.dart';
-import 'package:stipra/presentation/widgets/overlay/lock_overlay.dart';
+import '../../../../data/models/user_model.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/overlay/lock_overlay.dart';
 
 import '../../../../shared/app_theme.dart';
 import 'otp_verify_viewmodel.dart';

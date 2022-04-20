@@ -1,4 +1,4 @@
-import 'package:stipra/domain/entities/offer.dart';
+import '../../domain/entities/offer.dart';
 
 class OfferModel extends Offer {
   final String? title;

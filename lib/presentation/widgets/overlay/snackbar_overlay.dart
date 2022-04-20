@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stipra/presentation/widgets/classic_text.dart';
-import 'package:stipra/presentation/widgets/overlay/custom_overlay.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../classic_text.dart';
+import 'custom_overlay.dart';
+import '../../../shared/app_theme.dart';
 
 class SnackbarOverlay extends CustomOverlay {
   static SnackbarOverlay? _instance;

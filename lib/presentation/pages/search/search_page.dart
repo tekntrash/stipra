@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:stipra/presentation/pages/home/widgets/top_bar.dart';
-import 'package:stipra/presentation/widgets/curved_container.dart';
-import 'package:stipra/presentation/widgets/local_image_box.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../home/widgets/top_bar.dart';
+import '../../widgets/curved_container.dart';
+import '../../widgets/local_image_box.dart';
+import '../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchPage extends StatefulWidget {

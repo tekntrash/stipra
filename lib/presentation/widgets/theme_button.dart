@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:stipra/presentation/widgets/custom_button.dart';
+import 'custom_button.dart';
 
 import '../../shared/app_theme.dart';
 

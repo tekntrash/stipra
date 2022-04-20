@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/presentation/pages/sign/forgot_password/forgot_password_viewmodel.dart';
-import 'package:stipra/presentation/widgets/custom_button.dart';
+import '../forgot_password/forgot_password_viewmodel.dart';
+import '../../../widgets/custom_button.dart';
 
 import '../../../../shared/app_theme.dart';
 import '../../../widgets/field_builder_auto.dart';

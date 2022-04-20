@@ -3,14 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/core/platform/app_info.dart';
-import 'package:stipra/core/utils/router/app_navigator.dart';
-import 'package:stipra/data/models/user_model.dart';
-import 'package:stipra/injection_container.dart';
-import 'package:stipra/presentation/pages/board/board_screen.dart';
-import 'package:stipra/presentation/pages/home/home_page.dart';
-import 'package:stipra/presentation/pages/sign/enter_phone_number_page/enter_phone_number_page.dart';
-import 'package:stipra/presentation/pages/tabbar_view_container.dart';
+import '../../../core/platform/app_info.dart';
+import '../../../core/utils/router/app_navigator.dart';
+import '../../../data/models/user_model.dart';
+import '../../../injection_container.dart';
+import '../board/board_screen.dart';
+import '../home/home_page.dart';
+import '../sign/enter_phone_number_page/enter_phone_number_page.dart';
+import '../tabbar_view_container.dart';
 
 import '../../../domain/repositories/local_data_repository.dart';
 

@@ -1,5 +1,5 @@
-import 'package:stipra/data/models/scanned_video_model.dart';
-import 'package:stipra/data/models/user_model.dart';
+import '../../data/models/scanned_video_model.dart';
+import '../../data/models/user_model.dart';
 
 import '../../data/models/offer_model.dart';
 import '../../data/models/product_model.dart';

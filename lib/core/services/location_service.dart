@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:stipra/presentation/widgets/overlay/lock_overlay_dialog.dart';
-import 'package:stipra/presentation/widgets/overlay/widgets/location_permission_dialog.dart';
+import '../../presentation/widgets/overlay/lock_overlay_dialog.dart';
+import '../../presentation/widgets/overlay/widgets/location_permission_dialog.dart';
 
 abstract class LocationService {
   Future<bool> get isAccessGranted;

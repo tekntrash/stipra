@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:stipra/core/platform/app_info.dart';
+import '../../../core/platform/app_info.dart';
 
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../shared/app_images.dart';

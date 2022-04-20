@@ -1,35 +1,39 @@
 import 'dart:ui';
 
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:stipra/core/utils/time_converter/time_converter.dart';
-import 'package:stipra/data/models/product_model.dart';
-import 'package:stipra/presentation/pages/product_detail/product_detail_viewmodel.dart';
-import 'package:stipra/presentation/widgets/curved_container.dart';
-import 'package:stipra/presentation/widgets/image_box.dart';
-import 'package:stipra/presentation/widgets/like_section.dart';
-import 'package:stipra/presentation/widgets/local_image_box.dart';
-import 'package:stipra/presentation/widgets/theme_button.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../../../data/models/win_item_model.dart';
+import '../../../core/utils/router/app_navigator.dart';
+import '../../../core/utils/time_converter/time_converter.dart';
+import '../../../data/models/product_model.dart';
+import '../barcode_scan/barcode_scan_page.dart';
+import 'product_detail_viewmodel.dart';
+import '../../widgets/curved_container.dart';
+import '../../widgets/image_box.dart';
+import '../../widgets/like_section.dart';
+import '../../widgets/local_image_box.dart';
+import '../../widgets/theme_button.dart';
+import '../../../shared/app_theme.dart';
 
 part 'top_bar.dart';
 
-class ProductDetailPage extends StatefulWidget {
-  final ProductModel productModel;
-  const ProductDetailPage({
+class WinItemDetailPage extends StatefulWidget {
+  final WinItemModel winItem;
+  const WinItemDetailPage({
     Key? key,
-    required this.productModel,
+    required this.winItem,
   }) : super(key: key);
 
   @override
-  State<ProductDetailPage> createState() => _ProductDetailPageState();
+  State<WinItemDetailPage> createState() => _WinItemDetailPageState();
 }
 
-class _ProductDetailPageState extends State<ProductDetailPage> {
+class _WinItemDetailPageState extends State<WinItemDetailPage> {
   late final CarouselController carouselController;
   late ValueNotifier<double?> dotPosition;
   @override
@@ -109,7 +113,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   height: 25.h,
                                 ),
                                 _TopBar(
-                                  productModel: widget.productModel,
+                                  winItem: widget.winItem,
                                 ),
                                 Container(
                                   height: 16.h,
@@ -126,7 +130,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   height: 8.h,
                                 ),
                                 Text(
-                                  widget.productModel.desc ?? '',
+                                  widget.winItem.description ?? '',
                                   style: AppTheme()
                                       .extraSmallParagraphRegularText
                                       .copyWith(
@@ -156,7 +160,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       color: AppTheme().primaryColor,
                       borderRadius: BorderRadius.circular(15),
                       onTap: () {
-                        //
+                        AppNavigator.push(
+                          context: context,
+                          child: BarcodeScanPage(
+                            maxBarcodeLength: 1,
+                            findBarcode: widget.winItem.barcode,
+                          ),
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -187,6 +197,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   Widget buildImageBox() {
+    int imgLength =
+        widget.winItem.images?.where((e) => e.isNotEmpty).length ?? 0;
+
     return Container(
       height: 350.h,
       child: Stack(
@@ -209,13 +222,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   },
                 ),
                 carouselController: carouselController,
-                itemCount: 4,
+                itemCount: imgLength,
                 itemBuilder:
                     (BuildContext context, int itemIndex, int pageViewIndex) =>
                         ImageBox(
                   width: 1.sw,
                   height: 300.h,
-                  url: widget.productModel.image ?? '',
+                  url: widget.winItem.images![itemIndex],
                   fit: BoxFit.scaleDown,
                 ),
               ),
@@ -242,14 +255,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             child: ValueListenableBuilder<double?>(
               valueListenable: dotPosition,
               builder: (context, dotpos, child) {
-                return new DotsIndicator(
-                  dotsCount: 4,
-                  position: dotpos ?? 0,
-                  decorator: DotsDecorator(
-                    color: AppTheme().greyScale5, // Inactive color
-                    activeColor: AppTheme().primaryColor,
-                  ),
-                );
+                return imgLength == 1
+                    ? Container()
+                    : DotsIndicator(
+                        dotsCount: imgLength,
+                        position: dotpos ?? 0,
+                        decorator: DotsDecorator(
+                          color: AppTheme().greyScale5, // Inactive color
+                          activeColor: AppTheme().primaryColor,
+                        ),
+                      );
               },
             ),
           ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:stipra/domain/entities/product.dart';
+import '../../domain/entities/product.dart';
 
 class ProductModel extends Product {
   ProductModel({

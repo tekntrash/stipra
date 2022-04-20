@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-import 'package:stipra/domain/entities/user.dart';
+import '../../domain/entities/user.dart';
 part 'user_model.g.dart';
 
 @HiveType(typeId: 3)

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stipra/shared/app_theme.dart';
+import '../../../shared/app_theme.dart';
 
 import '../../../shared/app_images.dart';
 

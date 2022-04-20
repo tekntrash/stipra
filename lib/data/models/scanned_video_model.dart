@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:stipra/data/models/barcode_timestamp_model.dart';
-import 'package:stipra/domain/entities/scanned_video.dart';
+import 'barcode_timestamp_model.dart';
+import '../../domain/entities/scanned_video.dart';
 part 'scanned_video_model.g.dart';
 
 @HiveType(typeId: 1)

@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
-import 'package:stipra/core/errors/failure.dart';
-import 'package:stipra/core/services/location_service.dart';
-import 'package:stipra/presentation/widgets/scanned_video/upload_inform_box.dart';
+import '../errors/failure.dart';
+import 'location_service.dart';
+import '../../presentation/widgets/scanned_video/upload_inform_box.dart';
 
 import '../../data/models/scanned_video_model.dart';
 import '../../domain/repositories/data_repository.dart';
