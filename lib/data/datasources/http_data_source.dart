@@ -6,6 +6,7 @@ import 'package:dart_ipify/dart_ipify.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import '../enums/change_email_action_type.dart';
@@ -565,6 +566,38 @@ class HttpDataSource implements RemoteDataRepository {
       );
 
       return response;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<SearchDtoModel> search(
+    String text,
+  ) async {
+    try {
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/search.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'search',
+            'text': text,
+            'direction': 'asc',
+            'order': '1',
+            'category': '0',
+          },
+        ),
+      );
+      log('Response of request search: $response');
+      final result =
+          locator<RestApiHttpService>().handleResponse<SearchDtoModel>(
+        response,
+        parseModel: SearchDtoModel(),
+        isRawJson: true,
+      );
+      return result;
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

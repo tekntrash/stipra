@@ -58,7 +58,6 @@ dependencies:
   rest_api_package:
     path: ./rest_api_package
   video_player: ^2.3.0
-  permission_handler: ^9.2.0
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   geolocator: ^8.2.0
@@ -82,7 +81,12 @@ dependencies:
   dropdown_button2: ^1.4.0
   barcode_widget: ^2.0.2
   app_settings: ^4.1.5
+  flutter_map: ^0.14.0
+  location: ^4.3.0
   #camera: any
+
+dependency_overrides:
+  permission_handler: ^9.2.0
 
 dev_dependencies:
   flutter_test:

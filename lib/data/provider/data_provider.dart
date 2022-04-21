@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/domain/entities/win_item.dart';
 import '../../domain/entities/trade_item.dart';
 import '../enums/change_email_action_type.dart';
@@ -285,6 +286,18 @@ class DataProvider implements DataRepository {
     try {
       final remoteData = await remoteDataSource.getWinPoints(
           category, direction, expired, coordinates);
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, SearchDtoModel>> search(
+    String text,
+  ) async {
+    try {
+      final remoteData = await remoteDataSource.search(text);
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

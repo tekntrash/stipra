@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:stipra/injection_container.dart';
 import '../../../../core/utils/router/app_navigator.dart';
+import '../../../../domain/repositories/local_data_repository.dart';
 import '../../search/search_page.dart';
 import '../../../widgets/image_box.dart';
 import '../../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TopBar extends StatelessWidget {
-  final bool hideSearchBar, replaceSideBarWithBack;
+  final bool hideSearchBar, replaceSideBarWithBack, hideBack;
   const TopBar({
     Key? key,
     this.replaceSideBarWithBack: false,
     this.hideSearchBar: false,
+    this.hideBack: false,
   }) : super(key: key);
 
   @override
@@ -24,7 +27,7 @@ class TopBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (replaceSideBarWithBack)
+              if (replaceSideBarWithBack && !hideBack)
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -35,6 +38,7 @@ class TopBar extends StatelessWidget {
                     size: 24,
                   ),
                 ),
+              if (replaceSideBarWithBack && hideBack) Container(),
               if (!replaceSideBarWithBack)
                 Container(
                   child: Icon(
@@ -49,6 +53,13 @@ class TopBar extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppTheme().lightBlueColor,
+                  image: locator<LocalDataRepository>().getUser().userid != null
+                      ? DecorationImage(
+                          image: NetworkImage(
+                              'https://api.stipra.com/newapp/avatar.php?action=getavatar&alogin=${locator<LocalDataRepository>().getUser().alogin}&userid=${locator<LocalDataRepository>().getUser().userid}'),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
                 ),
               ),
             ],

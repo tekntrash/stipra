@@ -12,6 +12,7 @@ import '../../../core/utils/router/app_navigator.dart';
 import '../../../core/utils/time_converter/time_converter.dart';
 import '../../../data/models/product_model.dart';
 import '../barcode_scan/barcode_scan_page.dart';
+import '../map/map_controller.dart';
 import 'product_detail_viewmodel.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/image_box.dart';
@@ -85,6 +86,16 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
                     size: 26,
                   ),
                   onPressed: () {
+                    print(
+                        'Bin color: ${widget.winItem.getBinColor()} and color: ${widget.winItem.bincolor}');
+                    AppNavigator.push(
+                      context: context,
+                      child: MapControllerPage(
+                        name: widget.winItem.name ?? '',
+                        geoPoint: widget.winItem.geo ?? '',
+                        binColor: widget.winItem.getBinColor(),
+                      ),
+                    );
                     //Navigator.of(context).pop();
                   },
                 ),

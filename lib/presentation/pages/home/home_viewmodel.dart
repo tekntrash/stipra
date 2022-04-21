@@ -30,9 +30,6 @@ class HomeViewModel extends BaseViewModel {
     await Future.wait([
       requestPermisisons(),
     ]);
-    isInited = true;
-    isLoading = false;
-    notifyListeners();
   }
 
   Future<void> changeCategory(WinPointCategory category) async {
@@ -110,6 +107,8 @@ class HomeViewModel extends BaseViewModel {
         getOffers(),
         informAboutUploadedVideo(),
       ]);
+      isInited = true;
+      isLoading = false;
       notifyListeners();
     });
   }

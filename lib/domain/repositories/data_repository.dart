@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:stipra/domain/entities/search_dto.dart';
 import 'package:stipra/domain/entities/win_item.dart';
 import '../../data/enums/change_email_action_type.dart';
 import '../../data/enums/change_password_action_type.dart';
@@ -74,4 +75,6 @@ abstract class DataRepository {
   Future<Either<Failure, List<TradeItem>>> getTradePoints();
   Future<Either<Failure, List<WinItem>>> getWinPoints(WinPointCategory category,
       WinPointDirection direction, bool expired, List<double> coordinates);
+
+  Future<Either<Failure, SearchDto>> search(String text);
 }

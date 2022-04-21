@@ -1,3 +1,4 @@
+import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 
 import '../../data/enums/change_email_action_type.dart';
@@ -8,8 +9,6 @@ import '../../data/enums/win_point_category.dart';
 import '../../data/models/profile_model.dart';
 import '../../data/models/trade_item_model.dart';
 import '../../data/models/user_model.dart';
-import '../entities/barcode_timestamp.dart';
-import '../entities/user.dart';
 
 import '../../data/enums/change_profile_action_type.dart';
 import '../../data/models/offer_model.dart';
@@ -74,4 +73,6 @@ abstract class RemoteDataRepository {
   Future<List<TradeItemModel>> getTradePoints();
   Future<List<WinItemModel>> getWinPoints(WinPointCategory category,
       WinPointDirection direction, bool expired, List<double> coordinates);
+
+  Future<SearchDtoModel> search(String text);
 }
