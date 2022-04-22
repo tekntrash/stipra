@@ -603,4 +603,63 @@ class HttpDataSource implements RemoteDataRepository {
       throw ServerFailure(errorMessage: e.toString());
     }
   }
+
+  @override
+  Future<void> sendMail(String name, String email, String content) async {
+    try {
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/contact.php',
+          requestMethod: RequestMethod.POST,
+          queryParameters: {
+            'action': 'sendemail',
+          },
+          body: {
+            'name': name,
+            'email': email,
+            'content': content,
+          },
+        ),
+      );
+      log('Response of request send email: $response');
+      Map<String, dynamic> result = json.decode(response.data);
+      final status = result['status'];
+      if (status == 'Email sent') {
+        return;
+      } else {
+        throw status ?? 'Unknown error';
+      }
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<String> getPoints() async {
+    try {
+      final user = locator<LocalDataRepository>().getUser();
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/points.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'getpoints',
+            'userid': user.userid,
+          },
+        ),
+      );
+      log('Response of request get points: $response');
+      List result = json.decode(response.data);
+      final points = result[0]['points'];
+      if (points != null) {
+        return '$points';
+      } else {
+        throw 'Can not get points';
+      }
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
 }

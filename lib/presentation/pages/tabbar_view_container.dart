@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:stipra/presentation/pages/info/info_page.dart';
 import '../../core/utils/router/app_navigator.dart';
 import '../../core/utils/router/app_router.dart';
 import '../../data/models/user_model.dart';
@@ -29,7 +30,7 @@ class _TabBarViewContainerState extends State<TabBarViewContainer>
   void initState() {
     super.initState();
     AppRouter().tabController = TabController(
-      length: 3,
+      length: 4,
       vsync: this,
       initialIndex: 0,
     );
@@ -52,20 +53,50 @@ class _TabBarViewContainerState extends State<TabBarViewContainer>
                 child: BarcodeScanPage(),
               );
             },
-            child: Container(
-              width: 48.w,
-              height: 48.w,
-              decoration: BoxDecoration(
-                color: AppTheme().darkPrimaryColor,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: LocalImageBox(
-                  width: 32.w,
-                  height: 32.w,
-                  imgUrl: 'barcode.png',
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  width: 48.w,
+                  height: 48.w,
+                  decoration: BoxDecoration(
+                    color: AppTheme().darkPrimaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: LocalImageBox(
+                      width: 32.w,
+                      height: 32.w,
+                      imgUrl: 'barcode.png',
+                    ),
+                  ),
                 ),
-              ),
+                /*Expanded(
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                        top: 6,
+                        left: -6,
+                        right: -6,
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Text(
+                            'Make video',
+                            style: AppTheme()
+                                .extraSmallParagraphRegularText
+                                .copyWith(
+                                  color: AppTheme().darkPrimaryColor,
+                                  letterSpacing: 0.25,
+                                  fontSize: 12,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),*/
+              ],
             ),
           );
         },
@@ -81,6 +112,7 @@ class _TabBarViewContainerState extends State<TabBarViewContainer>
           HomePage(),
           PerksPage(),
           ProfilePage(),
+          InfoPage(),
         ],
       ),
     );

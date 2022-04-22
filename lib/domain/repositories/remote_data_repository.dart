@@ -75,4 +75,8 @@ abstract class RemoteDataRepository {
       WinPointDirection direction, bool expired, List<double> coordinates);
 
   Future<SearchDtoModel> search(String text);
+
+  Future<void> sendMail(String name, String email, String content);
+
+  Future<String> getPoints();
 }

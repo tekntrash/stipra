@@ -28,6 +28,7 @@ class SignTextFormField extends StatefulWidget {
   final bool autovalidateMode;
   final Radius? borderRadiusTopLeft, borderRadiusBottomLeft;
   final InputBorder? customBorder;
+  final int? maxLines;
   const SignTextFormField({
     Key? key,
     required this.textController,
@@ -56,6 +57,7 @@ class SignTextFormField extends StatefulWidget {
     this.helperText,
     this.autovalidateMode: false,
     this.customBorder,
+    this.maxLines: 1,
   }) : super(key: key);
 
   @override
@@ -87,6 +89,7 @@ class _SignTextFormFieldState extends State<SignTextFormField> {
         readOnly: !widget.isEnabled,
         controller: widget.textController,
         obscureText: obscureVisible,
+        maxLines: widget.maxLines,
         decoration: InputDecoration(
           helperText: widget.helperText,
           labelText: hasFocus

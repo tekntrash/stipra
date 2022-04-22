@@ -77,4 +77,9 @@ abstract class DataRepository {
       WinPointDirection direction, bool expired, List<double> coordinates);
 
   Future<Either<Failure, SearchDto>> search(String text);
+
+  Future<Either<Failure, void>> sendMail(
+      String name, String email, String content);
+
+  Future<Either<Failure, String>> getPoints();
 }

@@ -38,6 +38,14 @@ class _DropdownSelectorButtonState extends State<DropdownSelectorButton> {
   }
 
   @override
+  void didUpdateWidget(covariant DropdownSelectorButton oldWidget) {
+    if (oldWidget.selected != widget.selected &&
+        widget.selected != null &&
+        widget.selected!.isNotEmpty) selected = widget.selected;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.w),

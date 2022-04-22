@@ -41,10 +41,15 @@ class EditProfileViewModel extends BaseViewModel {
       countryValidator.textController.text = profile.country ?? '';
       city.textController.text = profile.city ?? '';
       zipcode.textController.text = profile.zipcode ?? '';
-      gender.textController.text = profile.gender ?? '';
+      gender.textController.text = profile.gender == 'M'
+          ? 'Male'
+          : profile.gender == 'F'
+              ? 'Female'
+              : '';
       dateofbirth.textController.text = convertDateToString(
           convertStringToDateOneByOne(
               profile.dobday, profile.dobmonth, profile.dobyear));
+      log('Gender: ${gender.textController.text}');
       notifyListeners();
     }
     LockOverlay().closeOverlay();

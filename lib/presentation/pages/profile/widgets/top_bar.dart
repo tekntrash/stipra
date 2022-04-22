@@ -10,9 +10,14 @@ AppBar _buildTopBar(BuildContext context) {
       ),
     ),
     leading: IconButton(
-      icon: const Icon(Icons.arrow_back_ios),
+      icon: LocalImageBox(
+        width: 48,
+        height: 48,
+        imgUrl: 'logo.png',
+        fit: BoxFit.scaleDown,
+      ),
       onPressed: () {
-        Navigator.of(context).pop();
+        //Navigator.of(context).pop();
       },
     ),
     title: Text('Profile'),

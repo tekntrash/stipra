@@ -109,7 +109,7 @@ class _PerksPageState extends State<PerksPage>
                               ),
                               SliverPadding(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: 0.h, horizontal: 15.w),
+                                    vertical: 0, horizontal: 15.w),
                                 sliver: PerksList(
                                   tradeItems: viewModel.tradeItems,
                                 ),
@@ -143,11 +143,11 @@ class PersistentHeader extends SliverPersistentHeaderDelegate {
 
   @override
   double get maxExtent =>
-      ((AppTheme().largeParagraphBoldText.fontSize?.h) ?? 0) + 25.h;
+      (AppTheme().largeParagraphBoldText.fontSize! * 1.2) + 25.h;
 
   @override
   double get minExtent =>
-      ((AppTheme().largeParagraphBoldText.fontSize?.h) ?? 0) + 25.h;
+      (AppTheme().largeParagraphBoldText.fontSize! * 1.2) + 25.h;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

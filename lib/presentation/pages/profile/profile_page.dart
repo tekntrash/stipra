@@ -37,7 +37,6 @@ class _ProfilePageState extends State<ProfilePage> {
     return isLogged
         ? ViewModelBuilder<ProfileViewModel>.reactive(
             viewModelBuilder: () => ProfileViewModel(),
-            onModelReady: (viewModel) => viewModel.init(),
             builder: (context, viewModel, child) {
               return Scaffold(
                 appBar: PreferredSize(
@@ -65,73 +64,53 @@ class _ProfilePageState extends State<ProfilePage> {
                                   radius: 30,
                                   child: Container(
                                     color: AppTheme().whiteColor,
-                                    child: (!viewModel.isInited)
-                                        ? Container(
-                                            height: 0.75.sh,
-                                            child: Center(
-                                              child: Container(
-                                                width: 48.w,
-                                                height: 48.w,
-                                                child: CircularProgressIndicator
-                                                    .adaptive(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
-                                                    AppTheme().darkPrimaryColor,
-                                                  ),
-                                                  strokeWidth: 3,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              SizedBox(
-                                                height: 80.h,
-                                              ),
-                                              buildButtonTitle('Profile'),
-                                              SizedBox(
-                                                height: 20.h,
-                                              ),
-                                              buildProfileButton(
-                                                'Edit Profile',
-                                                onTap: () {
-                                                  viewModel.routeToEditProfile(
-                                                      context);
-                                                },
-                                              ),
-                                              buildProfileButton(
-                                                'Change Email',
-                                                onTap: () {
-                                                  viewModel.routeToChangeEmail(
-                                                      context);
-                                                },
-                                              ),
-                                              buildProfileButton(
-                                                'Change Password',
-                                                onTap: () {
-                                                  viewModel
-                                                      .routeToChangePassword(
-                                                          context);
-                                                },
-                                              ),
-                                              buildProfileButton(
-                                                'Configuration',
-                                                onTap: () {},
-                                              ),
-                                              buildProfileButton(
-                                                'Logout',
-                                                onTap: () {
-                                                  viewModel.logout(context);
-                                                  setState(() {});
-                                                },
-                                              ),
-                                              Container(
-                                                height: 100.h,
-                                              ),
-                                            ],
-                                          ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          height: 80.h,
+                                        ),
+                                        buildButtonTitle('Profile'),
+                                        SizedBox(
+                                          height: 20.h,
+                                        ),
+                                        buildProfileButton(
+                                          'Edit Profile',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToEditProfile(context);
+                                          },
+                                        ),
+                                        buildProfileButton(
+                                          'Change Email',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToChangeEmail(context);
+                                          },
+                                        ),
+                                        buildProfileButton(
+                                          'Change Password',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToChangePassword(context);
+                                          },
+                                        ),
+                                        /*buildProfileButton(
+                                          'Configuration',
+                                          onTap: () {},
+                                        ),*/
+                                        buildProfileButton(
+                                          'Logout',
+                                          onTap: () {
+                                            viewModel.logout(context);
+                                            setState(() {});
+                                          },
+                                        ),
+                                        Container(
+                                          height: 110.h,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

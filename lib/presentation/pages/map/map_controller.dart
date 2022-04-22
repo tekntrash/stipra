@@ -60,7 +60,7 @@ class MapControllerPageState extends State<MapControllerPage> {
         height: 80.0,
         point: userLocation!,
         builder: (ctx) => Container(
-          key: Key('purple'),
+          key: Key('person'),
           width: 40,
           height: 40,
           child: Center(
@@ -72,6 +72,24 @@ class MapControllerPageState extends State<MapControllerPage> {
           ),
         ),
       ),
+      /*Marker(
+        width: 150.0,
+        height: 60.0,
+        point: filledPoints[3],
+        builder: (ctx) => Container(
+          key: Key('description'),
+          child: Container(
+            margin: EdgeInsets.only(bottom: 15),
+            child: Text(
+              'Get points from disposing this product in this area',
+              style: AppTheme().extraSmallParagraphRegularText.copyWith(
+                    color: Colors.black,
+                    fontSize: 12,
+                  ),
+            ),
+          ),
+        ),
+      ),*/
     ];
     setState(() {});
   }
@@ -177,6 +195,28 @@ class MapControllerPageState extends State<MapControllerPage> {
                         ),
                       ]),
                     ],
+                  ),
+          ),
+          Positioned.fill(
+            child: userLocation == null
+                ? Container()
+                : Container(
+                    margin: EdgeInsets.only(top: 10),
+                    alignment: Alignment.topCenter,
+                    child: Card(
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        child: Text(
+                          'Get points from disposing this product in this area',
+                          style: AppTheme()
+                              .extraSmallParagraphRegularText
+                              .copyWith(
+                                color: Colors.black,
+                              ),
+                        ),
+                      ),
+                    ),
                   ),
           ),
         ],

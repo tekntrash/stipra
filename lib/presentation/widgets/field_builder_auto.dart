@@ -19,6 +19,7 @@ class FieldBuilderAuto extends StatelessWidget {
   final String? helperText;
   final bool autovalidateMode;
   final bool obscureVisibility;
+  final int? maxLines;
 
   const FieldBuilderAuto({
     Key? key,
@@ -40,6 +41,7 @@ class FieldBuilderAuto extends StatelessWidget {
     this.helperText,
     this.autovalidateMode: false,
     this.obscureVisibility: false,
+    this.maxLines: 1,
   }) : super(key: key);
 
   @override
@@ -81,6 +83,7 @@ class FieldBuilderAuto extends StatelessWidget {
                     onChanged: onChanged,
                     helperText: helperText,
                     autovalidateMode: autovalidateMode,
+                    maxLines: maxLines,
                   ),
                 ),
                 if (rightWidget != null) rightWidget!,

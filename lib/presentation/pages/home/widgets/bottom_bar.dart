@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ionicons/ionicons.dart';
 import '../../../../core/utils/router/app_navigator.dart';
 import '../../../../core/utils/router/app_router.dart';
 import '../../../../shared/app_theme.dart';
@@ -23,16 +24,32 @@ class _BottomBarState extends State<BottomBar> {
       notchMargin: 3,
       child: Container(
         //color: Colors.transparent,
-        height: 56,
+        height: 60,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Expanded(
               child: IconButton(
-                  icon: Icon(
-                    Icons.sell_outlined,
-                    size: 28,
-                    color: getSelectedColor(0),
+                  padding: EdgeInsets.only(top: 3),
+                  icon: Column(
+                    children: [
+                      Icon(
+                        Icons.sell_outlined,
+                        size: 28,
+                        color: getSelectedColor(0),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Deals',
+                          style: AppTheme()
+                              .extraSmallParagraphRegularText
+                              .copyWith(
+                                color: getSelectedColor(0),
+                                fontSize: 12,
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
                   onPressed: () {
                     AppRouter().tabController.index = 0;
@@ -42,23 +59,69 @@ class _BottomBarState extends State<BottomBar> {
             ),
             Expanded(
               child: IconButton(
-                  icon: Icon(
-                    Icons.storefront,
-                    size: 28,
-                    color: getSelectedColor(1),
+                  padding: EdgeInsets.only(top: 3),
+                  icon: Column(
+                    children: [
+                      Icon(
+                        Icons.storefront,
+                        size: 28,
+                        color: getSelectedColor(1),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Perks',
+                          style: AppTheme()
+                              .extraSmallParagraphRegularText
+                              .copyWith(
+                                color: getSelectedColor(1),
+                                fontSize: 12,
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
                   onPressed: () {
                     AppRouter().tabController.index = 1;
                     setState(() {});
                   }),
             ),
-            Expanded(child: SizedBox()),
+            Expanded(
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.only(top: 18),
+                  child: Text(
+                    'Make video',
+                    style: AppTheme().extraSmallParagraphRegularText.copyWith(
+                          color: AppTheme().darkPrimaryColor,
+                          letterSpacing: 0.25,
+                          fontSize: 12,
+                        ),
+                  ),
+                ),
+              ),
+            ),
             Expanded(
               child: IconButton(
-                  icon: Icon(
-                    Icons.person_outline_outlined,
-                    size: 32,
-                    color: getSelectedColor(2),
+                  padding: EdgeInsets.only(top: 3),
+                  icon: Column(
+                    children: [
+                      Icon(
+                        Icons.person_outline_outlined,
+                        size: 28,
+                        color: getSelectedColor(2),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Profile',
+                          style: AppTheme()
+                              .extraSmallParagraphRegularText
+                              .copyWith(
+                                color: getSelectedColor(2),
+                                fontSize: 12,
+                              ),
+                        ),
+                      ),
+                    ],
                   ),
                   onPressed: () {
                     AppRouter().tabController.index = 2;
@@ -66,16 +129,30 @@ class _BottomBarState extends State<BottomBar> {
                   }),
             ),
             Expanded(
-              child: InkWell(
-                onTap: () {
-                  //
+              child: IconButton(
+                padding: EdgeInsets.only(top: 3),
+                onPressed: () {
+                  AppRouter().tabController.index = 3;
+                  setState(() {});
                 },
-                child: SvgPicture.asset(
-                  'assets/images/info.svg',
-                  width: 24,
-                  height: 24,
-                  color: getSelectedColor(3),
-                  semanticsLabel: 'Info box',
+                icon: Column(
+                  children: [
+                    Icon(
+                      Ionicons.information,
+                      size: 28,
+                      color: getSelectedColor(3),
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Info',
+                        style:
+                            AppTheme().extraSmallParagraphRegularText.copyWith(
+                                  color: getSelectedColor(3),
+                                  fontSize: 12,
+                                ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

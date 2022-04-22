@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/presentation/pages/search/search_item_list.dart';
 import 'package:stipra/presentation/pages/search/search_viewmodel.dart';
+import '../../../data/models/trade_item_model.dart';
 import '../../widgets/custom_load_indicator.dart';
 import '../home/widgets/top_bar.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/local_image_box.dart';
 import '../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+part 'trade_items_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -71,7 +75,7 @@ class _SearchPageState extends State<SearchPage> {
                               Expanded(
                                 child: FloatingSearchBar(
                                   controller: floatingSearchBarController,
-                                  hint: 'Search deal',
+                                  hint: 'Search',
                                   scrollPadding:
                                       EdgeInsets.only(top: 18.h, bottom: 56),
                                   transitionDuration:
@@ -158,9 +162,7 @@ class _SearchPageState extends State<SearchPage> {
       viewModelBuilder: () => viewModel,
       builder: (context, viewModel, child) {
         return Container(
-          margin: EdgeInsets.only(
-            top: 20.h,
-          ),
+          margin: EdgeInsets.only(),
           child: CurvedContainer(
             radius: 30,
             child: ValueListenableBuilder<SearchDtoModel>(
@@ -178,15 +180,88 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                       viewModel.isLoading
                           ? SliverToBoxAdapter(child: CustomLoadIndicator())
-                          : SliverPadding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 12.5.h, horizontal: 15.w),
-                              sliver: SearchItemList(
-                                winItems: searchDtoModel.winItems!,
-                                tradeItems: searchDtoModel.tradeItems!,
-                                isSearched: viewModel.isSearched,
+                          : SliverStickyHeader(
+                              header: (viewModel.isSearched &&
+                                      viewModel.isLoading == false &&
+                                      (viewModel.searchDtoModel.value.winItems
+                                                  ?.length ??
+                                              0) >
+                                          0)
+                                  ? Container(
+                                      color: Colors.white,
+                                      margin: EdgeInsets.only(left: 15.w),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10.h),
+                                      child: Text(
+                                        'Deals',
+                                        style: AppTheme()
+                                            .largeParagraphBoldText
+                                            .copyWith(
+                                              color: AppTheme().greyScale0,
+                                            ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  : Container(),
+                              sliver: SliverPadding(
+                                padding: ((viewModel.searchDtoModel.value
+                                                .winItems?.length ??
+                                            0) >
+                                        0)
+                                    ? EdgeInsets.symmetric(
+                                        vertical: 12.5.h, horizontal: 15.w)
+                                    : EdgeInsets.zero,
+                                sliver: SearchItemList(
+                                  winItems: searchDtoModel.winItems!,
+                                  tradeItems: searchDtoModel.tradeItems!,
+                                  isSearched: viewModel.isSearched,
+                                ),
                               ),
                             ),
+                      SliverToBoxAdapter(
+                        child:
+                            (viewModel.searchDtoModel.value.winItems?.length ??
+                                        0) >
+                                    0
+                                ? Container(
+                                    height: 10.h,
+                                  )
+                                : Container(),
+                      ),
+                      SliverStickyHeader(
+                        header: (viewModel.isSearched &&
+                                viewModel.isLoading == false &&
+                                (viewModel.searchDtoModel.value.tradeItems
+                                            ?.length ??
+                                        0) >
+                                    0)
+                            ? Container(
+                                color: Colors.white,
+                                margin: EdgeInsets.only(left: 15.w),
+                                padding: EdgeInsets.symmetric(vertical: 10.h),
+                                child: Text(
+                                  'Perks',
+                                  style: AppTheme()
+                                      .largeParagraphBoldText
+                                      .copyWith(
+                                        color: AppTheme().greyScale0,
+                                      ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              )
+                            : Container(),
+                        sliver: (viewModel.isSearched &&
+                                viewModel.isLoading == false)
+                            ? SliverPadding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 12.5.h, horizontal: 15.w),
+                                sliver: _TradeItemsList(
+                                  tradeItems: searchDtoModel.tradeItems!,
+                                  isSearched: viewModel.isSearched,
+                                ),
+                              )
+                            : null,
+                      ),
                     ],
                   ),
                 );

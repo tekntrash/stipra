@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:stipra/domain/repositories/data_repository.dart';
 import 'package:stipra/injection_container.dart';
 import '../../../../core/utils/router/app_navigator.dart';
 import '../../../../domain/repositories/local_data_repository.dart';
+import '../../../widgets/local_image_box.dart';
 import '../../search/search_page.dart';
 import '../../../widgets/image_box.dart';
 import '../../../../shared/app_theme.dart';
@@ -22,7 +24,7 @@ class TopBar extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
+          margin: EdgeInsets.only(right: 20, left: 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,10 +43,44 @@ class TopBar extends StatelessWidget {
               if (replaceSideBarWithBack && hideBack) Container(),
               if (!replaceSideBarWithBack)
                 Container(
-                  child: Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                    size: 28,
+                  child: IntrinsicWidth(
+                    child: Column(
+                      children: [
+                        LocalImageBox(
+                          width: 32,
+                          height: 32,
+                          imgUrl: 'logo.png',
+                          fit: BoxFit.scaleDown,
+                        ),
+                        if (locator<LocalDataRepository>().getUser().userid !=
+                            null)
+                          FutureBuilder(
+                            future: locator<DataRepository>().getPoints(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                return Text(
+                                  '${(snapshot.data as dynamic).value} Points',
+                                  style: AppTheme()
+                                      .extraSmallParagraphRegularText
+                                      .copyWith(
+                                        color: AppTheme().greyScale1,
+                                      ),
+                                );
+                              } else {
+                                return Text(
+                                  'X Points',
+                                  style: AppTheme()
+                                      .extraSmallParagraphRegularText
+                                      .copyWith(
+                                        color: AppTheme().greyScale1,
+                                      ),
+                                );
+                              }
+                            },
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               Container(
@@ -97,7 +133,7 @@ class TopBar extends StatelessWidget {
                     width: 15,
                   ),
                   Text(
-                    'Search deal',
+                    'Search',
                     style: AppTheme().extraSmallParagraphRegularText.copyWith(
                           color: AppTheme().greyScale2,
                         ),

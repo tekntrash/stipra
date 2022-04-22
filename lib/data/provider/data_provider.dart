@@ -303,4 +303,28 @@ class DataProvider implements DataRepository {
       return Left(e);
     }
   }
+
+  @override
+  Future<Either<Failure, void>> sendMail(
+    String name,
+    String email,
+    String content,
+  ) async {
+    try {
+      final remoteData = await remoteDataSource.sendMail(name, email, content);
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getPoints() async {
+    try {
+      final remoteData = await remoteDataSource.getPoints();
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
 }
