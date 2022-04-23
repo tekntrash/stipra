@@ -34,6 +34,7 @@ class WhatIsStipraPage extends StatelessWidget {
           gradient: AppTheme().gradientPrimary,
         ),
         child: SafeArea(
+          bottom: false,
           child: Container(
             color: Colors.white,
             child: ListView(

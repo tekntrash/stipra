@@ -45,6 +45,7 @@ class _SearchPageState extends State<SearchPage> {
               gradient: AppTheme().gradientPrimary,
             ),
             child: SafeArea(
+              bottom: false,
               child: NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
@@ -143,7 +144,7 @@ class _SearchPageState extends State<SearchPage> {
                             ],
                           ),
                         ),
-                        expandedHeight: 130,
+                        expandedHeight: 150,
                       ),
                     ),
                   ];

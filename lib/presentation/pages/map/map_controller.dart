@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart';
+import 'package:stipra/core/services/location_service.dart';
+import 'package:stipra/injection_container.dart';
 import 'package:stipra/presentation/pages/map/plugin/flutter_map_plugin_fixed.dart';
 import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
 import 'package:stipra/shared/app_theme.dart';
@@ -52,8 +54,10 @@ class MapControllerPageState extends State<MapControllerPage> {
   }
 
   initMarkers() async {
-    final loc = await Location().getLocation();
-    userLocation = LatLng(loc.latitude ?? 0, loc.longitude ?? 0);
+    log('Gettingn loc');
+    final loc = await locator<LocationService>().getCurrentLocation();
+    log('Getted loc');
+    userLocation = LatLng(loc.latitude, loc.longitude);
     markers = <Marker>[
       Marker(
         width: 80.0,
@@ -273,12 +277,12 @@ class _CurrentLocationState extends State<CurrentLocation> {
 
   void _moveToCurrent() async {
     _eventKey++;
-    var location = Location();
 
     try {
-      var currentLocation = await location.getLocation();
+      final currentLocation =
+          await locator<LocationService>().getCurrentLocation();
       var moved = widget.mapController.move(
-        LatLng(currentLocation.latitude!, currentLocation.longitude!),
+        LatLng(currentLocation.latitude, currentLocation.longitude),
         18,
         id: _eventKey.toString(),
       );

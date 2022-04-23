@@ -47,6 +47,7 @@ class ContactPage extends StatelessWidget {
             child: Form(
               key: viewModel.formKey,
               child: SafeArea(
+                bottom: false,
                 child: Container(
                   color: Colors.white,
                   child: ListView(

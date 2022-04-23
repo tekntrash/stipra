@@ -107,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           },
                                         ),
                                         Container(
-                                          height: 110.h,
+                                          height: 150.h,
                                         ),
                                       ],
                                     ),
