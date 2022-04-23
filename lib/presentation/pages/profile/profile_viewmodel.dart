@@ -34,6 +34,7 @@ class ProfileViewModel extends BaseViewModel {
     locator<LocalDataRepository>().getUser().alogin = null;
     locator<LocalDataRepository>().getUser().userid = null;
     locator<LocalDataRepository>().getUser().name = null;
+    locator<LocalDataRepository>().getUser().save();
     notifyListeners();
   }
 }

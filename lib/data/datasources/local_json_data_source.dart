@@ -76,4 +76,7 @@ class JsonLocalDataSource implements LocalDataRepository {
     // TODO: implement getUser
     throw UnimplementedError();
   }
+
+  @override
+  late Stream<UserModel> userStream;
 }

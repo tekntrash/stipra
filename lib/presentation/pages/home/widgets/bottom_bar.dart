@@ -17,6 +17,14 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   @override
+  void initState() {
+    AppRouter().tabController.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BottomAppBar(
       color: Colors.white,

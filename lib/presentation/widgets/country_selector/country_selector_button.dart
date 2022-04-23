@@ -17,6 +17,7 @@ import 'package:stipra/data/models/validator_model.dart';
 import 'package:stipra/presentation/widgets/classic_text.dart';
 import 'package:stipra/shared/app_theme.dart';
 
+import 'countries.dart';
 import 'country_select_button.dart';
 
 /// A [TextFormField] for [CountrySelectorButton].
@@ -150,11 +151,23 @@ class _InputWidgetState extends State<CountrySelectorButton> {
     super.didUpdateWidget(oldWidget);
   }
 
+  List<Country> getCountriesData({required List<String>? countries}) {
+    List jsonList = CountriesCustom.countryList;
+
+    if (countries == null || countries.isEmpty) {
+      return jsonList.map((country) => Country.fromJson(country)).toList();
+    }
+    List filteredList = jsonList.where((country) {
+      return countries.contains(country[PropertyName]);
+    }).toList();
+
+    return filteredList.map((country) => Country.fromJson(country)).toList();
+  }
+
   /// loads countries from [Countries.countryList] and selected Country
   void loadCountries({Country? previouslySelectedCountry}) {
     if (this.mounted) {
-      List<Country> countries =
-          CountryProvider.getCountriesData(countries: widget.countries);
+      List<Country> countries = getCountriesData(countries: widget.countries);
 
       Country country = previouslySelectedCountry ??
           getInitialSelectedCountry(

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,6 +16,10 @@ import '../models/scanned_video_model.dart';
 class HiveDataSource implements LocalDataRepository {
   final _scannedVideosBoxName = 'scanned_videos';
   final _userBoxName = 'users';
+
+  @override
+  late Stream<UserModel> userStream;
+
   Future init() async {
     await Hive.initFlutter();
     Hive.registerAdapter(BarcodeTimeStampModelAdapter());
@@ -25,6 +30,10 @@ class HiveDataSource implements LocalDataRepository {
     if (Hive.box<UserModel>(_userBoxName).values.length <= 0) {
       await cacheUser(UserModel());
     }
+    userStream = Hive.box<UserModel>(_userBoxName).watch().map((box) {
+      log('userStream: ${box.value}');
+      return box.value;
+    });
   }
 
   @override

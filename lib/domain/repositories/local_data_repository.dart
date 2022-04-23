@@ -21,5 +21,7 @@ abstract class LocalDataRepository {
 
   UserModel getUser();
 
+  late Stream<UserModel> userStream;
+
   Future<void> cacheUser(UserModel userModel);
 }

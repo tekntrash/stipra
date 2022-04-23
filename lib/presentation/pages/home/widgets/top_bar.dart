@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:stipra/data/models/user_model.dart';
 import 'package:stipra/domain/repositories/data_repository.dart';
 import 'package:stipra/injection_container.dart';
 import '../../../../core/utils/router/app_navigator.dart';
+import '../../../../core/utils/router/app_router.dart';
 import '../../../../domain/repositories/local_data_repository.dart';
 import '../../../widgets/local_image_box.dart';
 import '../../search/search_page.dart';
@@ -50,54 +54,95 @@ class TopBar extends StatelessWidget {
                           width: 32,
                           height: 32,
                           imgUrl: 'logo.png',
-                          fit: BoxFit.scaleDown,
+                          //fit: BoxFit.scaleDown,
                         ),
-                        if (locator<LocalDataRepository>().getUser().userid !=
-                            null)
-                          FutureBuilder(
-                            future: locator<DataRepository>().getPoints(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                return Text(
-                                  '${(snapshot.data as dynamic).value} Points',
-                                  style: AppTheme()
-                                      .extraSmallParagraphRegularText
-                                      .copyWith(
-                                        color: AppTheme().greyScale1,
-                                      ),
-                                );
-                              } else {
-                                return Text(
-                                  'X Points',
-                                  style: AppTheme()
-                                      .extraSmallParagraphRegularText
-                                      .copyWith(
-                                        color: AppTheme().greyScale1,
-                                      ),
-                                );
-                              }
-                            },
-                          ),
+                        StreamBuilder<UserModel>(
+                          stream: locator<LocalDataRepository>().userStream,
+                          initialData: locator<LocalDataRepository>().getUser(),
+                          builder: (context, snapshot) {
+                            log('Snapshot data: ${snapshot.data}');
+                            if (snapshot.hasData &&
+                                snapshot.data?.userid != null) {
+                              return FutureBuilder(
+                                future: locator<DataRepository>().getPoints(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.done) {
+                                    return Text(
+                                      '${(snapshot.data as dynamic).value} Points',
+                                      style: AppTheme()
+                                          .extraSmallParagraphRegularText
+                                          .copyWith(
+                                            color: AppTheme().greyScale1,
+                                          ),
+                                    );
+                                  } else {
+                                    return Text(
+                                      'X Points',
+                                      style: AppTheme()
+                                          .extraSmallParagraphRegularText
+                                          .copyWith(
+                                            color: AppTheme().greyScale1,
+                                          ),
+                                    );
+                                  }
+                                },
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
                 ),
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppTheme().lightBlueColor,
-                  image: locator<LocalDataRepository>().getUser().userid != null
-                      ? DecorationImage(
-                          image: NetworkImage(
-                              'https://api.stipra.com/newapp/avatar.php?action=getavatar&alogin=${locator<LocalDataRepository>().getUser().alogin}&userid=${locator<LocalDataRepository>().getUser().userid}'),
-                          fit: BoxFit.cover,
-                        )
-                      : null,
-                ),
-              ),
+              StreamBuilder<UserModel>(
+                  stream: locator<LocalDataRepository>().userStream,
+                  initialData: locator<LocalDataRepository>().getUser(),
+                  builder: (context, snapshot) {
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(500),
+                      onTap: () {
+                        if (snapshot.data?.userid == null) {
+                          AppRouter().tabController.index = 2;
+                        }
+                      },
+                      child: Ink(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppTheme().primaryColor.withOpacity(0.80),
+                          image: snapshot.data?.userid != null
+                              ? DecorationImage(
+                                  image: NetworkImage(
+                                      'https://api.stipra.com/newapp/avatar.php?action=getavatar&alogin=${snapshot.data?.alogin}&userid=${snapshot.data?.userid}'),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                        ),
+                        child: snapshot.data?.userid == null
+                            ? Center(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    'Sign in',
+                                    style: AppTheme()
+                                        .extraSmallParagraphRegularText
+                                        .copyWith(
+                                          //color: Colors.white,
+                                          fontSize: 12,
+                                        ),
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      ),
+                    );
+                  }),
             ],
           ),
         ),

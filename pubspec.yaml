@@ -104,7 +104,7 @@ flutter_icons:
   macos: true
   windows: true
   web: true
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icon/icon.jpg"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
