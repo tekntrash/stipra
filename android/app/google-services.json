@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:145088081009:android:f8491e3ab1e652c66c7fd0",
         "android_client_info": {
-          "package_name": "com.example.stipra"
+          "package_name": "com.tekntrash.stipra"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "145088081009-73a3393p65kvvhtse6pit96maki9ea30.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.stipra",
+            "package_name": "com.tekntrash.stipra",
             "certificate_hash": "d34dd59d8c739104bb85464931dbb8cadbcd690c"
           }
         },

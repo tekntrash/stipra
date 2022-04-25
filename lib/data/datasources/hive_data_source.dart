@@ -135,4 +135,19 @@ class HiveDataSource implements LocalDataRepository {
     var box = Hive.box<UserModel>(_userBoxName);
     return box.values.first;
   }
+
+  @override
+  Future<bool> isFirstTimeLogin() async {
+    var user = getUser();
+    log('isFirstTimeLogin user: ${user}');
+    if (user.lastLoginTime == null) {
+      user.lastLoginTime = DateTime.now();
+      log('isFirstTimeLogin user: ${getUser()}');
+      await getUser().save();
+      log('isFirstTimeLogin user: ${getUser()}');
+      return true;
+    }
+
+    return false;
+  }
 }

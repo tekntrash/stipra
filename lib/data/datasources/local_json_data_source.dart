@@ -79,4 +79,10 @@ class JsonLocalDataSource implements LocalDataRepository {
 
   @override
   late Stream<UserModel> userStream;
+
+  @override
+  Future<bool> isFirstTimeLogin() {
+    // TODO: implement isFirstTimeLogin
+    throw UnimplementedError();
+  }
 }

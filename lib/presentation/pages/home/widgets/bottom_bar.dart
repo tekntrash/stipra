@@ -48,7 +48,7 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Expanded(
                         child: Text(
-                          'Deals',
+                          'Products',
                           style: AppTheme()
                               .extraSmallParagraphRegularText
                               .copyWith(

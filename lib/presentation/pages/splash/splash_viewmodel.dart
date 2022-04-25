@@ -23,10 +23,12 @@ class SplashViewModel extends BaseViewModel {
 
     await exitIfNotKeepLogged();
 
-    await Future.delayed(Duration(milliseconds: 250));
+    //await Future.delayed(Duration(milliseconds: 250));
+    final isFirstLogin =
+        await locator<LocalDataRepository>().isFirstTimeLogin();
     AppNavigator.pushReplacement(
       context: context,
-      child: TabBarViewContainer(),
+      child: isFirstLogin ? BoardScreen() : TabBarViewContainer(),
     );
   }
 
@@ -35,9 +37,14 @@ class SplashViewModel extends BaseViewModel {
     if (user.stayLoggedIn == true) {
       return;
     } else {
+      final DateTime? lastLogged = user.lastLoginTime;
       await locator<LocalDataRepository>().getUser().delete();
-      await locator<LocalDataRepository>()
-          .cacheUser(UserModel(stayLoggedIn: false));
+      await locator<LocalDataRepository>().cacheUser(
+        UserModel(
+          stayLoggedIn: false,
+          lastLoginTime: lastLogged,
+        ),
+      );
     }
   }
 }

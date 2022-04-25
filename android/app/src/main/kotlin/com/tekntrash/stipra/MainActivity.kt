@@ -1,4 +1,4 @@
-package com.example.stipra
+package com.tekntrash.stipra
 
 import io.flutter.embedding.android.FlutterActivity
 

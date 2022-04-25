@@ -46,7 +46,7 @@ class WinPointCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'Deals', //'Deals on ${selectedCategory.getCategoryName}',
+                            'Products', //'Products on ${selectedCategory.getCategoryName}',
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),

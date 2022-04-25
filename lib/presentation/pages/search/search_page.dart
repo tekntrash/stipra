@@ -194,7 +194,7 @@ class _SearchPageState extends State<SearchPage> {
                                       padding:
                                           EdgeInsets.symmetric(vertical: 10.h),
                                       child: Text(
-                                        'Deals',
+                                        'Products',
                                         style: AppTheme()
                                             .largeParagraphBoldText
                                             .copyWith(

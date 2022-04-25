@@ -119,6 +119,7 @@ class BarcodeScanViewModel extends BaseViewModel {
       _cameraIndex = cameras.indexOf(
         cameras.firstWhere(
           (element) => element.lensDirection == CameraLensDirection.back,
+          orElse: () => cameras.first,
         ),
       );
     }

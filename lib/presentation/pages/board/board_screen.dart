@@ -1,7 +1,11 @@
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:stipra/presentation/pages/tabbar_view_container.dart';
 import '../../../core/platform/app_info.dart';
 
 import '../../../core/utils/router/app_navigator.dart';
@@ -21,90 +25,42 @@ class BoardScreen extends StatefulWidget {
 
 class _BoardScreenState extends State<BoardScreen> {
   late List<PageViewModel> pageViewModels;
+  late List<BoardModel> boardModels;
+  late ValueNotifier<double?> dotPosition;
+  late final CarouselController carouselController;
 
   @override
   void initState() {
-    pageViewModels = [
-      PageViewModel(
-        useScrollView: false,
-        titleWidget: Container(),
-        bodyWidget: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              'assets/images/image_box.svg',
-              width: 196.w,
-              height: 196.w,
-              semanticsLabel: 'Image box',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            buildTitle(
-              'Consume and earn',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            buildSubTitle(
-              'Let\'s win together with recycle the products we consumed!',
-            ),
-          ],
-        ),
+    carouselController = CarouselController();
+    dotPosition = ValueNotifier(0.0);
+    boardModels = [
+      BoardModel(
+        image: '1.png',
+        title: 'Care the environment',
+        subTitle:
+            'Show you care about the environment and be actually rewarded for it! Take pictures of household products before you dispose of them, receive points you can trade, trade those points for many perks, participate in a community of good recyclers, and help companies be more environmentally conscious',
       ),
-      PageViewModel(
-        useScrollView: false,
-        titleWidget: Container(),
-        bodyWidget: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              'assets/images/image_box.svg',
-              width: 196.w,
-              height: 196.w,
-              semanticsLabel: 'Image box',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            buildTitle(
-              'Consume and earn',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            buildSubTitle(
-              'Let\'s win together with recycle the products we consumed!',
-            ),
-          ],
-        ),
+      BoardModel(
+        image: '2.png',
+        title: 'AI based recognition',
+        subTitle:
+            'Earn points for the products our impressive AI system identified in the videous you made. Check how many points you made for each video you made. You can use the trash cans you use regularly: the system geolocates them automatically.',
       ),
-      PageViewModel(
-        useScrollView: false,
-        titleWidget: Container(),
-        bodyWidget: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              'assets/images/image_box.svg',
-              width: 196.w,
-              height: 196.w,
-              semanticsLabel: 'Image box',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            buildTitle(
-              'Consume and earn',
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            buildSubTitle(
-              'Let\'s win together with recycle the products we consumed!',
-            ),
-          ],
-        ),
+      BoardModel(
+          image: '3.png',
+          title: 'Community',
+          subTitle:
+              'Join our community and ether the fun! Join one of the 4 schols and compete with other for prices, perks and much more! See how you start from a \"Small Grasshopper\" and work you way up to a \'Migthy Eagle\", as you gain points from the videos you make of your household trash!'),
+      BoardModel(
+          image: '4.png',
+          title: 'Recycle properly and earn',
+          subTitle:
+              'Trade your points for perks and even for money! Yes: Stipra is the only service which actually rewards you for proper recycling. So, not only you are helping the nature but also beind rewared for it!'),
+      BoardModel(
+        image: '5.png',
+        title: 'Neigborhood',
+        subTitle:
+            'You can also make videos of your neighbours trash and also get rewards for it. For that, register them and, after we\'ve received confirmation that they are ok with it, all you have to do is pick up their trash whenever they want and choose them at the moment of making video.',
       ),
     ];
 
@@ -124,75 +80,119 @@ class _BoardScreenState extends State<BoardScreen> {
     return ClassicText(
       text: text,
       style: AppTheme().smallParagraphRegularText.copyWith(
+            fontSize: AppTheme().smallParagraphRegularText.fontSize! * 0.90,
             color: AppTheme().greyScale2,
           ),
       textAlign: TextAlign.center,
     );
   }
 
+  Widget buildDots() {
+    return ValueListenableBuilder<double?>(
+      valueListenable: dotPosition,
+      builder: (context, dotpos, child) {
+        return boardModels.length == 1
+            ? Container()
+            : DotsIndicator(
+                dotsCount: boardModels.length,
+                position: dotpos ?? 0,
+                decorator: DotsDecorator(
+                  color: AppTheme().greyScale4,
+                  activeColor: AppTheme().primaryColor,
+                ),
+              );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: AppTheme().whiteColor,
-        child: SafeArea(
-          child: Column(
+      backgroundColor: AppTheme().whiteColor,
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
             children: [
-              SizedBox(
-                height: 40.h,
-              ),
-              Expanded(
-                child: IntroductionScreen(
-                  pages: pageViewModels,
-                  onDone: () {},
-                  controlsPadding: EdgeInsets.zero,
-                  globalBackgroundColor:
-                      AppTheme().greyScale2.withOpacity(0.01),
-                  showSkipButton: false,
-                  showDoneButton: false,
-                  showNextButton: false,
-                  dotsDecorator: DotsDecorator(
-                      size: const Size.square(10.0),
-                      activeSize: const Size(10.0, 10.0),
-                      activeColor: AppTheme().primaryColor,
-                      color: Colors.black26,
-                      spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-                      activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(500.0))),
+              Positioned.fill(
+                child: CarouselSlider.builder(
+                  options: CarouselOptions(
+                    autoPlay: false,
+                    initialPage: 0,
+                    scrollPhysics: AlwaysScrollableScrollPhysics(),
+                    enableInfiniteScroll: false,
+                    enlargeCenterPage: false,
+                    viewportFraction: 1,
+                    height: 1.sh,
+                    onScrolled: (value) {
+                      dotPosition.value = value;
+                    },
+                  ),
+                  carouselController: carouselController,
+                  itemCount: boardModels.length,
+                  itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) =>
+                      buildBoardPage(boardModels[itemIndex]),
                 ),
               ),
-              SizedBox(
-                height: 40.h,
+              Positioned.fill(
+                top: 0.475.sh,
+                child: buildDots(),
               ),
-              ThemeButton(
-                  elevation: 5,
-                  width: 230.w,
-                  height: 45.h,
-                  text: 'Login',
-                  onTap: () {
-                    AppNavigator.push(
-                      context: context,
-                      child: EnterPhoneNumberScreen(isSignIn: true),
-                    );
-                  }),
-              SizedBox(
-                height: 5.h,
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ThemeButton(
+                        elevation: 5,
+                        width: 230.w,
+                        height: 45.h,
+                        text: 'Sign in',
+                        onTap: () {
+                          AppNavigator.push(
+                            context: context,
+                            child: EnterPhoneNumberScreen(
+                              isSignIn: true,
+                              onLogged: () {
+                                AppNavigator.pushAndRemoveUntil(
+                                  context: context,
+                                  child: TabBarViewContainer(),
+                                );
+                              },
+                              onVerified: () {
+                                AppNavigator.pushAndRemoveUntil(
+                                  context: context,
+                                  child: TabBarViewContainer(),
+                                );
+                              },
+                            ),
+                          );
+                        }),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    ThemeButton(
+                        width: 230.w,
+                        height: 45.h,
+                        elevation: 5,
+                        text: 'Skip',
+                        onTap: () {
+                          AppNavigator.pushAndRemoveUntil(
+                            context: context,
+                            child: TabBarViewContainer(),
+                          );
+                        }),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                  ],
+                ),
               ),
-              ThemeButton(
-                  width: 230.w,
-                  height: 45.h,
-                  elevation: 5,
-                  text: 'Register',
-                  onTap: () {
-                    AppNavigator.push(
-                      context: context,
-                      child: EnterPhoneNumberScreen(),
-                    );
-                  }),
-              SizedBox(
-                height: 20.h,
-              ),
-              buildBottomWidget(),
             ],
           ),
         ),
@@ -200,16 +200,47 @@ class _BoardScreenState extends State<BoardScreen> {
     );
   }
 
-  Widget buildBottomWidget() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 10.h),
-      alignment: Alignment.bottomCenter,
-      child: Text(
-        'Stipra all rights reserved ${AppInfo.version} + ${AppInfo.buildNumber}',
-        style: AppTheme().smallParagraphRegularText.copyWith(
-              color: AppTheme().greyScale2,
-            ),
-      ),
+  Widget buildBoardPage(BoardModel boardModel) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        LocalImageBox(
+          imgUrl: 'board/' + boardModel.image,
+          height: 200,
+          width: 200,
+          fit: BoxFit.cover,
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        buildTitle(
+          boardModel.title,
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 20.w),
+          child: buildSubTitle(
+            boardModel.subTitle,
+          ),
+        ),
+      ],
     );
   }
+}
+
+class BoardModel {
+  final String title;
+  final String subTitle;
+  final String image;
+
+  BoardModel({
+    required this.title,
+    required this.subTitle,
+    required this.image,
+  });
 }

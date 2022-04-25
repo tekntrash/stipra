@@ -9,6 +9,7 @@ class User extends Equatable {
     this.stayLoggedIn,
     this.otp,
     this.image,
+    this.lastLoginTime,
   });
 
   final String? alogin;
@@ -17,7 +18,9 @@ class User extends Equatable {
   bool? stayLoggedIn;
   final String? otp;
   final String? image;
+  final DateTime? lastLoginTime;
 
   @override
-  List<Object?> get props => [alogin, name, userid, stayLoggedIn, otp, image];
+  List<Object?> get props =>
+      [alogin, name, userid, stayLoggedIn, otp, image, lastLoginTime];
 }

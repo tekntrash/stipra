@@ -24,4 +24,6 @@ abstract class LocalDataRepository {
   late Stream<UserModel> userStream;
 
   Future<void> cacheUser(UserModel userModel);
+
+  Future<bool> isFirstTimeLogin();
 }

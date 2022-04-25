@@ -41,7 +41,7 @@ class SearchItemList extends StatelessWidget {
                 : SliverToBoxAdapter(
                     child: Center(
                       child: Text(
-                        'Start searching to find deals and perks.',
+                        'Start searching to find products and perks.',
                         style: AppTheme().smallParagraphSemiBoldText.copyWith(
                               color: AppTheme().greyScale0,
                             ),
