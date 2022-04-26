@@ -140,7 +140,7 @@ class BarcodeScanPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
+                /*Positioned(
                   top: 5,
                   right: 15,
                   child: SafeArea(
@@ -167,7 +167,7 @@ class BarcodeScanPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ),*/
                 BottomBox(
                   startCapture: viewModel.startCapture,
                   stopCapture: viewModel.stopCapture,
