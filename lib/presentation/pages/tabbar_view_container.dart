@@ -50,7 +50,9 @@ class _TabBarViewContainerState extends State<TabBarViewContainer>
             onPressed: () {
               AppNavigator.push(
                 context: context,
-                child: BarcodeScanPage(),
+                child: BarcodeScanPage(
+                  maxBarcodeLength: double.maxFinite.toInt(),
+                ),
               );
             },
             child: Column(

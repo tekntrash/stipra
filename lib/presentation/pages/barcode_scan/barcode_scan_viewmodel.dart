@@ -350,9 +350,10 @@ class BarcodeScanViewModel extends BaseViewModel {
     for (final barcode in barcodes) {
       final String? code = barcode.value.rawValue;
       if (code != null) {
-        final isSearchedBarcode = (code == findBarcode) && findBarcode != null;
+        final isSearchingBarcodeFound = (code == findBarcode);
+        final isSearchingBarcode = findBarcode != null;
         if (barcodeTimeStamps.any((element) => element.barcode == code) ||
-            !isSearchedBarcode) {
+            (isSearchingBarcode && !isSearchingBarcodeFound)) {
           isBusy = false;
           if (!disposed) {
             notifyListeners();

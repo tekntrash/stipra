@@ -47,21 +47,16 @@ class _BoardScreenState extends State<BoardScreen> {
             'Earn points for the products our impressive AI system identified in the videous you made. Check how many points you made for each video you made. You can use the trash cans you use regularly: the system geolocates them automatically.',
       ),
       BoardModel(
-          image: '3.png',
-          title: 'Community',
-          subTitle:
-              'Join our community and ether the fun! Join one of the 4 schols and compete with other for prices, perks and much more! See how you start from a \"Small Grasshopper\" and work you way up to a \'Migthy Eagle\", as you gain points from the videos you make of your household trash!'),
-      BoardModel(
           image: '4.png',
           title: 'Recycle properly and earn',
           subTitle:
-              'Trade your points for perks and even for money! Yes: Stipra is the only service which actually rewards you for proper recycling. So, not only you are helping the nature but also beind rewared for it!'),
-      BoardModel(
+              'Trade your points for perks, deals, and even donate them to charities. Yes: Stipra is the only service which actually rewards you for proper recycling. So, not only you are helping the nature but also beind rewared for it!'),
+      /*BoardModel(
         image: '5.png',
         title: 'Neigborhood',
         subTitle:
             'You can also make videos of your neighbours trash and also get rewards for it. For that, register them and, after we\'ve received confirmation that they are ok with it, all you have to do is pick up their trash whenever they want and choose them at the moment of making video.',
-      ),
+      ),*/
     ];
 
     super.initState();
