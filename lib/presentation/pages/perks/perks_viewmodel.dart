@@ -64,6 +64,8 @@ class PerksViewModel extends BaseViewModel {
     );
     if (data is Right) {
       tradeItems = (data as Right).value;
+    } else {
+      tradeItems = [];
     }
     log('Trade items: $tradeItems');
   }
