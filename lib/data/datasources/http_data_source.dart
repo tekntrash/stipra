@@ -14,6 +14,7 @@ import '../enums/change_password_action_type.dart';
 import '../enums/change_profile_action_type.dart';
 import '../enums/reset_password_action_type.dart';
 import '../enums/sms_action_type.dart';
+import '../enums/trade_point_category.dart';
 import '../models/profile_model.dart';
 
 import '../../core/errors/exception.dart';
@@ -518,7 +519,11 @@ class HttpDataSource implements RemoteDataRepository {
   }
 
   @override
-  Future<List<TradeItemModel>> getTradePoints() async {
+  Future<List<TradeItemModel>> getTradePoints(
+    TradePointCategory category,
+    TradePointDirection direction,
+    bool expired,
+  ) async {
     try {
       final response = await locator<RestApiHttpService>()
           .requestFormAndHandleList<TradeItemModel>(
@@ -527,6 +532,9 @@ class HttpDataSource implements RemoteDataRepository {
           requestMethod: RequestMethod.GET,
           queryParameters: {
             'action': 'show',
+            'category': category.index,
+            'direction': direction.name,
+            'includeexpired': expired ? 'yes' : 'no',
           },
         ),
         parseModel: TradeItemModel(),

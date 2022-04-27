@@ -63,7 +63,7 @@ class PerksList extends StatelessWidget {
                   width: 128,
                   height: 160,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 255, 220, 131),
+                    color: AppTheme().greyScale5,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(

@@ -7,6 +7,7 @@ import '../enums/change_password_action_type.dart';
 import '../enums/change_profile_action_type.dart';
 import '../enums/reset_password_action_type.dart';
 import '../enums/sms_action_type.dart';
+import '../enums/trade_point_category.dart';
 import '../enums/win_point_category.dart';
 import '../models/profile_model.dart';
 import '../models/trade_item_model.dart';
@@ -268,9 +269,17 @@ class DataProvider implements DataRepository {
   }
 
   @override
-  Future<Either<Failure, List<TradeItem>>> getTradePoints() async {
+  Future<Either<Failure, List<TradeItem>>> getTradePoints(
+    TradePointCategory category,
+    TradePointDirection direction,
+    bool expired,
+  ) async {
     try {
-      final remoteData = await remoteDataSource.getTradePoints();
+      final remoteData = await remoteDataSource.getTradePoints(
+        category,
+        direction,
+        expired,
+      );
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

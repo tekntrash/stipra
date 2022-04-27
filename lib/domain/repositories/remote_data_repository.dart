@@ -5,6 +5,7 @@ import '../../data/enums/change_email_action_type.dart';
 import '../../data/enums/change_password_action_type.dart';
 import '../../data/enums/reset_password_action_type.dart';
 import '../../data/enums/sms_action_type.dart';
+import '../../data/enums/trade_point_category.dart';
 import '../../data/enums/win_point_category.dart';
 import '../../data/models/profile_model.dart';
 import '../../data/models/trade_item_model.dart';
@@ -70,7 +71,11 @@ abstract class RemoteDataRepository {
   Future<ProfileModel> changeProfile(
       ChangeProfileActionType action, dynamic profile);
 
-  Future<List<TradeItemModel>> getTradePoints();
+  Future<List<TradeItemModel>> getTradePoints(
+    TradePointCategory category,
+    TradePointDirection direction,
+    bool expired,
+  );
   Future<List<WinItemModel>> getWinPoints(WinPointCategory category,
       WinPointDirection direction, bool expired, List<double> coordinates);
 

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/home/home_page.dart';
+import 'package:stipra/presentation/pages/perks/widgets/perks_category_list.dart';
 import '../../../core/utils/router/app_navigator.dart';
+import '../../widgets/custom_load_indicator.dart';
 import '../barcode_scan/barcode_scan_page.dart';
 import '../home/widgets/bottom_bar.dart';
 import '../home/widgets/top_bar.dart';
@@ -81,39 +83,52 @@ class _PerksPageState extends State<PerksPage>
                             slivers: [
                               SliverPersistentHeader(
                                 pinned: true,
+                                floating: true,
                                 delegate: PersistentHeader(
                                   widget: Container(
                                     color: AppTheme().bgColor,
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(
                                           height: 25.h,
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 30.w),
-                                          child: Text(
-                                            'Perks',
-                                            style: AppTheme()
-                                                .largeParagraphBoldText
-                                                .copyWith(
-                                                  color: AppTheme().greyScale0,
-                                                ),
-                                          ),
+                                        PerksCategoryList(
+                                          selectedCategory:
+                                              viewModel.selectedCategory,
+                                          selectedDirection:
+                                              viewModel.selectedDirection,
+                                          selectedExpire:
+                                              viewModel.selectedExpire,
+                                          onCategorySelected: (category) {
+                                            viewModel.changeCategory(category);
+                                          },
+                                          onDirectionSelected: (direction) {
+                                            viewModel
+                                                .changeDirection(direction);
+                                          },
+                                          onShowExpiredChanged: (bool value) {
+                                            viewModel
+                                                .onShowExpiredChanged(value);
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 12.5.h,
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
-                              SliverPadding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0, horizontal: 15.w),
-                                sliver: PerksList(
-                                  tradeItems: viewModel.tradeItems,
-                                ),
-                              ),
+                              viewModel.isLoading
+                                  ? SliverToBoxAdapter(
+                                      child: CustomLoadIndicator())
+                                  : SliverPadding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 0, horizontal: 15.w),
+                                      sliver: PerksList(
+                                        tradeItems: viewModel.tradeItems,
+                                      ),
+                                    ),
                             ],
                           ),
                   ),
@@ -128,29 +143,4 @@ class _PerksPageState extends State<PerksPage>
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class PersistentHeader extends SliverPersistentHeaderDelegate {
-  final Widget widget;
-
-  PersistentHeader({required this.widget});
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return widget;
-  }
-
-  @override
-  double get maxExtent =>
-      (AppTheme().largeParagraphBoldText.fontSize! * 1.2) + 25.h;
-
-  @override
-  double get minExtent =>
-      (AppTheme().largeParagraphBoldText.fontSize! * 1.2) + 25.h;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
 }
