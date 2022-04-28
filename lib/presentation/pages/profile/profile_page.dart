@@ -82,6 +82,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                           },
                                         ),
                                         buildProfileButton(
+                                          'My Trades',
+                                          onTap: () {
+                                            viewModel.routeToMyTrades(context);
+                                          },
+                                        ),
+                                        buildProfileButton(
+                                          'Videos Waiting',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToVideosWaiting(context);
+                                          },
+                                        ),
+                                        buildProfileButton(
                                           'Change Email',
                                           onTap: () {
                                             viewModel

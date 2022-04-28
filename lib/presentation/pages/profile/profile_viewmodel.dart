@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/pages/my_trades/my_trades_page.dart';
+import 'package:stipra/presentation/pages/videos_waiting/videos_waiting_page.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../domain/repositories/local_data_repository.dart';
 import '../../../injection_container.dart';
@@ -27,6 +29,20 @@ class ProfileViewModel extends BaseViewModel {
     AppNavigator.push(
       context: context,
       child: EditProfilePage(),
+    );
+  }
+
+  routeToMyTrades(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: MyTradesPage(),
+    );
+  }
+
+  routeToVideosWaiting(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: VideosWaitingPage(),
     );
   }
 

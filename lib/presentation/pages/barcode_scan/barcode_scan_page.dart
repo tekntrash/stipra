@@ -2,6 +2,9 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/core/utils/router/app_navigator.dart';
+import 'package:stipra/domain/repositories/local_data_repository.dart';
+import 'package:stipra/presentation/pages/sign/enter_phone_number_page/enter_phone_number_page.dart';
 import '../../widgets/overlay/lock_overlay.dart';
 
 import '../../../data/models/barcode_timestamp_model.dart';
@@ -140,34 +143,54 @@ class BarcodeScanPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                /*Positioned(
+                Positioned(
                   top: 5,
                   right: 15,
                   child: SafeArea(
                     child: wrapWithShadowContainer(
-                      child: Column(
-                        children: [
-                          IconButton(
-                            color: Colors.white,
-                            icon: Icon(FontAwesomeIcons.question),
-                            iconSize: 24.0,
-                            onPressed: () {
-                              //
-                            },
-                          ),
-                          Text(
-                            'Help',
-                            style: AppTheme()
-                                .extraSmallParagraphSemiBoldText
-                                .copyWith(
-                                  color: Colors.white,
-                                ),
-                          ),
-                        ],
+                      child: GestureDetector(
+                        onTap: () {
+                          if (locator<LocalDataRepository>().getUser().alogin ==
+                              null)
+                            AppNavigator.pushReplacement(
+                                context: context,
+                                child: EnterPhoneNumberScreen(
+                                  isSignIn: true,
+                                ));
+                        },
+                        child: Column(
+                          children: [
+                            IconButton(
+                              color: Colors.white,
+                              icon: Icon(FontAwesomeIcons.user),
+                              iconSize: 24.0,
+                              onPressed: () {
+                                if (locator<LocalDataRepository>()
+                                        .getUser()
+                                        .alogin ==
+                                    null)
+                                  AppNavigator.pushReplacement(
+                                      context: context,
+                                      child: EnterPhoneNumberScreen(
+                                        isSignIn: true,
+                                      ));
+                              },
+                            ),
+                            Text(
+                              locator<LocalDataRepository>().getUser().name ??
+                                  'Not logged in',
+                              style: AppTheme()
+                                  .extraSmallParagraphSemiBoldText
+                                  .copyWith(
+                                    color: Colors.white,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),*/
+                ),
                 BottomBox(
                   startCapture: viewModel.startCapture,
                   stopCapture: viewModel.stopCapture,

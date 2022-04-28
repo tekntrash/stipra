@@ -145,4 +145,14 @@ class ScannedVideoService {
       });
     });
   }
+
+  Future<List<ScannedVideoModel>> getVideosWaiting() async {
+    final dataRepository = locator<LocalDataRepository>();
+    List<ScannedVideoModel> _scannedVideos =
+        await dataRepository.getScannedVideos();
+    final unUploadedScannedVideos = _scannedVideos.where((scannedVideo) {
+      return scannedVideo.isUploaded != true;
+    }).toList();
+    return unUploadedScannedVideos;
+  }
 }

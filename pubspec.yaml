@@ -86,6 +86,7 @@ dependencies:
   flutter_sticky_header: ^0.6.1
   #camera: any
   jiffy: ^5.0.0
+  video_thumbnail: ^0.5.0
 
 dependency_overrides:
   permission_handler: ^9.2.0
