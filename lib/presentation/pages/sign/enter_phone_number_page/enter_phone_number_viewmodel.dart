@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,7 +84,7 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
     bool? isStayLoggedIn =
         locator<LocalDataRepository>().getUser().stayLoggedIn;
     final isHavePermission = await locator<LocationService>().isAccessGranted;
-    if (!isHavePermission) {
+    if (!isHavePermission && !Platform.isIOS) {
       locator<LocationService>().requestPermission(
         onRequestGranted: () {
           sendBackendSignInRequest(context);
@@ -91,7 +92,10 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
       );
       return;
     }
-    final geo = await locator<LocationService>().getCurrentLocationAsString();
+
+    String geo = '0,0';
+    if (isHavePermission)
+      geo = await locator<LocationService>().getCurrentLocationAsString();
     final response = await locator<DataRepository>().login(
       email.textController.text,
       password.textController.text,

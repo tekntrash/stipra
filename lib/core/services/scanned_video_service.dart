@@ -66,7 +66,7 @@ class ScannedVideoService {
 
   ///First index is latitude and second is longitude
   Future<List<double>?> getLocationWithPermRequest(
-      {Function()? onRequestGranted}) async {
+      {Function()? onRequestGranted, bool request: true}) async {
     double latitude, longitude;
     final isLocationAccessGranted =
         await locator<LocationService>().isAccessGranted;
@@ -76,8 +76,9 @@ class ScannedVideoService {
       longitude = position.longitude;
       return [latitude, longitude];
     } else {
-      await locator<LocationService>()
-          .requestPermission(onRequestGranted: onRequestGranted);
+      if (request)
+        await locator<LocationService>()
+            .requestPermission(onRequestGranted: onRequestGranted);
       return null;
     }
   }

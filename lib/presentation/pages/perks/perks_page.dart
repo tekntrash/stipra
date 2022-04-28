@@ -55,7 +55,7 @@ class _PerksPageState extends State<PerksPage>
                               ),
                               TopBar(),
                               SizedBox(
-                                height: 15.h,
+                                height: 10.h,
                               ),
                             ],
                           ),

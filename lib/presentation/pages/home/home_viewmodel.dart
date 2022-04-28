@@ -110,11 +110,12 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> askForLocationPermission() async {
     await locator<PermissionService>().requestPermission(Permission.location,
-        description: 'We need your location to verify your videos.',
+        description:
+            'We need your location to find available disposable products around you.',
         onDenied: () async {
       if (Platform.isIOS) {
         await Future.wait([
-          getWinItems(),
+          getWinItems(request: false),
           getOffers(),
           informAboutUploadedVideo(),
         ]);
@@ -126,7 +127,7 @@ class HomeViewModel extends BaseViewModel {
       }
     }, onRequestGranted: () async {
       await Future.wait([
-        getWinItems(),
+        getWinItems(request: false),
         getOffers(),
         informAboutUploadedVideo(),
       ]);
@@ -141,14 +142,14 @@ class HomeViewModel extends BaseViewModel {
     //await locator<ScannedVideoService>().informAboutUploadedVideo();
   }
 
-  Future getWinItems() async {
-    final location =
-        await locator<ScannedVideoService>().getLocationWithPermRequest();
+  Future getWinItems({bool request: true}) async {
+    final location = await locator<ScannedVideoService>()
+        .getLocationWithPermRequest(request: request);
     final data = await locator<DataRepository>().getWinPoints(
       selectedCategory,
       selectedDirection,
       selectedExpire,
-      location!,
+      location ?? [0, 0],
     );
     if (data is Right) {
       winItems = (data as Right).value;

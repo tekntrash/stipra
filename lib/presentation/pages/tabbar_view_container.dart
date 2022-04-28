@@ -59,16 +59,16 @@ class _TabBarViewContainerState extends State<TabBarViewContainer>
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  width: 48.w,
-                  height: 48.w,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
                     color: AppTheme().darkPrimaryColor,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: LocalImageBox(
-                      width: 32.w,
-                      height: 32.w,
+                      width: 32,
+                      height: 32,
                       imgUrl: 'barcode.png',
                     ),
                   ),

@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage>
                               ),
                               TopBar(),
                               SizedBox(
-                                height: 15.h,
+                                height: 10.h,
                               ),
                             ],
                           ),
