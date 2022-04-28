@@ -4,6 +4,7 @@ import 'package:stipra/domain/entities/trade_item.dart';
 
 class TradeItemModel extends TradeItem {
   TradeItemModel({
+    this.id,
     this.item,
     this.image,
     this.level,
@@ -15,6 +16,7 @@ class TradeItemModel extends TradeItem {
     this.minimumpoints,
     this.maximumpoints,
   }) : super(
+          id: id,
           item: item,
           image: image,
           level: level,
@@ -28,6 +30,7 @@ class TradeItemModel extends TradeItem {
         );
 
   int? item;
+  String? id;
   String? image;
   String? level;
   String? name;
@@ -43,6 +46,7 @@ class TradeItemModel extends TradeItem {
   String toRawJson() => json.encode(toJson());
 
   fromJson(Map<String, dynamic> json) => TradeItemModel(
+        id: json["id"],
         item: json["item"] == null ? null : json["item"],
         image: json["image"] == null ? null : json["image"],
         level: json["level"] == null ? null : json["level"],
@@ -58,6 +62,7 @@ class TradeItemModel extends TradeItem {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
         "item": item == null ? null : item,
         "image": image == null ? null : image,
         "level": level == null ? null : level,

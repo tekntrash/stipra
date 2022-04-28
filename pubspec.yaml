@@ -85,6 +85,7 @@ dependencies:
   ionicons: ^0.1.2
   flutter_sticky_header: ^0.6.1
   #camera: any
+  jiffy: ^5.0.0
 
 dependency_overrides:
   permission_handler: ^9.2.0

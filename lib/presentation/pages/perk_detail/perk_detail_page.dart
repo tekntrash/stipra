@@ -162,7 +162,7 @@ class _PerkDetailPageState extends State<PerkDetailPage> {
                       color: AppTheme().primaryColor,
                       borderRadius: BorderRadius.circular(15),
                       onTap: () {
-                        //
+                        viewModel.showTrade(context, widget.tradeItem);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

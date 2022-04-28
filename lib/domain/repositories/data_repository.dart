@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:stipra/domain/entities/my_trade.dart';
 import 'package:stipra/domain/entities/search_dto.dart';
 import 'package:stipra/domain/entities/win_item.dart';
 import '../../data/enums/change_email_action_type.dart';
@@ -87,4 +88,8 @@ abstract class DataRepository {
       String name, String email, String content);
 
   Future<Either<Failure, String>> getPoints();
+
+  Future<Either<Failure, String>> tradePoints(int perkId, int amount);
+
+  Future<Either<Failure, List<MyTrade>>> getMyTrades();
 }

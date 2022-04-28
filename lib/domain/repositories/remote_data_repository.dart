@@ -1,3 +1,4 @@
+import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 
@@ -84,4 +85,8 @@ abstract class RemoteDataRepository {
   Future<void> sendMail(String name, String email, String content);
 
   Future<String> getPoints();
+
+  Future<String> tradePoints(int perkId, int amount);
+
+  Future<List<MyTradeModel>> getMyTrades();
 }

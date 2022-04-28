@@ -26,6 +26,7 @@ class PerksViewModel extends BaseViewModel {
       getTradePoints(),
     ]);
     isInited = true;
+    isLoading = false;
     notifyListeners();
   }
 

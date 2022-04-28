@@ -15,6 +15,7 @@ class UserModel extends User with HiveObjectMixin {
     this.otp,
     this.image,
     this.lastLoginTime,
+    this.points,
   }) : super(
           alogin: alogin,
           name: name,
@@ -23,6 +24,7 @@ class UserModel extends User with HiveObjectMixin {
           otp: otp,
           image: image,
           lastLoginTime: lastLoginTime,
+          points: points,
         );
 
   @HiveField(0)
@@ -39,6 +41,8 @@ class UserModel extends User with HiveObjectMixin {
   String? image;
   @HiveField(6)
   DateTime? lastLoginTime;
+  @HiveField(7)
+  String? points;
 
   fromRawJson(String str) => fromJson(json.decode(str));
 
@@ -54,6 +58,7 @@ class UserModel extends User with HiveObjectMixin {
     lastLoginTime = json["lastLoginTime"] != null
         ? DateTime.parse(json["lastLoginTime"])
         : lastLoginTime;
+    points = json["points"] ?? points;
   }
 
   fromJson(Map<String, dynamic> json) => UserModel(
@@ -67,6 +72,7 @@ class UserModel extends User with HiveObjectMixin {
         lastLoginTime: json["lastLoginTime"] == null
             ? null
             : DateTime.parse(json["lastLoginTime"]),
+        points: json["points"] == null ? null : json["points"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,5 +84,6 @@ class UserModel extends User with HiveObjectMixin {
         "image": image == null ? null : image,
         "lastLoginTime":
             lastLoginTime == null ? null : lastLoginTime?.toIso8601String(),
+        "points": points == null ? null : points,
       };
 }

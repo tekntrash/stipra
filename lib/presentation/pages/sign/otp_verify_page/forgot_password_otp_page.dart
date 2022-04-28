@@ -67,13 +67,13 @@ class ForgotPasswordOtpPage extends StatelessWidget {
                                       AppTheme().paragraphSemiBoldText.fontSize,
                                 ),
                           ),
-                          Container(
+                          /*Container(
                             margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 10.h),
                             child: Text(
                               '* Password must contain 1 uppercase, 1 lowercase and 1 number.',
                               style: AppTheme().extraSmallParagraphRegularText,
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),

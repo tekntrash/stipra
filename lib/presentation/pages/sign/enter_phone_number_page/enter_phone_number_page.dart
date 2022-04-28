@@ -123,13 +123,13 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                                     AppTheme().paragraphSemiBoldText.fontSize,
                               ),
                         ),
-                        Container(
+                        /*Container(
                           margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0),
                           child: Text(
                             '* Password must contain 1 uppercase, 1 lowercase and 1 number.',
                             style: AppTheme().extraSmallParagraphRegularText,
                           ),
-                        ),
+                        ),*/
                         SizedBox(
                           height: 15.h,
                         ),

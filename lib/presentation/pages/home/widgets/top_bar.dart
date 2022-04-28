@@ -9,12 +9,13 @@ import '../../../../core/utils/router/app_navigator.dart';
 import '../../../../core/utils/router/app_router.dart';
 import '../../../../domain/repositories/local_data_repository.dart';
 import '../../../widgets/local_image_box.dart';
+import '../../my_trades/my_trades_page.dart';
 import '../../search/search_page.dart';
 import '../../../widgets/image_box.dart';
 import '../../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TopBar extends StatelessWidget {
+class TopBar extends StatefulWidget {
   final bool hideSearchBar, replaceSideBarWithBack, hideBack;
   const TopBar({
     Key? key,
@@ -22,6 +23,17 @@ class TopBar extends StatelessWidget {
     this.hideSearchBar: false,
     this.hideBack: false,
   }) : super(key: key);
+
+  @override
+  State<TopBar> createState() => _TopBarState();
+}
+
+class _TopBarState extends State<TopBar> {
+  @override
+  void initState() {
+    super.initState();
+    locator<DataRepository>().getPoints();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +45,7 @@ class TopBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (replaceSideBarWithBack && !hideBack)
+              if (widget.replaceSideBarWithBack && !widget.hideBack)
                 InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -44,56 +56,59 @@ class TopBar extends StatelessWidget {
                     size: 24,
                   ),
                 ),
-              if (replaceSideBarWithBack && hideBack) Container(),
-              if (!replaceSideBarWithBack)
-                Container(
-                  child: IntrinsicWidth(
-                    child: Column(
-                      children: [
-                        LocalImageBox(
-                          width: 32,
-                          height: 32,
-                          imgUrl: 'logo.png',
-                          //fit: BoxFit.scaleDown,
-                        ),
-                        StreamBuilder<UserModel>(
-                          stream: locator<LocalDataRepository>().userStream,
-                          initialData: locator<LocalDataRepository>().getUser(),
-                          builder: (context, snapshot) {
-                            log('Snapshot data: ${snapshot.data}');
-                            if (snapshot.hasData &&
-                                snapshot.data?.userid != null) {
-                              return FutureBuilder(
-                                future: locator<DataRepository>().getPoints(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.done) {
-                                    return Text(
-                                      '${(snapshot.data as dynamic).value} Points',
-                                      style: AppTheme()
-                                          .extraSmallParagraphRegularText
-                                          .copyWith(
-                                            color: AppTheme().greyScale1,
-                                          ),
-                                    );
-                                  } else {
-                                    return Text(
-                                      'X Points',
-                                      style: AppTheme()
-                                          .extraSmallParagraphRegularText
-                                          .copyWith(
-                                            color: AppTheme().greyScale1,
-                                          ),
-                                    );
-                                  }
-                                },
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      ],
+              if (widget.replaceSideBarWithBack && widget.hideBack) Container(),
+              if (!widget.replaceSideBarWithBack)
+                GestureDetector(
+                  onTap: () {
+                    AppNavigator.push(
+                      context: context,
+                      child: MyTradesPage(),
+                    );
+                  },
+                  child: Container(
+                    child: IntrinsicWidth(
+                      child: Column(
+                        children: [
+                          LocalImageBox(
+                            width: 32,
+                            height: 32,
+                            imgUrl: 'logo.png',
+                            //fit: BoxFit.scaleDown,
+                          ),
+                          StreamBuilder<UserModel>(
+                            stream: locator<LocalDataRepository>().userStream,
+                            initialData:
+                                locator<LocalDataRepository>().getUser(),
+                            builder: (context, snapshot) {
+                              log('Snapshot data: ${snapshot.data}');
+                              if (snapshot.hasData &&
+                                  snapshot.data?.userid != null) {
+                                if (snapshot.data?.points != null) {
+                                  return Text(
+                                    '${snapshot.data?.points} Points',
+                                    style: AppTheme()
+                                        .extraSmallParagraphRegularText
+                                        .copyWith(
+                                          color: AppTheme().greyScale1,
+                                        ),
+                                  );
+                                } else {
+                                  return Text(
+                                    '0 Points',
+                                    style: AppTheme()
+                                        .extraSmallParagraphRegularText
+                                        .copyWith(
+                                          color: AppTheme().greyScale1,
+                                        ),
+                                  );
+                                }
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -149,7 +164,7 @@ class TopBar extends StatelessWidget {
         SizedBox(
           height: 15,
         ),
-        if (!hideSearchBar)
+        if (!widget.hideSearchBar)
           InkWell(
             onTap: () {
               AppNavigator.pushWithFadeIn(

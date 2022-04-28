@@ -100,6 +100,7 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
     );
     if (response is Right) {
       await locator<LocalDataRepository>().cacheUser((response as Right).value);
+      await locator<DataRepository>().getPoints();
       log('Cached user ${locator<LocalDataRepository>().getUser()}');
       if (onLogged != null) {
         onLogged!();
@@ -110,6 +111,7 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
       final failure = (response as Left).value;
       if (failure is PhoneVerifyFailure) {
         await locator<LocalDataRepository>().cacheUser(failure.userModel);
+        await locator<DataRepository>().getPoints();
         SnackbarOverlay().show(
           text: '${failure.errorMessage}',
           buttonText: 'OK',
@@ -172,6 +174,7 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
     );
     if (response is Right) {
       await locator<LocalDataRepository>().cacheUser((response as Right).value);
+      await locator<DataRepository>().getPoints();
       log('Cached user reg ${locator<LocalDataRepository>().getUser()}');
       if (onLogged != null) {
         AppNavigator.pushWithFadeIn<bool>(

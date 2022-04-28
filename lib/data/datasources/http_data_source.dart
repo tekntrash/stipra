@@ -6,6 +6,7 @@ import 'package:dart_ipify/dart_ipify.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
@@ -661,10 +662,70 @@ class HttpDataSource implements RemoteDataRepository {
       List result = json.decode(response.data);
       final points = result[0]['points'];
       if (points != null) {
+        user.points = '$points';
+        await user.save();
         return '$points';
       } else {
         throw 'Can not get points';
       }
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<String> tradePoints(int perkId, int amount) async {
+    try {
+      final user = locator<LocalDataRepository>().getUser();
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/tradepoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'trade',
+            'userid': user.userid,
+            'alogin': user.alogin,
+            'amount': amount,
+            'id': perkId,
+          },
+        ),
+      );
+      log('Response of request trade points: $response');
+      Map<String, dynamic> result = json.decode(response.data);
+      final status = result['status'];
+      if (status != null && status.contains('Traded ')) {
+        return status;
+      } else if (status != null) {
+        throw status;
+      } else {
+        throw 'Can not trade points please try again.';
+      }
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<List<MyTradeModel>> getMyTrades() async {
+    try {
+      final user = locator<LocalDataRepository>().getUser();
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandleList<MyTradeModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/tradepoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'showtrades',
+            'userid': user.userid,
+          },
+        ),
+        parseModel: MyTradeModel(),
+        isRawJson: true,
+      );
+
+      return response;
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

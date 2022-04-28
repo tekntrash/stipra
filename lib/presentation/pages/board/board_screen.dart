@@ -36,21 +36,21 @@ class _BoardScreenState extends State<BoardScreen> {
     boardModels = [
       BoardModel(
         image: '1.png',
-        title: 'Care the environment',
+        title: 'Care about the environment',
         subTitle:
-            'Show you care about the environment and be actually rewarded for it! Take pictures of household products before you dispose of them, receive points you can trade, trade those points for many perks, participate in a community of good recyclers, and help companies be more environmentally conscious',
+            'Show you care about the environment and be actually rewarded for it! Make videos of your household products before you dispose of them, receive points you can trade, trade those points for many perks, and help companies be more environmentally conscious',
       ),
       BoardModel(
         image: '2.png',
         title: 'AI based recognition',
         subTitle:
-            'Earn points for the products our impressive AI system identified in the videous you made. Check how many points you made for each video you made. You can use the trash cans you use regularly: the system geolocates them automatically.',
+            'Our impressive AI system identified in the videous you made. Check how many points you made for each video you made. You can use the trash cans you use regularly: the system geolocates them automatically.',
       ),
       BoardModel(
           image: '4.png',
           title: 'Recycle properly and earn',
           subTitle:
-              'Trade your points for perks, deals, and even donate them to charities. Yes: Stipra is the only service which actually rewards you for proper recycling. So, not only you are helping the nature but also beind rewared for it!'),
+              'Trade your points for perks, deals, and even donate them to charities. Yes: Stipra is the only service which actually rewards you for proper recycling. So, not only you are helping the nature, but also being rewared for it!'),
       /*BoardModel(
         image: '5.png',
         title: 'Neigborhood',

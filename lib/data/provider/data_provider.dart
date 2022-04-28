@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/domain/entities/win_item.dart';
 import '../../domain/entities/trade_item.dart';
@@ -331,6 +332,26 @@ class DataProvider implements DataRepository {
   Future<Either<Failure, String>> getPoints() async {
     try {
       final remoteData = await remoteDataSource.getPoints();
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> tradePoints(int perkId, int amount) async {
+    try {
+      final remoteData = await remoteDataSource.tradePoints(perkId, amount);
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<MyTradeModel>>> getMyTrades() async {
+    try {
+      final remoteData = await remoteDataSource.getMyTrades();
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

@@ -1,13 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../data/models/offer_model.dart';
-import '../../../data/models/product_model.dart';
-import '../../../presentation/pages/board/board_screen.dart';
-import '../../../presentation/pages/product_detail/win_item_detail_page.dart';
-import '../../../presentation/pages/trading_offer_detail/trading_offer_detail_page.dart';
-
-import '../../../presentation/pages/home/home_page.dart';
-import '../../../presentation/pages/splash/splash_page.dart';
-import 'app_routes.dart';
 
 typedef AppRoute = Route Function(
   RouteSettings routeSettings,

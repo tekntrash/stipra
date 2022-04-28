@@ -1,16 +1,20 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:stipra/presentation/widgets/local_image_box.dart';
 
 import '../../../../shared/app_theme.dart';
 import '../../theme_button.dart';
 import '../lock_overlay_dialog.dart';
 
 class LocationPermissionDialog extends StatefulWidget {
-  final String button1Text, button2Text, descriptionText;
+  final String titleText, button1Text, button2Text, descriptionText;
+  final String? image;
   final Function()? onButton1Tap, onButton2Tap, onResume, onClickOutside;
+  final bool disableCancelButton;
   const LocationPermissionDialog({
     Key? key,
+    this.titleText = 'Information',
     this.descriptionText = 'We need your location to verify your videos.',
     this.button1Text = '',
     this.button2Text = '',
@@ -18,6 +22,8 @@ class LocationPermissionDialog extends StatefulWidget {
     this.onButton2Tap,
     this.onResume,
     this.onClickOutside,
+    this.image,
+    this.disableCancelButton: false,
   }) : super(key: key);
 
   @override
@@ -85,7 +91,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      'Information',
+                      widget.titleText,
                       style: AppTheme().paragraphSemiBoldText,
                       textAlign: TextAlign.left,
                     ),
@@ -101,6 +107,19 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
                       textAlign: TextAlign.left,
                     ),
                   ),
+                  if (widget.image != null)
+                    SizedBox(
+                      height: 10,
+                    ),
+                  if (widget.image != null)
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      child: LocalImageBox(
+                        width: 128,
+                        height: 128,
+                        imgUrl: widget.image!,
+                      ),
+                    ),
                   SizedBox(
                     height: 25,
                   ),
@@ -112,18 +131,23 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
                     },
                     text: widget.button1Text,
                   ),
-                  ThemeButton(
-                    height: 42,
-                    color: Colors.white,
-                    textColor: Colors.black,
-                    isEnabled: false,
-                    elevation: 0,
-                    onTap: () {
-                      if (widget.onButton2Tap != null) widget.onButton2Tap!();
-                      //LockOverlayDialog().closeOverlay();
-                    },
-                    text: widget.button2Text,
-                  ),
+                  if (widget.disableCancelButton)
+                    SizedBox(
+                      height: 5,
+                    ),
+                  if (widget.disableCancelButton == false)
+                    ThemeButton(
+                      height: 42,
+                      color: Colors.white,
+                      textColor: Colors.black,
+                      isEnabled: false,
+                      elevation: 0,
+                      onTap: () {
+                        if (widget.onButton2Tap != null) widget.onButton2Tap!();
+                        //LockOverlayDialog().closeOverlay();
+                      },
+                      text: widget.button2Text,
+                    ),
                 ],
               ),
             ),
