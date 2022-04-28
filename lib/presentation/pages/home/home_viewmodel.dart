@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
@@ -72,13 +74,19 @@ class HomeViewModel extends BaseViewModel {
   Future<void> askForCameraPermission() async {
     await locator<PermissionService>().requestPermission(
       Permission.camera,
-      description: 'We need to access your camera to scan your barcodes.',
+      description:
+          'We need to access your camera to identify barcodes of products you will scan.',
       onRequestGranted: () {
         LockOverlayDialog().closeOverlay();
         askForStoragePermission();
       },
       onDenied: () {
-        askForCameraPermission();
+        if (Platform.isIOS) {
+          LockOverlayDialog().closeOverlay();
+          askForStoragePermission();
+        } else {
+          askForCameraPermission();
+        }
       },
     );
   }
@@ -91,7 +99,11 @@ class HomeViewModel extends BaseViewModel {
         askForLocationPermission();
       },
       onDenied: () {
-        askForStoragePermission();
+        if (Platform.isIOS) {
+          askForLocationPermission();
+        } else {
+          askForStoragePermission();
+        }
       },
     );
   }
@@ -99,8 +111,19 @@ class HomeViewModel extends BaseViewModel {
   Future<void> askForLocationPermission() async {
     await locator<PermissionService>().requestPermission(Permission.location,
         description: 'We need your location to verify your videos.',
-        onDenied: () {
-      askForLocationPermission();
+        onDenied: () async {
+      if (Platform.isIOS) {
+        await Future.wait([
+          getWinItems(),
+          getOffers(),
+          informAboutUploadedVideo(),
+        ]);
+        isInited = true;
+        isLoading = false;
+        notifyListeners();
+      } else {
+        askForLocationPermission();
+      }
     }, onRequestGranted: () async {
       await Future.wait([
         getWinItems(),

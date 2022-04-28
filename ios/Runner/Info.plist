@@ -23,15 +23,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Scan barcodes and capture profile photo</string>
+	<string>We are identifying barcodes of scanned products so you can earn points. Also we need to use camera for profile photo capture.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
+	<string>We are showing products for your location for see products near around you, location should be active.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
+	<string>We are showing products for your location for see products near around you, location should be active.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Save audio in video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Save video in gallery</string>
+	<string>Save video in gallery and get images from gallery for profile photo upload.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
