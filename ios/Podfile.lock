@@ -248,6 +248,6 @@ SPEC CHECKSUMS:
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
 
-PODFILE CHECKSUM: d7b1bd6a1b599ba04c481e4c3a87efeabf5b479d
+PODFILE CHECKSUM: 4a5665bafd124e683e8a44d2efdd897c0b6a4428
 
 COCOAPODS: 1.11.2

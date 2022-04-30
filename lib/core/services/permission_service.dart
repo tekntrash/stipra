@@ -34,6 +34,7 @@ class PermissionServiceImpl extends PermissionService {
     if (overridePermission != null) {
       permission = overridePermission;
     } else {
+      log('Requesting permission: $requestedPermission');
       permission = await requestedPermission.request();
     }
     log('Permission is: $permission');

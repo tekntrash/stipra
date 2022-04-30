@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/services/permission_service.dart';
@@ -78,6 +80,7 @@ class HomeViewModel extends BaseViewModel {
           'We need to access your camera to identify barcodes of products you will scan.',
       onRequestGranted: () {
         LockOverlayDialog().closeOverlay();
+
         askForStoragePermission();
       },
       onDenied: () {
@@ -109,7 +112,8 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future<void> askForLocationPermission() async {
-    await locator<PermissionService>().requestPermission(Permission.location,
+    await locator<PermissionService>().requestPermission(
+        Permission.locationWhenInUse,
         description:
             'We need your location to find available disposable products around you.',
         onDenied: () async {
