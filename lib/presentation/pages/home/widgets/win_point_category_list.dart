@@ -5,6 +5,10 @@ import 'package:stipra/data/enums/win_point_category.dart';
 import '../../../../data/models/offer_model.dart';
 import '../../../../shared/app_theme.dart';
 
+//* Win point category list
+//* Also names as 'products category list'
+//* It is creating a list for products' categories
+
 class WinPointCategoryList extends StatelessWidget {
   final Function(WinPointCategory) onCategorySelected;
   final Function(WinPointDirection) onDirectionSelected;

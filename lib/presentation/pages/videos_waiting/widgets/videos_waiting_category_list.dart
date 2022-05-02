@@ -6,6 +6,8 @@ import '../../../../data/enums/trade_point_category.dart';
 import '../../../../data/models/offer_model.dart';
 import '../../../../shared/app_theme.dart';
 
+/// Create text for description for UI
+
 class VideosWaitingCategoryList extends StatelessWidget {
   const VideosWaitingCategoryList({
     Key? key,

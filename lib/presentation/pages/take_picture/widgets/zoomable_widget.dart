@@ -1,5 +1,8 @@
 part of '../take_picture_page.dart';
 
+/// Support zoom in and zoom out
+/// for taking picture
+
 class ZoomableWidget extends StatefulWidget {
   final Widget child;
   final Function onZoom;
@@ -20,6 +23,10 @@ class _ZoomableWidgetState extends State<ZoomableWidget> {
   bool showZoom = false;
   Timer? t1;
 
+  /// Controlling zoom in and zoom out
+  /// by using gesture detector
+  /// When two finger is scaling this functon will be called
+  /// and this function will call the [widget.onZoom]
   bool handleZoom(newZoom) {
     if (newZoom >= 1) {
       if (newZoom > 10) {

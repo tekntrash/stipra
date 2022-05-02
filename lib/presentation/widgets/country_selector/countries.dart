@@ -1,3 +1,5 @@
+//* Country list for application to sync with backend
+
 /// [CountriesCustom] has a static method [countryList] that returns list of Map for most country around the world.
 class CountriesCustom {
   /// returns `List<Map<String, dynamic>` of countries which contains

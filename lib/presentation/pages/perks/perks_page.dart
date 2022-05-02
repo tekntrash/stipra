@@ -15,6 +15,9 @@ import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
 import 'perks_viewmodel.dart';
 
+/// Perks page UI for showing perks list and categories
+/// Using PerksViewModel to handle logic
+
 class PerksPage extends StatefulWidget {
   const PerksPage({Key? key}) : super(key: key);
 

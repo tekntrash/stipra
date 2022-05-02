@@ -16,6 +16,10 @@ import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
 import 'my_trades_viewmodel.dart';
 
+/// Create UI for my trades page
+/// Like list and categories component calls from here.
+/// Using MyTradesViewModel to handle logic
+
 class MyTradesPage extends StatefulWidget {
   const MyTradesPage({Key? key}) : super(key: key);
 
@@ -128,6 +132,8 @@ class _MyTradesPageState extends State<MyTradesPage>
   @override
   bool get wantKeepAlive => true;
 }
+
+/// Change the height of component on top bar of UI to make it pinned
 
 class PersistentHeader extends SliverPersistentHeaderDelegate {
   final Widget widget;

@@ -13,6 +13,8 @@ import 'change_email_viewmodel.dart';
 part 'widgets/confirm_button.dart';
 part 'widgets/topbar_widget.dart';
 
+/// UI for change email page
+/// Have button and 2 text field
 class ChangeEmailPage extends StatefulWidget {
   final Function()? onLogged;
   ChangeEmailPage({

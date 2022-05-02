@@ -4,6 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../shared/app_theme.dart';
 import '../classic_text.dart';
 
+//* Using this with custom input components so we can show error messages with animation.
+//* ListenableErorText listens a notifier for handle.
+//* It is showing a red text like normal 'text field' but with custom animation.
+
 class ListenableErrorText extends StatelessWidget {
   final ValueNotifier<String?> notifier;
   final bool showErrorOnlyIfTrue;

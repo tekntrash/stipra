@@ -1,3 +1,6 @@
+//* This is a custom component to use country_select_button.dart with a text field
+//* It is providing a text field to write something or validate something.
+
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:intl_phone_number_input/src/models/country_list.dart';

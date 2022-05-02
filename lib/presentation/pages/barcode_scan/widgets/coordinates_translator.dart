@@ -1,3 +1,6 @@
+/// This class was using with barcode detector for painting barcodes on camera UI
+/// Currently not using.
+
 /*import 'dart:io';
 import 'dart:ui';
 

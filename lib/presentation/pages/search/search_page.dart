@@ -16,6 +16,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 part 'trade_items_list.dart';
 
+/// Search page UI for showing search results
+/// Using SearchViewModel to handle logic
+/// Using SearchItemList in view model to show search results
+/// Also providing search functionality in here
+
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -32,6 +37,10 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
   }
 
+  /// Build search page UI and provide search functionality
+  /// FloatingSearchBar is a textfield which have callback for text change
+  /// And there is a body component for showing search results based on search text
+  /// Also using [SearchViewModel] to handle logic it is updating UI
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SearchViewModel>.nonReactive(
@@ -52,13 +61,6 @@ class _SearchPageState extends State<SearchPage> {
                   // These are the slivers that show up in the "outer" scroll view.
                   return <Widget>[
                     SliverOverlapAbsorber(
-                      // This widget takes the overlapping behavior of the SliverAppBar,
-                      // and redirects it to the SliverOverlapInjector below. If it is
-                      // missing, then it is possible for the nested "inner" scroll view
-                      // below to end up under the SliverAppBar even when the inner
-                      // scroll view thinks it has not been scrolled.
-                      // This is not necessary if the "headerSliverBuilder" only builds
-                      // widgets that do not overlap the next sliver.
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           context),
                       sliver: SliverAppBar(
@@ -158,6 +160,8 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
+  /// Build the actual search body here
+  /// It is showing search results based on search text
   Widget searchBody(SearchViewModel viewModel) {
     return ViewModelBuilder<SearchViewModel>.reactive(
       viewModelBuilder: () => viewModel,

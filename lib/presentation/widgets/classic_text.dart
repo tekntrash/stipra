@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//* A basic ready made text component.
+
 class ClassicText extends StatelessWidget {
   final String text;
   final TextStyle style;

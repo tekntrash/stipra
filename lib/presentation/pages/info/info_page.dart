@@ -23,6 +23,9 @@ import 'package:dartz/dartz.dart' as dartz;
 
 part 'widgets/top_bar.dart';
 
+/// Shows the info page UI
+/// and buttons for info page UI
+
 class InfoPage extends StatefulWidget {
   const InfoPage({Key? key}) : super(key: key);
 
@@ -33,8 +36,8 @@ class InfoPage extends StatefulWidget {
 class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<ProfileViewModel>.reactive(
-      viewModelBuilder: () => ProfileViewModel(),
+    return ViewModelBuilder<InfoViewModel>.reactive(
+      viewModelBuilder: () => InfoViewModel(),
       builder: (context, viewModel, child) {
         return Scaffold(
           appBar: PreferredSize(

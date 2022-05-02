@@ -14,7 +14,14 @@ import '../tabbar_view_container.dart';
 
 import '../../../domain/repositories/local_data_repository.dart';
 
+/// SplashViewModel is used for controlling the splash screen
+/// Also the SplashPage is only appears on first time app openings to load
+/// some important datas before app opens.
+
 class SplashViewModel extends BaseViewModel {
+  /// Get the version information from the app
+  /// Control if the apps opening first time or not
+  /// Also control if logged in or not from local database
   Future<void> loadApp(BuildContext context) async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
@@ -32,6 +39,8 @@ class SplashViewModel extends BaseViewModel {
     );
   }
 
+  /// Get user from local database if keep logged selected login with registered data
+  /// If keep logged not selected remove old data and logout
   exitIfNotKeepLogged() async {
     var user = locator<LocalDataRepository>().getUser();
     if (user.stayLoggedIn == true) {

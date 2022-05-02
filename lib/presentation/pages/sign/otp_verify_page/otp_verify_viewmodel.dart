@@ -35,13 +35,7 @@ class OtpVerifyViewModel extends BaseViewModel {
   bool isCheckingPin = false;
   bool reachedLimit = false;
 
-  init() {
-    /*locator<DataRepository>().smsConfirm(
-      SmsActionType.send,
-      locator<LocalDataRepository>().getUser().alogin ?? '',
-      locator<LocalDataRepository>().getUser().userid ?? '',
-    );*/
-  }
+  init() {}
 
   @override
   void dispose() {

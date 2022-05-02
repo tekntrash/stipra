@@ -1,3 +1,6 @@
+//* Saving colors of application in here so in future if necessary we can do a theme changer easily
+//* These colors using in app
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,6 +11,7 @@ class AppTheme {
 
   factory AppTheme() => _instance ??= AppTheme._();
 
+  //* Creating colors for use in app
   final primaryBlueColor = Color.fromARGB(255, 42, 75, 160);
   final primaryDarkBlueColor = Color.fromARGB(255, 21, 48, 117);
   final primaryColor = Color.fromARGB(255, 25, 202, 106);
@@ -35,6 +39,7 @@ class AppTheme {
     ],
   );
 
+  //* Creating text styles for use in app when writing texts
   final headingText = GoogleFonts.inter(
     fontSize: 30,
     fontWeight: FontWeight.w600,

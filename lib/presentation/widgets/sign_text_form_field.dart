@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../shared/app_theme.dart';
 
+//* This class helping us to create a custom text field with specific required ready properties.
+
 class SignTextFormField extends StatefulWidget {
   final TextEditingController textController;
   final String labelText;

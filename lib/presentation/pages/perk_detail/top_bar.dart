@@ -1,5 +1,8 @@
 part of 'perk_detail_page.dart';
 
+/// Top section of the perk detail page
+/// For showing points and level of it
+
 class _TopBar extends StatelessWidget {
   final TradeItemModel tradeItem;
   const _TopBar({

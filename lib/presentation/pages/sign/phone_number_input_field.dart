@@ -1,3 +1,6 @@
+//* This is a custom component to use list of countries and show them in a component to select one.
+//* It is providing a text field to write phone number and a button to show list of countries.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';

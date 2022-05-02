@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+/// Video widget for How to make video screen
+
 class VideoWidget extends StatefulWidget {
   final String fileLink;
 

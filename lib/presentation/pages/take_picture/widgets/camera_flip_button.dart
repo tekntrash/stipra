@@ -1,5 +1,9 @@
 part of '../take_picture_page.dart';
 
+/// Camera flip button component for take_picture_page
+/// It is calling [flipCamera] from parameter
+/// and that function is coming from TakePictureViewModel.dart via TakePicturePage.dart
+
 class _CameraFlipButton extends StatelessWidget {
   final Function() flipCamera;
   const _CameraFlipButton({

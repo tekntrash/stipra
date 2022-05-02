@@ -4,6 +4,8 @@ import 'custom_button.dart';
 
 import '../../shared/app_theme.dart';
 
+//* A button for application we are using it as custom component in several places
+
 class ThemeButton extends StatelessWidget {
   final String? text;
   final Function() onTap;

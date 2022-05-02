@@ -6,6 +6,9 @@ import 'package:intl/intl.dart';
 import '../../shared/app_theme.dart';
 import 'classic_text.dart';
 
+//* A component for date selector.
+//* This component providing a date selector functionality and showing a selected date with initial date.
+
 class DateField extends StatelessWidget {
   final String title;
   final Function(DateTime?) onDateChange;
@@ -77,10 +80,7 @@ class DateField extends StatelessWidget {
                               0,
                               (1.0 - size) * -2.0,
                             ),
-                            child: /*Transform.scale(
-                        scale: size,
-                        child: */
-                                Container(
+                            child: Container(
                               padding: EdgeInsets.only(
                                   bottom: 5, left: 11.w, top: 5),
                               child: ClassicText(
@@ -92,7 +92,6 @@ class DateField extends StatelessWidget {
                                     ),
                               ),
                             ),
-                            //),
                           ),
                         );
                       },

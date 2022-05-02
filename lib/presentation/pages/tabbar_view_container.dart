@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:stipra/presentation/pages/info/info_page.dart';
+
 import '../../core/utils/router/app_navigator.dart';
 import '../../core/utils/router/app_router.dart';
-import '../../data/models/user_model.dart';
-import '../../domain/repositories/local_data_repository.dart';
-import '../../injection_container.dart';
+import '../../shared/app_theme.dart';
+import '../widgets/local_image_box.dart';
+import '../widgets/tab_bar/tab_bar_view_without_animation.dart';
 import 'barcode_scan/barcode_scan_page.dart';
 import 'home/home_page.dart';
 import 'home/widgets/bottom_bar.dart';
+import 'info/info_page.dart';
 import 'perks/perks_page.dart';
 import 'profile/profile_page.dart';
-import 'sign/enter_phone_number_page/enter_phone_number_page.dart';
-import '../widgets/local_image_box.dart';
-import '../widgets/tab_bar/tab_bar_view_without_animation.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../shared/app_theme.dart';
+
+/// This the bottom bar and home page creator.
+/// It is used to create the bottom bar and the home page.
+/// Helping to navigate between pages with tabbarview.
 
 class TabBarViewContainer extends StatefulWidget {
   const TabBarViewContainer({Key? key}) : super(key: key);

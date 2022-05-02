@@ -23,6 +23,11 @@ import '../../domain/repositories/data_repository.dart';
 import '../../domain/repositories/local_data_repository.dart';
 import '../../domain/repositories/remote_data_repository.dart';
 
+/// This class is used for get data from data source
+/// and return data
+/// It is implements from [DataRepository] and uses
+/// [RemoteDataRepository] and [LocalDataRepository] as data source
+
 class DataProvider implements DataRepository {
   final RemoteDataRepository remoteDataSource;
   final LocalDataRepository localDataSource;

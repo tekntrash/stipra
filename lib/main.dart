@@ -8,19 +8,13 @@ import 'core/utils/router/app_router.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 
+//* This class opens application and control the start flow
+
+//* This is the main entry point of the application.
 Future<void> main() async {
+  //* Ensure the app initalized
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  /*FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-    ScaffoldMessenger.of(
-      AppRouter().mainNavigatorKey!.currentState!.context,
-    ).showSnackBar(
-      SnackBar(
-        content: Text('Error: $details'),
-      ),
-    );
-  };*/
   runApp(
     StipraApplication(),
   );
@@ -31,6 +25,7 @@ class StipraApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //* Initialize the screen util (using this for responsive thing)
     return ScreenUtilInit(
       designSize: Size(360, 690),
       minTextAdapt: true,
@@ -39,13 +34,13 @@ class StipraApplication extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: SplashPage(),
         navigatorKey: AppRouter().mainNavigatorKey,
-        //onGenerateRoute: AppRouter().onGenerateRoute,
         theme: ThemeData(
           primaryColor: AppTheme().primaryColor,
           secondaryHeaderColor: AppTheme().secondaryColor,
           accentColor: AppTheme().primaryColor,
         ),
         builder: (context, widget) {
+          //* Add screen util to the current context so we can use it in components
           ScreenUtil.setContext(context);
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -53,7 +48,6 @@ class StipraApplication extends StatelessWidget {
           );
         },
       ),
-      //routes: AppRouter().routes,
     );
   }
 }

@@ -1,15 +1,20 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:stipra/data/models/trade_item_model.dart';
-import 'package:stipra/data/models/user_model.dart';
-import 'package:stipra/injection_container.dart';
-import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
 
 import '../../../../shared/app_theme.dart';
-import '../../../domain/repositories/data_repository.dart';
-import '../../../domain/repositories/local_data_repository.dart';
+import '../../../data/models/trade_item_model.dart';
+import '../../widgets/overlay/snackbar_overlay.dart';
 import '../../widgets/theme_button.dart';
+
+/// Trade Dialog is for PerkDetailPage.dart
+/// This dialog showing a amount button and a Trade button for user to trade
+/// This dialog is showing when user click on the trade button from PerkDetailPage.dart
+/// Calculates the points and show the result in amount button via [tradeItem]
+/// [tradeItem] is the item that user clicked on
+/// The minimum amount is coming from [tradeItem.minimumpoints]
+/// The maximum amount is coming from [tradeItem.maximumpoints]
+/// The amount is increasing/decreasing by [tradeItem.minimumpoints]
+/// Amount can not be less than [tradeItem.minimumpoints]
+/// Amount can not be more than [tradeItem.maximumpoints]
 
 class TradeDialog extends StatefulWidget {
   final String button1Text, button2Text, descriptionText;
@@ -88,13 +93,6 @@ class _TradeDialogState extends State<TradeDialog> {
                   SizedBox(
                     height: 10,
                   ),
-                  /*Row(
-                    children: [
-                      Expanded(
-                        child: userPointText(),
-                      ),
-                    ],
-                  ),*/
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
@@ -107,11 +105,6 @@ class _TradeDialogState extends State<TradeDialog> {
                     height: 10,
                   ),
                   basketAmountButton(),
-                  /*Text(
-                    'Trading: ${amount * points} points',
-                    style: AppTheme().paragraphRegularText,
-                    textAlign: TextAlign.center,
-                  ),*/
                   SizedBox(
                     height: 25,
                   ),
@@ -124,7 +117,6 @@ class _TradeDialogState extends State<TradeDialog> {
                           height: 42,
                           onTap: () {
                             widget.onButton1Tap(amount * minPoints);
-                            //LockOverlayDialog().closeOverlay();
                           },
                           text: 'Trade: ${amount * minPoints} Points',
                         ),
@@ -140,7 +132,6 @@ class _TradeDialogState extends State<TradeDialog> {
                           onTap: () {
                             if (widget.onButton2Tap != null)
                               widget.onButton2Tap!();
-                            //LockOverlayDialog().closeOverlay();
                           },
                           text: widget.button2Text,
                         ),
@@ -156,52 +147,7 @@ class _TradeDialogState extends State<TradeDialog> {
     );
   }
 
-  /*Widget userPointText() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15),
-      alignment: Alignment.centerLeft,
-      child: StreamBuilder<UserModel>(
-        stream: locator<LocalDataRepository>().userStream,
-        initialData: locator<LocalDataRepository>().getUser(),
-        builder: (context, snapshot) {
-          log('Snapshot data: ${snapshot.data}');
-          if (snapshot.hasData && snapshot.data?.userid != null) {
-            return FutureBuilder(
-              future: locator<DataRepository>().getPoints(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return Text(
-                    'Your points: ${(snapshot.data as dynamic).value}',
-                    style: AppTheme().smallParagraphRegularText.copyWith(
-                          color: AppTheme().greyScale1,
-                        ),
-                    textAlign: TextAlign.left,
-                  );
-                } else {
-                  return Text(
-                    'Loading...',
-                    style: AppTheme().smallParagraphRegularText.copyWith(
-                          color: AppTheme().greyScale1,
-                        ),
-                    textAlign: TextAlign.left,
-                  );
-                }
-              },
-            );
-          } else {
-            return Text(
-              'Login to see your points',
-              style: AppTheme().smallParagraphRegularText.copyWith(
-                    color: AppTheme().greyScale1,
-                  ),
-            );
-          }
-        },
-      ),
-    );
-  }*/
-
-  //create a basket amount increaser decreaser button with functionality to change amount variable
+  ///Create a basket amount increaser decreaser button with functionality to change amount variable
   Widget basketAmountButton() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 15),

@@ -3,6 +3,9 @@ import 'package:stipra/shared/app_theme.dart';
 
 import '../../../widgets/local_image_box.dart';
 
+/// What is Stipra UI for Info page
+/// Includes texts and images
+
 class WhatIsStipraPage extends StatelessWidget {
   const WhatIsStipraPage({Key? key}) : super(key: key);
 

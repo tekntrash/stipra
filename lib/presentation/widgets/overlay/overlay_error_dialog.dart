@@ -7,6 +7,10 @@ import '../../../shared/app_theme.dart';
 import '../classic_text.dart';
 import 'lock_overlay_dialog.dart';
 
+//* This custom component for error messages.
+//* We are showing a component at the middle of screen with a blur effect.
+//* This class uses applications's main overlay to show dialogs top of ui.
+
 class OverlayErrorDialog extends StatelessWidget {
   final String error;
   const OverlayErrorDialog({

@@ -1,5 +1,8 @@
 part of '../take_picture_page.dart';
 
+/// Camera preview for showing camera in UI
+/// It is using controller for show specific camera's preview in UI
+
 class _CameraPreviewWidget extends StatelessWidget {
   final CameraController? controller;
   const _CameraPreviewWidget({

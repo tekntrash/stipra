@@ -7,7 +7,9 @@ import '../contact/contact_page.dart';
 import 'widgets/how_to_make_video.dart';
 import 'widgets/what_is_stipra.dart';
 
-class ProfileViewModel extends BaseViewModel {
+/// Info Controller for handling routes in there
+
+class InfoViewModel extends BaseViewModel {
   routeToContact(BuildContext context) {
     AppNavigator.push(
       context: context,

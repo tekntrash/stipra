@@ -14,6 +14,11 @@ import 'package:stipra/presentation/widgets/overlay/widgets/location_permission_
 import '../../../domain/repositories/data_repository.dart';
 import '../../../domain/repositories/local_data_repository.dart';
 
+/// Controlling the perk detail page
+/// Handling buttons from here
+/// Trade dialog opens from here and trade functionality
+/// happening in this controller.
+
 class PerkDetailViewModel extends BaseViewModel {
   late bool isInited;
 
@@ -24,6 +29,8 @@ class PerkDetailViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  /// Show user the trade dialog
+  /// If not logged prevent and show a dialog for log in.
   Future<dynamic> showTrade(
     BuildContext context,
     TradeItemModel tradeItem,
@@ -63,6 +70,11 @@ class PerkDetailViewModel extends BaseViewModel {
     );
   }
 
+  /// When click trade button from dialog, this method will be called
+  /// And will trade the item with amount as given by user
+  /// Then will request for points from backend and update the UI
+  /// If success will show a dialog about 'success' with gif
+  /// If not will show a ui with error message
   Future<void> trade(TradeItemModel tradeItem, int amount) async {
     LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
     final result = await locator<DataRepository>().tradePoints(

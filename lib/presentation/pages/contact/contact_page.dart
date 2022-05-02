@@ -11,6 +11,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 part 'widgets/confirm_button.dart';
 
+/// This page shows contact page's ui
+/// with 3 text field and a button
+
 class ContactPage extends StatelessWidget {
   const ContactPage({Key? key}) : super(key: key);
 

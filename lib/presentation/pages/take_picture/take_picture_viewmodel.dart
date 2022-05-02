@@ -7,6 +7,11 @@ import 'package:stacked/stacked.dart';
 import '../../../core/services/image_service.dart';
 import '../../../core/utils/time_converter/time_converter.dart';
 
+/// Controlling camera functionality of TakePicturePage
+/// Get camera from plugin
+/// Supports flash mode change functionality
+/// Supports camera flip functionality
+
 class TakePictureViewModel extends BaseViewModel {
   IconData getCameraLensIcon(CameraLensDirection direction) {
     return Icons.flip_camera_ios;
@@ -20,6 +25,7 @@ class TakePictureViewModel extends BaseViewModel {
   bool isbackCamera = true;
   double startPointOfVideoRecord = 0;
 
+  /// Call [takePicture] for get path of the image then exit page with [imagePath] data
   void onTakePictureButtonPressed(BuildContext context) {
     takePicture().then((String? filePath) {
       if (!disposed) {
@@ -32,6 +38,7 @@ class TakePictureViewModel extends BaseViewModel {
     });
   }
 
+  /// Capture photo from camera then return string
   Future<String?> takePicture() async {
     if (!(customCameraController?.value.isInitialized == true)) {
       return null;
@@ -54,6 +61,8 @@ class TakePictureViewModel extends BaseViewModel {
     }
   }
 
+  /// Not using right now. Can be used for future
+  /// It is for change file name of the image
   Future<File> changeFileNameOnly(File file, String newFileName) async {
     var path = file.path;
     var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
@@ -61,6 +70,7 @@ class TakePictureViewModel extends BaseViewModel {
     return file.rename(newPath);
   }
 
+  /// Change camera direction with call [onNewCameraSelected]
   void flipCamera() {
     if (isbackCamera) {
       isbackCamera = false;
@@ -71,6 +81,8 @@ class TakePictureViewModel extends BaseViewModel {
     }
   }
 
+  /// When camera changed this functionality called
+  /// It is for change camera direction or rebuild camera
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     if (customCameraController != null) {
       await customCameraController?.dispose();
@@ -93,6 +105,7 @@ class TakePictureViewModel extends BaseViewModel {
     if (!disposed) notifyListeners();
   }
 
+  /// Change flash mode then update UI for icon's color
   Future<void> changeFlashMode() async {
     if (flashMode == FlashMode.off || flashMode == FlashMode.torch) {
       flashMode = FlashMode.always;

@@ -1,5 +1,7 @@
 part of '../info_page.dart';
 
+/// Uses for top bar of Info Page with logo and 'Info' title
+
 AppBar _buildTopBar(BuildContext context) {
   final userModel = locator<LocalDataRepository>().getUser();
   return AppBar(

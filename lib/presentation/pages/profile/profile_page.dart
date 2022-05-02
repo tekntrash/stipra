@@ -23,6 +23,10 @@ import 'package:dartz/dartz.dart' as dartz;
 
 part 'widgets/top_bar.dart';
 
+/// Profile Page UI
+/// and buttons for profile page UI
+/// It is using ViewModelBuilder to handle the state of the page with ProfileViewModel
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -31,6 +35,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  /// Building ProfilePage ui but it depends on user state
+  /// if user is logged in or not
+  /// If logged in it will show the profile page ui
+  /// If not it will show the sign in page ui
   @override
   Widget build(BuildContext context) {
     final isLogged = locator<LocalDataRepository>().getUser().userid != null;
@@ -138,7 +146,10 @@ class _ProfilePageState extends State<ProfilePage> {
               );
             },
           )
-        : EnterPhoneNumberScreen(
+        :
+
+        /// If user is not logged show login page to provide log in or register
+        EnterPhoneNumberScreen(
             hideBackButton: true,
             isSignIn: true,
             onLogged: () {
@@ -150,6 +161,10 @@ class _ProfilePageState extends State<ProfilePage> {
           );
   }
 
+  /// Build user avatar photo and the name
+  /// When click on the avatar photo, it will route to the TakePicturePage
+  /// when select or capture a photo it is sending to backend
+  /// after it is changing avatar from profile page with animation
   File? selectedImage;
   bool uploading = false;
   Widget buildTopBar() {
@@ -166,6 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: InkWell(
               borderRadius: BorderRadius.circular(50),
               onTap: () async {
+                ///Route to take picture page and get the image then send it to backend
                 final result = await AppNavigator.push(
                   context: context,
                   child: TakePicturePage(),
@@ -262,6 +278,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// Builds a button with a title and an onTap callback
+  /// Using for buttons as a general structure
   Widget buildProfileButton(String buttonName, {Function()? onTap}) {
     return Container(
       margin: EdgeInsets.only(left: 20.w),

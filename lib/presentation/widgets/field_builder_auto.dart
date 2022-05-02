@@ -4,6 +4,8 @@ import '../../shared/app_theme.dart';
 import 'classic_text.dart';
 import 'sign_text_form_field.dart';
 
+//* An improved text field for showing errors with default animations and uses easily.
+
 class FieldBuilderAuto extends StatelessWidget {
   final TextEditingController controller;
   final String text, hint;

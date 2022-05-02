@@ -1,5 +1,7 @@
 part of '../take_picture_page.dart';
 
+/// A button component for open gallery to select image
+
 class _PickFromGalleryButton extends StatelessWidget {
   const _PickFromGalleryButton({Key? key}) : super(key: key);
 

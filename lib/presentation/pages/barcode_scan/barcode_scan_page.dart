@@ -11,10 +11,11 @@ import '../../../data/models/barcode_timestamp_model.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
 import '../../../shared/app_theme.dart';
-import '../../widgets/mobile_scanner_fixed.dart';
 import 'barcode_scan_viewmodel.dart';
 
 part 'widgets/bottom_box.dart';
+
+/// Create a UI for camera to scan barcodes and buttons to cancel and open flash
 
 class BarcodeScanPage extends StatelessWidget {
   final int? maxBarcodeLength;

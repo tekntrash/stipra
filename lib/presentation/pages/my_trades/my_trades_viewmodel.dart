@@ -9,6 +9,8 @@ import 'package:stipra/data/models/trade_item_model.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
 
+/// MyTradesViewModel uses for get old trades from backend
+
 class MyTradesViewModel extends BaseViewModel {
   late bool isInited;
   late List<MyTradeModel> myTrades;

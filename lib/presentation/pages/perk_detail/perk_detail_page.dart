@@ -1,28 +1,24 @@
 import 'dart:ui';
 
-import 'package:barcode_widget/barcode_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stacked/stacked.dart';
+
 import '../../../data/models/trade_item_model.dart';
-import '../../../data/models/win_item_model.dart';
-import '../../../core/utils/router/app_navigator.dart';
-import '../../../core/utils/time_converter/time_converter.dart';
-import '../../../data/models/product_model.dart';
-import '../barcode_scan/barcode_scan_page.dart';
-import '../map/map_controller.dart';
-import 'perk_detail_viewmodel.dart';
+import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/image_box.dart';
-import '../../widgets/like_section.dart';
-import '../../widgets/local_image_box.dart';
 import '../../widgets/theme_button.dart';
-import '../../../shared/app_theme.dart';
+import 'perk_detail_viewmodel.dart';
 
 part 'top_bar.dart';
+
+/// Create a Perk Detail UI for shows details of perk
+/// and buttons for perk detail UI
+/// Also this UI using a Carousel Slider to show multiple images
+/// Using [PerkDetailViewModel] to handle logic
 
 class PerkDetailPage extends StatefulWidget {
   final TradeItemModel tradeItem;

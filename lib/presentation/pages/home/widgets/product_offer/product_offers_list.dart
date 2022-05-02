@@ -7,6 +7,8 @@ import '../../../product_detail/win_item_detail_page.dart';
 
 import '../../../../../shared/app_theme.dart';
 
+//* Creating a listview component for products
+
 class WinItemsList extends StatelessWidget {
   final List<WinItemModel> winItems;
   const WinItemsList({

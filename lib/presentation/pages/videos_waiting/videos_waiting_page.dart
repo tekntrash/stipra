@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/presentation/pages/home/home_page.dart';
-import 'package:stipra/presentation/pages/my_trades/widgets/my_trades_category_list.dart';
-import 'package:stipra/presentation/pages/perks/widgets/perks_category_list.dart';
-import 'package:stipra/presentation/pages/videos_waiting/videos_waiting_viewmodel.dart';
-import 'package:stipra/presentation/pages/videos_waiting/widgets/videos_waiting_category_list.dart';
-import '../../../core/utils/router/app_navigator.dart';
-import '../../widgets/custom_load_indicator.dart';
-import '../barcode_scan/barcode_scan_page.dart';
-import '../home/widgets/bottom_bar.dart';
-import '../home/widgets/top_bar.dart';
-import 'widgets/videos_waiting_list.dart';
-import '../../widgets/local_image_box.dart';
 
 import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
+import '../../widgets/custom_load_indicator.dart';
+import '../home/widgets/top_bar.dart';
+import 'videos_waiting_viewmodel.dart';
+import 'widgets/videos_waiting_category_list.dart';
+import 'widgets/videos_waiting_list.dart';
+
+/// Show videos waiting page UI
+/// Using [VideosWaitingViewModel] to handle logic
+/// Using [VideosWaitingCategoryList] to show category list
+/// Using [VideosWaitingList] to show videos list
+/// Using [CurvedContainer] to show curved container
+/// Using [CustomLoadIndicator] to show loading indicator
+/// Using [TopBar] to show top bar
 
 class VideosWaitingPage extends StatefulWidget {
   const VideosWaitingPage({Key? key}) : super(key: key);
@@ -81,7 +82,6 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
                             ),
                           )
                         : CustomScrollView(
-                            //mainAxisSize: MainAxisSize.min,
                             physics: AlwaysScrollableScrollPhysics(),
                             slivers: [
                               SliverPersistentHeader(
@@ -130,6 +130,8 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
   bool get wantKeepAlive => true;
 }
 
+/// PersistentHeader class to change height of sliver's height
+/// For Category list
 class PersistentHeader extends SliverPersistentHeaderDelegate {
   final Widget widget;
 

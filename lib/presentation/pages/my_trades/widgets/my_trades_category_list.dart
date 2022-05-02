@@ -6,6 +6,9 @@ import '../../../../data/enums/trade_point_category.dart';
 import '../../../../data/models/offer_model.dart';
 import '../../../../shared/app_theme.dart';
 
+/// Create a category UI for my trades
+/// Currently there are no categories.
+
 class MyTradesCategoryList extends StatelessWidget {
   const MyTradesCategoryList({
     Key? key,

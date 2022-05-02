@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/barcode_scanner.dart';
 
 import 'coordinates_translator.dart';
+
+/// This component was using for test barcodes it is trying to show barcodes inside a rectangle on camera UI
+/// Currently not using.
+
 /*
 class BarcodeDetectorPainter extends CustomPainter {
   BarcodeDetectorPainter(this.barcodes, this.absoluteImageSize, this.rotation);

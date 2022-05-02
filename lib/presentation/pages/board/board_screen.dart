@@ -16,6 +16,10 @@ import '../../widgets/local_image_box.dart';
 import '../../widgets/theme_button.dart';
 import '../sign/enter_phone_number_page/enter_phone_number_page.dart';
 
+/// Create a UI for board screen
+/// Also named as 'Intro screen'
+/// It is showing only first time when the app is opened
+
 class BoardScreen extends StatefulWidget {
   BoardScreen({Key? key}) : super(key: key);
 
@@ -29,6 +33,7 @@ class _BoardScreenState extends State<BoardScreen> {
   late ValueNotifier<double?> dotPosition;
   late final CarouselController carouselController;
 
+  /// Init all the pages
   @override
   void initState() {
     carouselController = CarouselController();

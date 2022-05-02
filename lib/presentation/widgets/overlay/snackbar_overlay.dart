@@ -3,6 +3,11 @@ import '../classic_text.dart';
 import 'custom_overlay.dart';
 import '../../../shared/app_theme.dart';
 
+//* This custom component for error messages. We are showing a component which is coming from bottom of screen.
+//* Difference from snackbar_show is this is not related with context.
+//* And not using Scaffold's messenger to show.
+//* This class uses applications's main overlay to show dialogs top of ui.
+
 class SnackbarOverlay extends CustomOverlay {
   static SnackbarOverlay? _instance;
 

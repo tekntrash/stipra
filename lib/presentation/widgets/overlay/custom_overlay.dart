@@ -3,6 +3,9 @@ import '../../../core/utils/router/app_router.dart';
 
 import 'classic_loading_overlay.dart';
 
+//* This custom service is a base service for new services.
+//* To provide easy use applications's main overlay to show dialogs top of ui.
+
 abstract class CustomOverlay {
   bool haveOverlay = false;
   final ValueNotifier<OverlayEntry?> _overlayEntry = ValueNotifier(null);

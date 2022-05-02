@@ -1,5 +1,8 @@
 part of '../take_picture_page.dart';
 
+/// Flash button component for take_picture_page
+/// It is updates from TakePicturePage.dart with helps of TakePictureViewModel
+
 class _FlashButton extends StatelessWidget {
   final FlashMode flashMode;
   final Function() changeFlashMode;

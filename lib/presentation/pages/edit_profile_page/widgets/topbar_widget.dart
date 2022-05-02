@@ -1,5 +1,7 @@
 part of '../edit_profile_page.dart';
 
+/// A component for showing a title and description in edit profile page
+
 class TopBarWidget extends StatelessWidget {
   const TopBarWidget({
     Key? key,

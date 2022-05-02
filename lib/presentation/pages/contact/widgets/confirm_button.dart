@@ -1,5 +1,7 @@
 part of '../contact_page.dart';
 
+/// Button for use in contact page
+
 class _SendButton extends StatelessWidget {
   final ContactViewModel viewModel;
   const _SendButton({

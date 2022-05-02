@@ -1,5 +1,7 @@
 part of '../edit_profile_page.dart';
 
+/// A component for showing a button for apply changes in edit profile page
+
 class ConfirmButton extends StatelessWidget {
   final EditProfileViewModel viewModel;
   const ConfirmButton({

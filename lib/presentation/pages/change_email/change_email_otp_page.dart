@@ -7,6 +7,10 @@ import '../../widgets/field_builder_auto.dart';
 import '../../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+/// This page is UI of confirming change email
+/// It has 1 textfield
+/// Confirm button and resend button for control OTP
+
 class ChangeEmailOtpPage extends StatelessWidget {
   final String otp;
   final String emailAddress;

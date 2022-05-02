@@ -32,6 +32,11 @@ import '../../widgets/overlay/lock_overlay.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as path;
 
+/// Barcode Scanner Controller for control flow of barcode to identify and save
+/// videos
+/// Also supports max barcode length and find barcode parameters
+/// Max barcode length is for maximum barcode per scan
+/// And findbarcode parameter is for specific barcode scan to find only scan the specific barcode that given
 class BarcodeScanViewModel extends BaseViewModel {
   int? maxBarcodeLength;
   String? findBarcode;
@@ -40,6 +45,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     this.findBarcode,
   });
 
+  /// Create parameters that will be used in this controller and UI
   CameraController? controller;
   int _cameraIndex = 0;
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
@@ -57,6 +63,8 @@ class BarcodeScanViewModel extends BaseViewModel {
   late ValueNotifier<int> timeDuration;
   late ValueNotifier<int> countDownDuration;
 
+  /// Init controller with default parameters and get cameras list
+  /// Reuqest a permission for camera
   void init(BuildContext context) async {
     _context = context;
     isStopped = false;
@@ -68,6 +76,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     await requestPermissions();
   }
 
+  /// Countdown when the screen opens and start the camera after
   void countDownTimer() async {
     if (countDownDuration.value > 0) {
       await Future.delayed(Duration(seconds: 1));
@@ -80,6 +89,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
   }
 
+  /// Listen the duration of the video if reaches 0 then stop the video
   timerListener() async {
     if (isStarted != true || isStopped) {
       return;
@@ -93,6 +103,9 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
   }
 
+  /// Request permission for camera and storage
+  /// Get the back camera first if exists if not get the any camera
+  /// Start the countDownTimer for camera start
   requestPermissions() async {
     final camera = cameras[_cameraIndex];
     controller = CameraController(
@@ -128,6 +141,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     countDownTimer();
   }
 
+  /// Start capture to scan barcodes and record
   Future startCapture() async {
     if (disposed) {
       return;
@@ -148,8 +162,13 @@ class BarcodeScanViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  /// Get the date timestamp for current time
   String get timeStamp => DateTime.now().millisecondsSinceEpoch.toString();
 
+  /// Stop the video recording and barcode identify
+  /// If pop is true show a dialog for 'Save Video' or 'Cancel'
+  /// then if pop is false save the video
+  /// Save the video to local storage with path and barcodes that identified
   Future<void> stopCapture(BuildContext context, {bool pop: false}) async {
     if (disposed || isStopped) {
       return;
@@ -205,6 +224,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     return;
   }
 
+  /// When user click exit button shows this dialog for 'Save Video' or 'Cancel'
   Future<bool> showExitOrSaveDialog() async {
     return await showDialog(
       context: _context,
@@ -223,6 +243,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     );
   }
 
+  /// Change file name with pattern for video names we use
   File changeFileNameOnlySync(File file, String newFileName) {
     var path = file.path;
     var lastSeparator = path.lastIndexOf(Platform.pathSeparator);
@@ -230,6 +251,9 @@ class BarcodeScanViewModel extends BaseViewModel {
     return file.renameSync(newPath);
   }
 
+  /// Show a dialog component after video recorded
+  /// If logged shows will be analyzed
+  /// If not logged shows you need to log in
   void showSnackbarForInformation(BuildContext context) {
     ScaffoldMessenger.of(context).clearSnackBars();
     if (locator<LocalDataRepository>().getUser().alogin != null) {
@@ -266,6 +290,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
   }
 
+  /// Send the video and barcodes to server with location
   Future<void> _sendVideoAndBarcodes(String path) async {
     final location = await locator<ScannedVideoService>()
         .getLocationWithPermRequest(onRequestGranted: () {
@@ -294,6 +319,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
   }
 
+  /// Process the image of camera and send it to identify for barcodes
   Future _processCameraImage(CameraImage image) async {
     final WriteBuffer allBytes = WriteBuffer();
     for (final Plane plane in image.planes) {
@@ -336,6 +362,9 @@ class BarcodeScanViewModel extends BaseViewModel {
     processImage(inputImage);
   }
 
+  /// Identify the barcode if exists with barcode scanner plugin
+  /// If barcode exists add it to list of barcodes and vibrate the device
+  /// Show a dialog when found
   bool isBusy = false;
   Future<void> processImage(InputImage inputImage) async {
     if (isBusy || isStopped) return;
@@ -394,6 +423,7 @@ class BarcodeScanViewModel extends BaseViewModel {
     }
   }
 
+  /// Dispose controller for prevent performance issue
   @override
   void dispose() {
     controller?.dispose();

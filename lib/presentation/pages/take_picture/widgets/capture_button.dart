@@ -1,5 +1,9 @@
 part of '../take_picture_page.dart';
 
+/// A button component for capture image from camera
+/// It is calling [onCapture] from parameter
+/// and that function is coming from TakePictureViewModel.dart via TakePicturePage.dart
+
 class _CaptureButton extends StatelessWidget {
   final Function(BuildContext context) onCapture;
   const _CaptureButton({

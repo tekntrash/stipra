@@ -7,6 +7,9 @@ import 'classic_loading_overlay.dart';
 
 bool haveOverlay = false;
 
+//* This custom service is using for for showing a loading component.
+//* This class uses applications's main overlay to show dialogs top of ui.
+//* It can be used to show loading component at the middle of screen.
 class LockOverlay {
   static LockOverlay? _instance;
   final ValueNotifier<OverlayEntry?> _overlayEntry = ValueNotifier(null);

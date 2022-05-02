@@ -15,16 +15,21 @@ import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
 import '../../widgets/overlay/lock_overlay_dialog.dart';
 
+/// This class controlling home page
+/// Can get products from backend
+/// Can change category, directiong and can select expired products
+
 class HomeViewModel extends BaseViewModel {
   late bool isInited;
   late List<WinItemModel> winItems;
-  late List<OfferModel> offers;
   late WinPointCategory selectedCategory;
   late WinPointDirection selectedDirection;
   late bool selectedExpire;
   late bool isLoading;
+
+  /// Init this controller and set default parameters for this controller
+  /// Also request permissions if not granted
   init() async {
-    offers = [];
     winItems = [];
     isInited = false;
     isLoading = true;
@@ -36,6 +41,7 @@ class HomeViewModel extends BaseViewModel {
     ]);
   }
 
+  /// Change category of products then re-request products
   Future<void> changeCategory(WinPointCategory category) async {
     selectedCategory = category;
     isLoading = true;
@@ -45,6 +51,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  /// Change direction of products then re-request products
   Future<void> changeDirection(WinPointDirection direction) async {
     selectedDirection = direction;
     isLoading = true;
@@ -54,6 +61,7 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  /// Change expired parameter of products then re-request products
   Future<void> onShowExpiredChanged(bool status) async {
     selectedExpire = status;
     isLoading = true;
@@ -63,16 +71,12 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  /// Request permissions for camera and storage & location
   Future<void> requestPermisisons() async {
-    /*Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
-      Permission.storage,
-      Permission.location,
-    ].request();*/
     askForCameraPermission();
-    //if camera is not granted
   }
 
+  /// Wait for camera permission response then ask for storage permission if not granted and if it is not ios show error to open settings
   Future<void> askForCameraPermission() async {
     await locator<PermissionService>().requestPermission(
       Permission.camera,
@@ -94,6 +98,7 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
+  /// Wait for storage permission response then if granted ask for location permission if not granted and if it is not ios show error to open settings
   Future<void> askForStoragePermission() async {
     await locator<PermissionService>().requestPermission(
       Permission.storage,
@@ -111,6 +116,7 @@ class HomeViewModel extends BaseViewModel {
     );
   }
 
+  /// Wait for location permission response then if granted get products, if not granted and if it is not ios show error to open settings
   Future<void> askForLocationPermission() async {
     await locator<PermissionService>().requestPermission(
         Permission.locationWhenInUse,
@@ -120,7 +126,6 @@ class HomeViewModel extends BaseViewModel {
       if (Platform.isIOS) {
         await Future.wait([
           getWinItems(request: false),
-          getOffers(),
           informAboutUploadedVideo(),
         ]);
         isInited = true;
@@ -132,7 +137,6 @@ class HomeViewModel extends BaseViewModel {
     }, onRequestGranted: () async {
       await Future.wait([
         getWinItems(request: false),
-        getOffers(),
         informAboutUploadedVideo(),
       ]);
       isInited = true;
@@ -141,11 +145,13 @@ class HomeViewModel extends BaseViewModel {
     });
   }
 
+  /// Control the local storage if there are any videos waiting for upload
   Future<void> informAboutUploadedVideo() async {
     locator<ScannedVideoService>().listenInternetForInformation();
     //await locator<ScannedVideoService>().informAboutUploadedVideo();
   }
 
+  /// Get products from backend with location and with the help of singleton and data repository
   Future getWinItems({bool request: true}) async {
     final location = await locator<ScannedVideoService>()
         .getLocationWithPermRequest(request: request);
@@ -159,13 +165,6 @@ class HomeViewModel extends BaseViewModel {
       winItems = (data as Right).value;
     } else {
       winItems = [];
-    }
-  }
-
-  Future getOffers() async {
-    final data = await locator<DataRepository>().getOffers();
-    if (data is Right) {
-      offers = (data as Right).value;
     }
   }
 }

@@ -6,6 +6,10 @@ import '../../../../core/utils/router/app_navigator.dart';
 import '../../../../core/utils/router/app_router.dart';
 import '../../../../shared/app_theme.dart';
 
+//* A bottom bar component for use it in TabBarViewContainer
+//* We are creating components for each page and adding them to the bottom navigation bar here
+//* So we can control the navigation between main pages
+
 class BottomBar extends StatefulWidget {
   const BottomBar({
     Key? key,

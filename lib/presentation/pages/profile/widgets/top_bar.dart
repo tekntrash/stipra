@@ -1,5 +1,7 @@
 part of '../profile_page.dart';
 
+/// Top bar component of the profile page
+
 AppBar _buildTopBar(BuildContext context) {
   final userModel = locator<LocalDataRepository>().getUser();
   return AppBar(

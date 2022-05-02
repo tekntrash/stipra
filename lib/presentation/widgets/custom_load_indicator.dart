@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../shared/app_theme.dart';
 
+//* A loading component for custom and easy use in app.
+
 class CustomLoadIndicator extends StatelessWidget {
   const CustomLoadIndicator({Key? key}) : super(key: key);
 

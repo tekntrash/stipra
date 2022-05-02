@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//* A component for loading images from assets folder with readymade properties.
+
 class LocalImageBox extends StatelessWidget {
   final double width, height;
   final EdgeInsets margin;

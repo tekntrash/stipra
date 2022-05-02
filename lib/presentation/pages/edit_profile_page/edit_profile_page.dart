@@ -17,6 +17,8 @@ part 'widgets/confirm_button.dart';
 part 'widgets/topbar_widget.dart';
 part 'widgets/appbar_widget.dart';
 
+/// Show edit profile page
+/// With avatar & country & name & address & birth & gender fields...
 class EditProfilePage extends StatefulWidget {
   EditProfilePage({
     Key? key,

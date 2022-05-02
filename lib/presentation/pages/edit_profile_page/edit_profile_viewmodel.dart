@@ -14,6 +14,9 @@ import '../../../domain/repositories/data_repository.dart';
 import '../../widgets/overlay/lock_overlay.dart';
 import '../../widgets/overlay/snackbar_overlay.dart';
 
+/// Controller for edit profile page
+/// This page provides to get profile information and edit them with backend service
+/// It have variables for profile information and also for validation to check it in front
 class EditProfileViewModel extends BaseViewModel {
   GlobalKey<FormState> formKey = GlobalKey();
   AutoValidatorModel address = AutoValidatorModel(
@@ -31,6 +34,8 @@ class EditProfileViewModel extends BaseViewModel {
   ValidatorModel dateofbirth = ValidatorModel();
   bool isSending = false;
 
+  /// Initialize the controller and show a loading component until the profile data is loaded
+  /// When data loaded change parameters and notify listeners to update the view
   init() async {
     LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
     final result = await locator<DataRepository>()
@@ -55,6 +60,9 @@ class EditProfileViewModel extends BaseViewModel {
     LockOverlay().closeOverlay();
   }
 
+  /// Control all parameters if they are ok send a request to backend
+  /// and if success get profile again and show a loading component until profile loaded
+  /// If fail show a snackbar with error message
   Future<void> sendChangeEmail(BuildContext context) async {
     if (isSending) return;
     countryValidator.validate();

@@ -11,6 +11,8 @@ import '../../../core/services/scanned_video_service.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
 
+/// VideoViewModel uses for get video results from [ScannedVideoService]
+
 class VideosWaitingViewModel extends BaseViewModel {
   late bool isInited;
   late List<ScannedVideoModel> scannedVideos;

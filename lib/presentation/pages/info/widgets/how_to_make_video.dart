@@ -4,6 +4,9 @@ import 'package:stipra/shared/app_theme.dart';
 import '../../../widgets/local_image_box.dart';
 import 'video_widget.dart';
 
+/// How to make video screen UI
+/// Showing texts and a video player
+
 class HowToMakeVideoPage extends StatelessWidget {
   const HowToMakeVideoPage({Key? key}) : super(key: key);
 

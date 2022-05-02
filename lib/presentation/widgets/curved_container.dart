@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//* A rounded component for use rounded background in several places.
+
 class CurvedContainer extends StatelessWidget {
   final Widget child;
   final double radius;

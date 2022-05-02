@@ -3,6 +3,8 @@ import '../../../shared/app_theme.dart';
 
 import '../../../shared/app_images.dart';
 
+//* A loading component for use in lock overlay.
+
 class ClassicLoadingOverlay extends StatelessWidget {
   final ValueNotifier<OverlayEntry?> overlayEntry;
   ClassicLoadingOverlay({

@@ -9,6 +9,10 @@ import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
 import '../../widgets/overlay/snackbar_overlay.dart';
 
+/// Contact controller for validate parameters and send backend request
+/// When user click on submit button, this controller will validate parameters
+/// and send backend request to send contact information with content
+
 class ContactViewModel extends BaseViewModel {
   GlobalKey<FormState> formKey = GlobalKey();
 

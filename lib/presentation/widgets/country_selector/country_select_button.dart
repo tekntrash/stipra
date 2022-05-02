@@ -1,3 +1,5 @@
+//* This is a custom component to use list of countries and show them in a component to select one.
+
 import 'package:flutter/material.dart';
 // ignore: implementation_imports
 import 'package:intl_phone_number_input/src/models/country_model.dart';

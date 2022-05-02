@@ -3,6 +3,8 @@ import '../../../core/utils/router/app_router.dart';
 
 bool _haveOverlay = false;
 
+//* This custom service for show a custom component.
+//* This class uses applications's main overlay to show dialogs top of ui.
 class LockOverlayDialog {
   static LockOverlayDialog? _instance;
   final ValueNotifier<OverlayEntry?> _overlayEntry = ValueNotifier(null);

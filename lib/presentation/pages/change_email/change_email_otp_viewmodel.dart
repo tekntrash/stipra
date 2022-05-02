@@ -20,6 +20,10 @@ import '../../widgets/overlay/snackbar_overlay.dart';
 
 import '../../../../injection_container.dart';
 
+/// Change email OTP controller uses for sending backend requests and validate OTP
+/// When user click on submit button, this controller will validate OTP
+/// and send backend request to send email change request is confirmed
+
 class ChangeEmailOtpViewModel extends BaseViewModel {
   String otp;
   String emailAddress;
@@ -51,6 +55,7 @@ class ChangeEmailOtpViewModel extends BaseViewModel {
     super.dispose();
   }
 
+  /// When click confirm button, this method will validate parameters and send backend request
   Future<void> onConfirmed(
     BuildContext context,
   ) async {
@@ -72,10 +77,13 @@ class ChangeEmailOtpViewModel extends BaseViewModel {
     shakePinFieldsForNotCorrect();
   }
 
+  /// Control If OTP code has been entered correctly
   bool validatePinFieldsFilled() {
     return currentPin.length == 4 && formKey.currentState!.validate();
   }
 
+  /// If OTP Code is correct send backend request to change email
+  /// And navigate to home page
   Future<void> onPinConfirmed(
     BuildContext context,
   ) async {
@@ -97,6 +105,7 @@ class ChangeEmailOtpViewModel extends BaseViewModel {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  /// If OTP needed to be resend, this method will send backend request to resend OTP
   void resendOtp({bool force: false}) async {
     if ((resendingOtp || waitBeforeResend.value != 0) && !force) return;
     resendingOtp = true;
@@ -130,6 +139,7 @@ class ChangeEmailOtpViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  /// This method will count down for resend OTP to prevent multiple click
   Timer? timer;
   countDownResend() {
     timer = Timer.periodic(Duration(seconds: 1), (_timer) {
@@ -142,14 +152,17 @@ class ChangeEmailOtpViewModel extends BaseViewModel {
     });
   }
 
+  /// If OTP not correct shake pin fields
   void shakePinFieldsForNotCorrect() {
     errorController!.add(ErrorAnimationType.shake);
     hasError = true;
     notifyListeners();
   }
 
+  /// Control the pin is correct
   bool get isPinCorrect => currentPin == otp;
 
+  /// Change ui with error status
   void updateIsCheckingPinStatus(bool newStatus) {
     isCheckingPin = newStatus;
     notifyListeners();

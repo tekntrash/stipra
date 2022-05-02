@@ -6,6 +6,9 @@ import '../../../../data/enums/trade_point_category.dart';
 import '../../../../data/models/offer_model.dart';
 import '../../../../shared/app_theme.dart';
 
+/// Create a category UI for perks
+/// It is using perksviewmodel parameters and functions for the change of the state
+
 class PerksCategoryList extends StatelessWidget {
   final Function(TradePointCategory) onCategorySelected;
   final Function(TradePointDirection) onDirectionSelected;

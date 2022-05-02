@@ -6,6 +6,9 @@ import '../../../../shared/app_theme.dart';
 import '../../theme_button.dart';
 import '../lock_overlay_dialog.dart';
 
+/// A dialog that asks the user to save video.
+/// Using this with overlay service.
+
 class SaveVideoDialog extends StatefulWidget {
   final String button1Text, button2Text, descriptionText;
   final Function()? onButton1Tap, onButton2Tap, onResume;

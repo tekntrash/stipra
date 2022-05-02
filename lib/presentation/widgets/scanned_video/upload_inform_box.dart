@@ -4,6 +4,11 @@ import '../../../shared/app_theme.dart';
 import '../overlay/lock_overlay_dialog.dart';
 import '../theme_button.dart';
 
+//* A component for informing user and helping them to make actions.
+//* We are showing user in the middle of screen and showing a message.
+//* We are also showing a button for user to make actions.
+//* This class providing a button to upload videos.
+
 class UploadInformBox extends StatelessWidget {
   final Function() onTapUpload;
   const UploadInformBox({

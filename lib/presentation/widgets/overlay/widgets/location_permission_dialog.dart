@@ -7,6 +7,9 @@ import '../../../../shared/app_theme.dart';
 import '../../theme_button.dart';
 import '../lock_overlay_dialog.dart';
 
+/// A dialog that asks the user to access location.
+/// Using this with overlay service.
+/// Also can be customized with parameters for custom use.
 class LocationPermissionDialog extends StatefulWidget {
   final String titleText, button1Text, button2Text, descriptionText;
   final String? image;

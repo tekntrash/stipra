@@ -1,5 +1,7 @@
 part of '../edit_profile_page.dart';
 
+/// A component for showing a text and go back button in edit profile page
+
 AppBar _buildTopBar(BuildContext context) {
   return AppBar(
     flexibleSpace: Container(

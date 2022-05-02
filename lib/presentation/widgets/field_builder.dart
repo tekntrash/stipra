@@ -5,6 +5,10 @@ import '../../shared/app_theme.dart';
 import 'classic_text.dart';
 import 'sign_text_form_field.dart';
 
+//* An improved text field for showing errors with custom animations and for some specific components.
+//* It can be use like in row with different components for better ui.
+//* The reason to have this class; normally textfields can not be used in rows with good way.
+
 class FieldBuilder extends StatelessWidget {
   final TextEditingController controller;
   final String text, hint;

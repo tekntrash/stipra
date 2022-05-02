@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//* A component for loading images from network with readymade properties.
 class ImageBox extends StatelessWidget {
   final double width, height;
   final String url;

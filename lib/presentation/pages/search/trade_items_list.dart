@@ -1,5 +1,8 @@
 part of 'search_page.dart';
 
+/// Transform the list of trade items into a list of widgets
+/// that can be used in a sliver list
+/// If empty, return empty list
 class _TradeItemsList extends StatelessWidget {
   final List<TradeItemModel> tradeItems;
   final bool isSearched;

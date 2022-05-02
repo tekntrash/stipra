@@ -9,6 +9,10 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../../../shared/app_theme.dart';
 
+/// Transform the list of scanned videos into a list of widgets
+/// that can be used in a sliver list
+/// Also check if the list is empty and display a message if it is empty
+
 class VideosWaitingList extends StatelessWidget {
   final List<ScannedVideoModel> scannedVideos;
   const VideosWaitingList({
@@ -39,6 +43,9 @@ class VideosWaitingList extends StatelessWidget {
           );
   }
 
+  /// Build a single item in the list
+  /// Until thumbnail is ready it is showing a [SvgPicture]
+  /// Also convert the date to a readable format
   Widget buildItem(BuildContext context, int index) {
     final newDate = Jiffy(
       '${DateTime.fromMillisecondsSinceEpoch(scannedVideos[index].timeStamp)}',
@@ -182,6 +189,8 @@ class VideosWaitingList extends StatelessWidget {
     );
   }
 
+  /// Generate a thumbnail file from a video file
+  /// and return it
   Future<File?> genThumbnailFile(String path) async {
     final thumbnail = await VideoThumbnail.thumbnailFile(
       video: path,

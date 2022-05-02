@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+//* Preventing animation when changing tab from bottom navigation bar.
+//* So page changes happens as smooth.
+
 class TabBarViewWithoutAnimation extends StatefulWidget {
   /// Creates a page view with one child per tab.
   ///

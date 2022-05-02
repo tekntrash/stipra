@@ -1,5 +1,7 @@
 part of '../barcode_scan_page.dart';
 
+/// Showing buttons on bottom of Barcode Scan Page
+
 class BottomBox extends StatelessWidget {
   final bool? isStarted;
   final bool? isStopped;

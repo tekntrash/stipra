@@ -16,7 +16,6 @@ import '../map/map_controller.dart';
 import 'product_detail_viewmodel.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/image_box.dart';
-import '../../widgets/like_section.dart';
 import '../../widgets/local_image_box.dart';
 import '../../widgets/theme_button.dart';
 import '../../../shared/app_theme.dart';

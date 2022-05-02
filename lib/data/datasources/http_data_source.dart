@@ -27,6 +27,9 @@ import '../models/offer_model.dart';
 import '../models/product_model.dart';
 import '../models/user_model.dart';
 
+/// Remote data source
+/// Using for handle HTTP requests with [RestApiPackage]
+
 class HttpDataSource implements RemoteDataRepository {
   final baseUrl = 'https://api.stipra.com/';
 
@@ -42,6 +45,9 @@ class HttpDataSource implements RemoteDataRepository {
     throw UnimplementedError();
   }
 
+  /// Uses for sending barcode to backend via HTTP [GET] request
+  /// Send a request to [newapp/barcode.php] with
+  /// [barcode] [videoName] [latitude] [longitude] parameters
   @override
   Future<void> sendBarcode(String barcode, String videoName, double latitude,
       double longitude) async {
@@ -61,6 +67,12 @@ class HttpDataSource implements RemoteDataRepository {
     log('sendBarcode result: $result');
   }
 
+  /// Uses for sending video to backend via HTTP [POST] request
+  /// Send a request to [newapp/upload.php] with
+  /// [videoPath] [latitude] [longitude] parameters
+  /// Also calls [callPythonForScannedVideo] method when upload done
+  /// It is return 'true' if upload done successfully
+  /// Otherwise it is throw [Exception]
   @override
   Future<bool> sendScannedVideo(
       String videoPath, double latitude, double longitude) async {
@@ -91,6 +103,12 @@ class HttpDataSource implements RemoteDataRepository {
     }
   }
 
+  /// Uses for sending credentials for login to backend via HTTP [POST] request
+  /// Send a request to [newapp/login.php] with
+  /// [emailAddress] [password] [stayLoggedIn] [geo] parameters
+  /// If response is '{'status':'logged'}' then return [UserModel]
+  /// If response is '{'status':'Needs confirming mobile'}' then throw [PhoneVerifyFailure]
+  /// Otherwise it is throw [ServerException]
   @override
   Future<UserModel> login(String emailAddress, String password,
       bool? stayLoggedIn, String geo) async {
@@ -150,6 +168,11 @@ class HttpDataSource implements RemoteDataRepository {
     }
   }
 
+  /// Uses for sending credentials for register to backend via HTTP [POST] request
+  /// Send a request to [newapp/register.php] with
+  /// [emailAddress] [password] [name] [mobile] [countrycode] [stayLoggedIn] [latitude] [longitude] parameters
+  /// If response is '{'status':'registered'}' then return [UserModel]
+  /// Otherwise it is throw [ServerException]
   @override
   Future<UserModel> register(
     String emailAddress,
@@ -210,6 +233,14 @@ class HttpDataSource implements RemoteDataRepository {
     }
   }
 
+  /// Uses for confirming otp and sending sms to phone via HTTP [GET] request
+  /// Send a request to [newapp/sms.php] with
+  /// [action] [emailAddres] [userId] parameters
+  /// If response is '{'status':'verified'}' then return true
+  /// If response is '{'status':'SMS sent'}' then return true
+  /// If response is '{'status':'Email sent'}' then return true
+  /// If response is '{'status':'Tries exceeded'}' then return [PhoneSmsExceededLimit]
+  /// Otherwise it is throw [ServerException]
   @override
   Future<bool> smsConfirm(
     SmsActionType action,
@@ -266,6 +297,15 @@ class HttpDataSource implements RemoteDataRepository {
     }
   }
 
+  /// Uses for sending barcode to backend via HTTP [GET] request
+  /// Send a request to [newapp/resetpassword.php] with
+  /// [action] [emailAddres] [password] parameters
+  /// If response is '{'status':'verified'}' then return otp
+  /// If response is '{'status':'SMS sent'}' then return otp
+  /// If response is '{'status':'Email sent'}' then return otp
+  /// If response is '{'status':'password changed'}' then return otp
+  /// If response is '{'status':'Tries exceeded'}' then return [PhoneSmsExceededLimit]
+  /// Otherwise it is throw [ServerException]
   @override
   Future<String> resetPassword(
     ResetPasswordActionType action,

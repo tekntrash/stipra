@@ -15,6 +15,9 @@ import '../../../widgets/image_box.dart';
 import '../../../../shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+//* Top bar for use in products & perks page
+//* Its has a search bar and a back button
+
 class TopBar extends StatefulWidget {
   final bool hideSearchBar, replaceSideBarWithBack, hideBack;
   const TopBar({

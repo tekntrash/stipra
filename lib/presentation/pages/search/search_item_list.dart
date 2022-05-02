@@ -8,6 +8,12 @@ import '../../../../../core/utils/router/app_navigator.dart';
 import '../../../../../shared/app_theme.dart';
 import '../product_detail/win_item_detail_page.dart';
 
+/// Transform the list of win items into a list of widgets
+/// that can be used in a sliver list
+/// Also check if the both list is empty and display a message if both is empty
+/// The reason we checking both in here is because we don't want to show the
+/// 'No win items available' twice per list
+
 class SearchItemList extends StatelessWidget {
   final List<WinItemModel> winItems;
   final List<TradeItemModel> tradeItems;

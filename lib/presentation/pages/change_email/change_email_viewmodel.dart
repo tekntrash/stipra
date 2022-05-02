@@ -23,6 +23,10 @@ import '../../../shared/app_theme.dart';
 
 import '../../../../injection_container.dart';
 
+/// Change email controller uses for sending backend requests and validate parameters
+/// When user click on submit button, this controller will validate parameters
+/// and send backend request to send email change request
+
 class ChangeEmailViewModel extends BaseViewModel {
   GlobalKey<FormState> formKey = GlobalKey();
   AutoValidatorModel oldEmail = AutoValidatorModel(
@@ -38,6 +42,8 @@ class ChangeEmailViewModel extends BaseViewModel {
         locator<LocalDataRepository>().getUser().alogin ?? '';
   }
 
+  /// When user click on submit button
+  /// validating parameters and if correct sending request to backend with parameters
   Future<void> sendChangeEmail(BuildContext context) async {
     if (isSending) return;
     if (formKey.currentState?.validate() == true) {

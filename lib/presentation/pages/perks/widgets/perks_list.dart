@@ -8,6 +8,9 @@ import 'package:stipra/presentation/pages/perk_detail/perk_detail_page.dart';
 import '../../../../../data/models/offer_model.dart';
 import '../../../../../shared/app_theme.dart';
 
+/// Create UI for Perks as list
+/// And building them with the list given as parameter
+
 class PerksList extends StatelessWidget {
   final List<TradeItemModel> tradeItems;
   const PerksList({
@@ -36,12 +39,6 @@ class PerksList extends StatelessWidget {
               childCount: tradeItems.length,
             ),
           );
-    ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: tradeItems.length,
-      itemBuilder: (context, index) {},
-    );
   }
 
   Widget buildItem(BuildContext context, int index) {

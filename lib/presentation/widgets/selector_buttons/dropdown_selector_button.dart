@@ -6,6 +6,9 @@ import '../../../shared/app_theme.dart';
 import '../classic_text.dart';
 import 'listenable_error_text.dart';
 
+//* A button selector for dropdown.
+//* Using it for Gender selector for now.
+
 class DropdownSelectorButton extends StatefulWidget {
   final List items;
   final String title, unSelectedTitle;

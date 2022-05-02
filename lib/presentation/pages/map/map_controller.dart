@@ -10,6 +10,8 @@ import 'package:stipra/presentation/pages/map/plugin/flutter_map_plugin_fixed.da
 import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
 import 'package:stipra/shared/app_theme.dart';
 
+/// Map controller for show map and markers on map
+
 class MapControllerPage extends StatefulWidget {
   final String geoPoint;
   final Color binColor;
@@ -37,6 +39,8 @@ class MapControllerPageState extends State<MapControllerPage> {
   late final MapController mapController;
   double rotation = 0.0;
 
+  /// Init default parameters
+  /// And create a rectangle around the product's area
   @override
   void initState() {
     super.initState();
@@ -53,6 +57,7 @@ class MapControllerPageState extends State<MapControllerPage> {
     initMarkers();
   }
 
+  /// Init markers on map like 'user' and 'product'
   initMarkers() async {
     log('Gettingn loc');
     final loc = await locator<LocationService>().getCurrentLocation();
@@ -98,6 +103,7 @@ class MapControllerPageState extends State<MapControllerPage> {
     setState(() {});
   }
 
+  /// Build components also using openstreet map in here
   @override
   Widget build(BuildContext context) {
     return Scaffold(

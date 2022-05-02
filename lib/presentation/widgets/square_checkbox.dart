@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 
+//* Checkbox for application it is a custom component for app.
+//* We are using it in sign screens for now to check 'keep login'.
+
 class SquareCheckbox extends StatelessWidget {
   const SquareCheckbox({
     Key? key,

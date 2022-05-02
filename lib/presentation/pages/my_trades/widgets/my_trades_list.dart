@@ -11,6 +11,9 @@ import 'package:stipra/presentation/pages/perk_detail/perk_detail_page.dart';
 import '../../../../../data/models/offer_model.dart';
 import '../../../../../shared/app_theme.dart';
 
+/// Create UI for my trades as list
+/// And building them with the list given as parameter
+
 class MyTradesList extends StatelessWidget {
   final List<MyTradeModel> myTrades;
   const MyTradesList({

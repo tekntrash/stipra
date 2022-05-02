@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
-import '../../../core/utils/router/app_navigator.dart';
-import '../../../domain/repositories/local_data_repository.dart';
-import '../../../injection_container.dart';
-import '../barcode_scan/barcode_scan_page.dart';
-import 'widgets/bottom_bar.dart';
-import 'widgets/top_bar.dart';
-import '../../widgets/local_image_box.dart';
 
 import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
+import '../../widgets/custom_load_indicator.dart';
 import 'home_viewmodel.dart';
 import 'widgets/product_offer/product_offers_list.dart';
+import 'widgets/top_bar.dart';
 import 'widgets/win_point_category_list.dart';
+
+//* Home also named as 'products page'
+//* It has topbar & products list
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -162,6 +158,8 @@ class _HomePageState extends State<HomePage>
   bool get wantKeepAlive => true;
 }
 
+// A custom component to set custom properties for scrollable sliver
+// With this we can control the height of the sliver
 class PersistentHeader extends SliverPersistentHeaderDelegate {
   final Widget widget;
 

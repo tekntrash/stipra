@@ -21,6 +21,12 @@ part 'widgets/go_back_button.dart';
 part 'widgets/pick_from_gallery_button.dart';
 part 'widgets/zoomable_widget.dart';
 
+/// Take Picture page UI
+/// Its showing a camera preview and a capture button
+/// on top have a back button
+/// on bottom have a flash button
+/// It is using TakePictureViewModel to handle logic
+
 class TakePicturePage extends StatefulWidget {
   const TakePicturePage({Key? key}) : super(key: key);
 
