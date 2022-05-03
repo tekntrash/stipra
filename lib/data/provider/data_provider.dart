@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
+import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/domain/entities/win_item.dart';
 import '../../domain/entities/trade_item.dart';
@@ -357,6 +359,18 @@ class DataProvider implements DataRepository {
   Future<Either<Failure, List<MyTradeModel>>> getMyTrades() async {
     try {
       final remoteData = await remoteDataSource.getMyTrades();
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ProductConsumedModel>>> getProductsConsumed(
+      MyProductOrder order, MyProductDirection direction) async {
+    try {
+      final remoteData =
+          await remoteDataSource.getProductsConsumed(order, direction);
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

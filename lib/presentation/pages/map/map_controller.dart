@@ -8,19 +8,26 @@ import 'package:stipra/core/services/location_service.dart';
 import 'package:stipra/injection_container.dart';
 import 'package:stipra/presentation/pages/map/plugin/flutter_map_plugin_fixed.dart';
 import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
+import 'package:stipra/presentation/widgets/image_box.dart';
 import 'package:stipra/shared/app_theme.dart';
 
 /// Map controller for show map and markers on map
 
 class MapControllerPage extends StatefulWidget {
-  final String geoPoint;
+  final String? geoPoint;
   final Color binColor;
   final String name;
+  final String? productLocation;
+  final String? productImage;
+  final bool removeAppBar;
   MapControllerPage({
     Key? key,
-    required this.geoPoint,
+    this.geoPoint,
+    this.productLocation,
+    this.productImage,
     required this.binColor,
     required this.name,
+    this.removeAppBar: false,
   }) : super(key: key);
 
   static const String route = 'map_controller';
@@ -35,6 +42,7 @@ class MapControllerPageState extends State<MapControllerPage> {
   late List<LatLng> filledPoints;
   late List<Marker> markers;
   LatLng? userLocation;
+  LatLng? productLocation;
 
   late final MapController mapController;
   double rotation = 0.0;
@@ -45,14 +53,17 @@ class MapControllerPageState extends State<MapControllerPage> {
   void initState() {
     super.initState();
     markers = [];
+    filledPoints = [];
     //Get coordinates from geo
-    final coordinates = widget.geoPoint.split(',');
-    filledPoints = [
-      LatLng(double.parse(coordinates[0]), double.parse(coordinates[1])),
-      LatLng(double.parse(coordinates[0]), double.parse(coordinates[3])),
-      LatLng(double.parse(coordinates[2]), double.parse(coordinates[3])),
-      LatLng(double.parse(coordinates[2]), double.parse(coordinates[1])),
-    ];
+    if (widget.geoPoint != null) {
+      final coordinates = widget.geoPoint!.split(',');
+      filledPoints = [
+        LatLng(double.parse(coordinates[0]), double.parse(coordinates[1])),
+        LatLng(double.parse(coordinates[0]), double.parse(coordinates[3])),
+        LatLng(double.parse(coordinates[2]), double.parse(coordinates[3])),
+        LatLng(double.parse(coordinates[2]), double.parse(coordinates[1])),
+      ];
+    }
     mapController = MapController();
     initMarkers();
   }
@@ -63,7 +74,41 @@ class MapControllerPageState extends State<MapControllerPage> {
     final loc = await locator<LocationService>().getCurrentLocation();
     log('Getted loc');
     userLocation = LatLng(loc.latitude, loc.longitude);
+
+    if (widget.productLocation != null) {
+      final coordinates = widget.productLocation!.split(',');
+      productLocation =
+          LatLng(double.parse(coordinates[0]), double.parse(coordinates[1]));
+      log('Product found at ${productLocation.toString()}');
+      markers.add(
+        Marker(
+          width: 80.0,
+          height: 80.0,
+          point: productLocation!,
+          builder: (ctx) => Container(
+            key: Key('product'),
+            width: 40,
+            height: 40,
+            child: Center(
+              child: widget.productImage != null
+                  ? ImageBox(
+                      width: 44,
+                      height: 44,
+                      url: widget.productImage!,
+                      fit: BoxFit.fill,
+                    )
+                  : Icon(
+                      Icons.location_on,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+            ),
+          ),
+        ),
+      );
+    }
     markers = <Marker>[
+      ...markers,
       Marker(
         width: 80.0,
         height: 80.0,
@@ -107,50 +152,53 @@ class MapControllerPageState extends State<MapControllerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            //color: AppTheme().blackColor,
-            gradient: AppTheme().gradientPrimary,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        title: widget.binColor != Colors.transparent
-            ? RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Right bin for this: ',
-                      style: AppTheme().paragraphSemiBoldText,
-                    ),
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.delete,
-                        color: widget.binColor,
-                        size: AppTheme().paragraphSemiBoldText.fontSize! * 1.1,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: widget.name,
-                      style: AppTheme().paragraphSemiBoldText,
-                    ),
-                  ],
+      appBar: widget.removeAppBar
+          ? null
+          : AppBar(
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  //color: AppTheme().blackColor,
+                  gradient: AppTheme().gradientPrimary,
                 ),
               ),
-        centerTitle: true,
-        actions: [
-          /*Container(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              title: widget.binColor != Colors.transparent
+                  ? RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Right bin for this: ',
+                            style: AppTheme().paragraphSemiBoldText,
+                          ),
+                          WidgetSpan(
+                            child: Icon(
+                              Icons.delete,
+                              color: widget.binColor,
+                              size: AppTheme().paragraphSemiBoldText.fontSize! *
+                                  1.1,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: widget.name,
+                            style: AppTheme().paragraphSemiBoldText,
+                          ),
+                        ],
+                      ),
+                    ),
+              centerTitle: true,
+              actions: [
+                /*Container(
             margin: EdgeInsets.only(right: 5),
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             child: IconButton(
@@ -164,8 +212,8 @@ class MapControllerPageState extends State<MapControllerPage> {
               },
             ),
           ),*/
-        ],
-      ),
+              ],
+            ),
       body: Stack(
         children: [
           Positioned.fill(
@@ -174,7 +222,7 @@ class MapControllerPageState extends State<MapControllerPage> {
                 : FlutterMapPlugin(
                     mapController: mapController,
                     options: MapOptions(
-                      center: userLocation,
+                      center: productLocation ?? userLocation,
                       //center: LatLng(51.5, -0.09),
                       zoom: 4.0,
                       allowPanningOnScrollingParent: false,
@@ -208,7 +256,7 @@ class MapControllerPageState extends State<MapControllerPage> {
                   ),
           ),
           Positioned.fill(
-            child: userLocation == null
+            child: (userLocation == null || widget.geoPoint == null)
                 ? Container()
                 : Container(
                     margin: EdgeInsets.only(top: 10),

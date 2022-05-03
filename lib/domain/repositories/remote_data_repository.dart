@@ -1,4 +1,6 @@
+import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
+import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 
@@ -89,4 +91,7 @@ abstract class RemoteDataRepository {
   Future<String> tradePoints(int perkId, int amount);
 
   Future<List<MyTradeModel>> getMyTrades();
+
+  Future<List<ProductConsumedModel>> getProductsConsumed(
+      MyProductOrder order, MyProductDirection direction);
 }

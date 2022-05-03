@@ -90,6 +90,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                           },
                                         ),
                                         buildProfileButton(
+                                          'My Products',
+                                          onTap: () {
+                                            viewModel.routeToProductsConsumed(
+                                                context);
+                                          },
+                                        ),
+                                        buildProfileButton(
                                           'My Trades',
                                           onTap: () {
                                             viewModel.routeToMyTrades(context);

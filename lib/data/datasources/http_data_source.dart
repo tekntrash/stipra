@@ -5,8 +5,10 @@ import 'dart:io';
 import 'package:dart_ipify/dart_ipify.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
+import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
+import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
@@ -762,6 +764,35 @@ class HttpDataSource implements RemoteDataRepository {
           },
         ),
         parseModel: MyTradeModel(),
+        isRawJson: true,
+      );
+
+      return response;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<List<ProductConsumedModel>> getProductsConsumed(
+      MyProductOrder order, MyProductDirection direction) async {
+    try {
+      final user = locator<LocalDataRepository>().getUser();
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandleList<ProductConsumedModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/products.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'showproducts',
+            'userid': user.userid,
+            'order': order.name,
+            'direction': direction.name,
+            'excludeunknown': 'yes',
+          },
+        ),
+        parseModel: ProductConsumedModel(),
         isRawJson: true,
       );
 
