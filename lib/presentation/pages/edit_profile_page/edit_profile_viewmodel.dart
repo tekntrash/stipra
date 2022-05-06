@@ -115,22 +115,22 @@ class EditProfileViewModel extends BaseViewModel {
 
   DateTime? convertStringToDate(String date) {
     if (date.isEmpty) return null;
-    return DateTime.parse(date);
+    return DateTime.tryParse(date);
   }
 
-  DateTime convertStringToDateOneByOne(
+  DateTime? convertStringToDateOneByOne(
       String? day, String? month, String? year) {
     if (day?.length == 1) day = '0$day';
     if (month?.length == 1) month = '0$month';
     String date = '$year-$month-$day';
-    return DateTime.parse(date);
+    return DateTime.tryParse(date);
   }
 
-  String convertDateToString(DateTime dateTime) {
-    String day = dateTime.day.toString();
-    String month = dateTime.month.toString();
-    if (day.length == 1) day = '0$day';
-    if (month.length == 1) month = '0$month';
-    return '${dateTime.year}-$month-$day';
+  String convertDateToString(DateTime? dateTime) {
+    String? day = dateTime?.day.toString();
+    String? month = dateTime?.month.toString();
+    if (day?.length == 1) day = '0$day';
+    if (month?.length == 1) month = '0$month';
+    return '${dateTime?.year}-$month-$day';
   }
 }

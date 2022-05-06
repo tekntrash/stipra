@@ -239,7 +239,7 @@ class RestApiHttpService {
     if (response.statusCode == 200 || response.statusCode == 201) {
       try {
         final data = response.data;
-        log('Response data: $data');
+        log('Response handle type: $parseModel data: $data');
         if (isRawJson) {
           final list = json.decode(data) as List;
           return List<T>.from(list.map((x) => parseModel.fromJson(x)));
