@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../errors/failure.dart';
 import 'location_service.dart';
@@ -16,6 +18,8 @@ import '../platform/network_info.dart';
 
 class ScannedVideoService {
   bool _waitForConnection = true;
+  ValueNotifier<Map<String, UploadingVideo>> uploadingVideosNotifier =
+      ValueNotifier({});
 
   listenInternetForInformation() {
     locator<NetworkInfo>().onInternetChange(
@@ -54,13 +58,35 @@ class ScannedVideoService {
     if (isNeedUpload && isConnectedForUpload) {
       log('informAboutUploadedVideo: true');
       uploadScannedVideos(unUploadedScannedVideos);
-      /*LockOverlayDialog().showCustomOverlay(
+    }
+  }
+
+  Future<void> informAboutUploadedVideoWithDialog() async {
+    final dataRepository = locator<LocalDataRepository>();
+    bool isNeedUpload = false;
+    log('Helo!');
+    List<ScannedVideoModel> scannedVideos =
+        await dataRepository.getScannedVideos().then((scannedVideos) {
+      scannedVideos.forEach((scannedVideo) {
+        if (scannedVideo.isUploaded != true) {
+          isNeedUpload = true;
+          log('video is not uploaded path: ${scannedVideo.videoPath}');
+        }
+      });
+      return scannedVideos;
+    });
+    final unUploadedScannedVideos = scannedVideos.where((scannedVideo) {
+      return scannedVideo.isUploaded != true;
+    }).toList();
+    final isConnected = await locator<NetworkInfo>().isConnected;
+    if (isNeedUpload && isConnected) {
+      LockOverlayDialog().showCustomOverlay(
         child: UploadInformBox(
           onTapUpload: () {
             uploadScannedVideos(unUploadedScannedVideos);
           },
         ),
-      );*/
+      );
     }
   }
 
@@ -107,14 +133,28 @@ class ScannedVideoService {
             location[1],
           );
         }));
+        final cancelToken = CancelToken();
+        final progressNotifier = ValueNotifier<double>(0.0);
+        uploadingVideosNotifier.value[path] = UploadingVideo(
+          progressNotifier: progressNotifier,
+          cancelToken: cancelToken,
+          scannedVideo: scannedVideo,
+        );
+        uploadingVideosNotifier.notifyListeners();
         final data = await dataRepository.sendScannedVideo(
           path,
           location[0],
           location[1],
+          cancelToken: cancelToken,
+          progressNotifier: progressNotifier,
         );
         if (data is Right) {
+          uploadingVideosNotifier.value.remove(path);
+          uploadingVideosNotifier.notifyListeners();
           return Right(true);
         } else {
+          uploadingVideosNotifier.value.remove(path);
+          uploadingVideosNotifier.notifyListeners();
           return Left(data as Failure);
         }
       } else {
@@ -156,4 +196,15 @@ class ScannedVideoService {
     }).toList();
     return unUploadedScannedVideos;
   }
+}
+
+class UploadingVideo {
+  UploadingVideo({
+    required this.cancelToken,
+    required this.scannedVideo,
+    required this.progressNotifier,
+  });
+  final ValueNotifier<double> progressNotifier;
+  final CancelToken cancelToken;
+  final ScannedVideoModel scannedVideo;
 }

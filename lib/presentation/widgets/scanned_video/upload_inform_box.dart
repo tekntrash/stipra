@@ -56,7 +56,7 @@ class UploadInformBox extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 15),
                     child: Text(
-                      'It looks like you have some videos that are not uploaded yet. Do you want to upload them now?',
+                      'If you are not in using wifi this will use data from your mobile and the video may end up not being received. Do you want to upload them now?',
                       style: AppTheme().smallParagraphRegularText,
                       textAlign: TextAlign.left,
                     ),

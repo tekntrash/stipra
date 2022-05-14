@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -132,11 +133,11 @@ class MyProductsList extends StatelessWidget {
                             ? Container(
                                 width: 96,
                                 height: 96,
-                                child: Image.network(
-                                  productsConsumed[index]
+                                child: CachedNetworkImage(
+                                  imageUrl: productsConsumed[index]
                                       .base64
                                       .convertBase64ToImageUrl(),
-                                  errorBuilder: (context, error, stackTrace) =>
+                                  errorWidget: (context, error, stackTrace) =>
                                       Center(
                                     child: SvgPicture.asset(
                                       'assets/images/image_box.svg',

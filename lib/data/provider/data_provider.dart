@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
@@ -97,10 +98,16 @@ class DataProvider implements DataRepository {
 
   @override
   Future<Either<Failure, bool>> sendScannedVideo(
-      String videoPath, double latitude, double longitude) async {
+      String videoPath, double latitude, double longitude,
+      {dynamic cancelToken, ValueNotifier<double>? progressNotifier}) async {
     try {
       final remoteData = await remoteDataSource.sendScannedVideo(
-          videoPath, latitude, longitude);
+        videoPath,
+        latitude,
+        longitude,
+        cancelToken: cancelToken,
+        progressNotifier: progressNotifier,
+      );
       return Right(remoteData);
     } on ServerException {
       return Left(ServerFailure());
@@ -218,7 +225,7 @@ class DataProvider implements DataRepository {
   Future<Either<Failure, void>> callPythonForScannedVideo(
       String videoPath, double latitude, double longitude) async {
     try {
-      final remoteData = await remoteDataSource.sendScannedVideo(
+      final remoteData = await remoteDataSource.callPythonForScannedVideo(
           videoPath, latitude, longitude);
       return Right(remoteData);
     } on ServerException {

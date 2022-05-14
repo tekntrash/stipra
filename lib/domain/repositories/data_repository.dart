@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/domain/entities/my_trade.dart';
 import 'package:stipra/domain/entities/product_consumed.dart';
@@ -28,7 +29,8 @@ abstract class DataRepository {
       String barcode, String videoName, double latitude, double longitude);
 
   Future<Either<Failure, bool>> sendScannedVideo(
-      String videoPath, double latitude, double longitude);
+      String videoPath, double latitude, double longitude,
+      {dynamic cancelToken, ValueNotifier<double>? progressNotifier});
 
   Future<Either<Failure, void>> callPythonForScannedVideo(
       String videoPath, double latitude, double longitude);

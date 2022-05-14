@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/widgets/theme_button.dart';
 
 import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
@@ -81,39 +82,72 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
                               child: CircularProgressIndicator.adaptive(),
                             ),
                           )
-                        : CustomScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            slivers: [
-                              SliverPersistentHeader(
-                                pinned: true,
-                                floating: true,
-                                delegate: PersistentHeader(
-                                  widget: Container(
-                                    color: AppTheme().bgColor,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 25.h,
+                        : Stack(
+                            children: [
+                              CustomScrollView(
+                                physics: AlwaysScrollableScrollPhysics(),
+                                slivers: [
+                                  SliverPersistentHeader(
+                                    pinned: true,
+                                    floating: true,
+                                    delegate: PersistentHeader(
+                                      widget: Container(
+                                        color: AppTheme().bgColor,
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 25.h,
+                                            ),
+                                            VideosWaitingCategoryList(),
+                                            SizedBox(
+                                              height: 12.5.h,
+                                            ),
+                                          ],
                                         ),
-                                        VideosWaitingCategoryList(),
-                                        SizedBox(
-                                          height: 12.5.h,
-                                        ),
-                                      ],
+                                      ),
                                     ),
+                                  ),
+                                  viewModel.isLoading
+                                      ? SliverToBoxAdapter(
+                                          child: CustomLoadIndicator())
+                                      : SliverPadding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              15.w, 0, 15.w, 50),
+                                          sliver: VideosWaitingList(
+                                            scannedVideos:
+                                                viewModel.scannedVideos,
+                                          ),
+                                        ),
+                                ],
+                              ),
+                              Positioned(
+                                bottom: 30,
+                                left: 0,
+                                right: 0,
+                                child: ThemeButton(
+                                  width: 1.sw,
+                                  height: 50.h,
+                                  elevation: 5,
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 20.w),
+                                  color: AppTheme().primaryColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                  onTap: () {
+                                    viewModel.showUploadVideosDialog();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Upload now',
+                                        style: AppTheme()
+                                            .paragraphSemiBoldText
+                                            .copyWith(),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
-                              viewModel.isLoading
-                                  ? SliverToBoxAdapter(
-                                      child: CustomLoadIndicator())
-                                  : SliverPadding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0, horizontal: 15.w),
-                                      sliver: VideosWaitingList(
-                                        scannedVideos: viewModel.scannedVideos,
-                                      ),
-                                    ),
                             ],
                           ),
                   ),

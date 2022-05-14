@@ -1,10 +1,14 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stipra/data/models/user_model.dart';
 import 'package:stipra/domain/repositories/data_repository.dart';
 import 'package:stipra/injection_container.dart';
+import 'package:stipra/presentation/widgets/avatar_image.dart';
+import 'package:stipra/shared/app_images.dart';
 import '../../../../core/utils/router/app_navigator.dart';
 import '../../../../core/utils/router/app_router.dart';
 import '../../../../domain/repositories/local_data_repository.dart';
@@ -129,17 +133,19 @@ class _TopBarState extends State<TopBar> {
                       child: Ink(
                         width: 48,
                         height: 48,
-                        decoration: BoxDecoration(
+                        /* decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme().primaryColor.withOpacity(0.80),
                           image: snapshot.data?.userid != null
-                              ? DecorationImage(
+                              ? 
+                              DecorationImage(
                                   image: NetworkImage(
-                                      'https://api.stipra.com/newapp/avatar.php?action=getavatar&alogin=${snapshot.data?.alogin}&userid=${snapshot.data?.userid}'),
+                                    'https://api.stipra.com/newapp/avatar.php?action=getavatar&alogin=${snapshot.data?.alogin}&userid=${snapshot.data?.userid}',
+                                  ),
                                   fit: BoxFit.cover,
                                 )
                               : null,
-                        ),
+                        ),*/
                         child: snapshot.data?.userid == null
                             ? Center(
                                 child: Container(
@@ -157,7 +163,7 @@ class _TopBarState extends State<TopBar> {
                                   ),
                                 ),
                               )
-                            : Container(),
+                            : AvatarImage(user: snapshot.data),
                       ),
                     );
                   }),

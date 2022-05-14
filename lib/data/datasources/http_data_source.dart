@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dart_ipify/dart_ipify.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
@@ -77,7 +78,12 @@ class HttpDataSource implements RemoteDataRepository {
   /// Otherwise it is throw [Exception]
   @override
   Future<bool> sendScannedVideo(
-      String videoPath, double latitude, double longitude) async {
+    String videoPath,
+    double latitude,
+    double longitude, {
+    dynamic cancelToken,
+    ValueNotifier<double>? progressNotifier,
+  }) async {
     var file = File(videoPath);
 
     final result = await locator<RestApiHttpService>().requestFile(
@@ -93,8 +99,12 @@ class HttpDataSource implements RemoteDataRepository {
       fileFieldName: 'fileToUpload',
       file: file,
       onSendProgress: (int sent, int total) {
+        if (progressNotifier != null) {
+          progressNotifier.value = sent / total;
+        }
         log('onSendProgress: $sent/$total');
       },
+      cancelToken: cancelToken,
     );
     if (result.data != null && result.data.toString().contains('Saved file')) {
       log('sendScannedVideo result: $result');

@@ -34,4 +34,8 @@ class VideosWaitingViewModel extends BaseViewModel {
     scannedVideos = data;
     log('Scanned videos waiting: $scannedVideos');
   }
+
+  Future<void> showUploadVideosDialog() async {
+    locator<ScannedVideoService>().informAboutUploadedVideoWithDialog();
+  }
 }

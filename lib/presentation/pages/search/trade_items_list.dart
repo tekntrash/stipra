@@ -54,7 +54,15 @@ class _TradeItemsList extends StatelessWidget {
                       width: 64.w,
                       height: 64.w,
                       child: Center(
-                        child: Image.network(tradeItem.image!),
+                        child: CachedNetworkImage(
+                          imageUrl: tradeItem.image!,
+                          errorWidget: (context, url, error) =>
+                              SvgPicture.asset(
+                            'assets/images/image_box.svg',
+                            width: 64.w,
+                            height: 64.w,
+                          ),
+                        ),
                       ),
                     )
                   : SvgPicture.asset(

@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/widgets/avatar_image.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../data/models/user_model.dart';
 import '../../../domain/repositories/data_repository.dart';
@@ -176,8 +179,6 @@ class _ProfilePageState extends State<ProfilePage> {
   bool uploading = false;
   Widget buildTopBar() {
     final user = locator<LocalDataRepository>().getUser();
-    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-    final imageUrl = stringToBase64.encode(user.image ?? '');
     return Align(
       alignment: Alignment.bottomCenter,
       child: Column(
@@ -240,22 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       )
                     : Ink(
-                        decoration: BoxDecoration(
-                          image: uploading
-                              ? null
-                              : DecorationImage(
-                                  image: selectedImage != null
-                                      ? FileImage(selectedImage!)
-                                      : user.image != null
-                                          ? NetworkImage(
-                                                  'https://api.stipra.com/newapp/showpic.php?image=${imageUrl}')
-                                              as ImageProvider
-                                          : AssetImage(
-                                              'assets/images/roblox.png'),
-                                  fit: BoxFit.cover,
-                                ),
-                          borderRadius: BorderRadius.circular(50),
-                        ),
+                        child: AvatarImage(user: user),
                         width: 96,
                         height: 96,
                       ),

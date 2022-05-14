@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
@@ -27,7 +28,8 @@ abstract class RemoteDataRepository {
       String barcode, String videoName, double latitude, double longitude);
 
   Future<bool> sendScannedVideo(
-      String videoPath, double latitude, double longitude);
+      String videoPath, double latitude, double longitude,
+      {dynamic cancelToken, ValueNotifier<double>? progressNotifier});
 
   Future<bool> callPythonForScannedVideo(
       String videoPath, double latitude, double longitude);

@@ -171,6 +171,7 @@ class RestApiHttpService {
     required String fileFieldName,
     required File file,
     Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
   }) async {
     Response resp;
     String url = apiRequest.endPoint;
@@ -196,6 +197,7 @@ class RestApiHttpService {
           options: options,
           data: formData,
           queryParameters: apiRequest.queryParameters,
+          cancelToken: cancelToken,
         );
       } else if (apiRequest.requestMethod == RequestMethod.POST) {
         resp = await Dio().post(
@@ -204,6 +206,7 @@ class RestApiHttpService {
           data: formData,
           queryParameters: apiRequest.queryParameters,
           onSendProgress: onSendProgress,
+          cancelToken: cancelToken,
         );
       } else {
         throw Exception("Error this request's method is undefined");

@@ -28,6 +28,7 @@ class AppTheme {
   final greyScale4 = Color.fromARGB(255, 178, 187, 206);
   final greyScale5 = Color.fromARGB(255, 248, 249, 251);
   final greyScale6 = Color.fromARGB(255, 250, 251, 253);
+  final greyLight = Color.fromARGB(255, 230, 230, 230);
   final lightBlueColor = Color.fromARGB(255, 209, 231, 237);
   final whiteColor = Color.fromARGB(255, 255, 255, 255);
   final bgColor = Color.fromARGB(255, 255, 255, 255);

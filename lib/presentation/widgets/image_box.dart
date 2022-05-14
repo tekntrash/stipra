@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stipra/presentation/widgets/local_image_box.dart';
@@ -24,10 +25,10 @@ class ImageBox extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        child: Image.network(
-          url,
+        child: CachedNetworkImage(
+          imageUrl: url,
           fit: fit,
-          errorBuilder: (context, error, stackTrace) {
+          errorWidget: (context, error, stackTrace) {
             return Center(
               child: SvgPicture.asset(
                 'assets/images/image_box.svg',

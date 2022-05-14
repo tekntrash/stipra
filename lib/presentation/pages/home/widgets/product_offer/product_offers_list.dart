@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -79,7 +80,15 @@ class WinItemsList extends StatelessWidget {
                       width: 64.w,
                       height: 64.w,
                       child: Center(
-                        child: Image.network(winItem.images!.first),
+                        child: CachedNetworkImage(
+                          imageUrl: winItem.images!.first,
+                          errorWidget: (context, url, error) =>
+                              SvgPicture.asset(
+                            'assets/images/image_box.svg',
+                            width: 64.w,
+                            height: 64.w,
+                          ),
+                        ),
                       ),
                     )
                   : SvgPicture.asset(

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -88,8 +89,14 @@ class PerksList extends StatelessWidget {
                             ? Container(
                                 width: 96,
                                 height: 96,
-                                child: Image.network(
-                                  tradeItems[index].image!,
+                                child: CachedNetworkImage(
+                                  imageUrl: tradeItems[index].image!,
+                                  errorWidget: (context, url, error) =>
+                                      SvgPicture.asset(
+                                    'assets/images/image_box.svg',
+                                    width: 64,
+                                    height: 64,
+                                  ),
                                 ),
                               )
                             : SvgPicture.asset(
