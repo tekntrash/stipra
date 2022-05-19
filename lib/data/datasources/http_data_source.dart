@@ -100,7 +100,7 @@ class HttpDataSource implements RemoteDataRepository {
       file: file,
       onSendProgress: (int sent, int total) {
         if (progressNotifier != null) {
-          progressNotifier.value = sent / total;
+          progressNotifier.value = (sent / total) * 100;
         }
         log('onSendProgress: $sent/$total');
       },
@@ -436,7 +436,7 @@ class HttpDataSource implements RemoteDataRepository {
         },
       ),
     );
-    log('CallPythonForScannedVideo result: $result');
+    //log('CallPythonForScannedVideo result: $result');
     if (result.data != null && result.data.toString().contains('Saved file')) {
       return true;
     } else {
@@ -807,6 +807,47 @@ class HttpDataSource implements RemoteDataRepository {
       );
 
       return response;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<void> deleteAccount(String password) async {
+    try {
+      final user = locator<LocalDataRepository>().getUser();
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/deleteprofile.php',
+          requestMethod: RequestMethod.POST,
+          queryParameters: {
+            'action': 'deleteprofile',
+            'userid': user.userid,
+            'alogin': user.alogin,
+          },
+          body: {
+            'password': '$password',
+          },
+        ),
+      );
+
+      Map<String, dynamic> result = json.decode(response.data);
+      final status = result['status'];
+      if (status != null && status.contains('deleted')) {
+        return;
+      } else if (status != null) {
+        if (status == 'Password incorrect') {
+          throw 'The password you entered is incorrect.';
+        }
+        throw status;
+      } else {
+        throw 'Can not delete profile, please try again.';
+      }
+      log('request of delete: ${response.requestOptions.queryParameters}');
+      log('Response of delete: ${response}');
+
+      return;
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

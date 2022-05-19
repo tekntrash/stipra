@@ -116,38 +116,44 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
                                           sliver: VideosWaitingList(
                                             scannedVideos:
                                                 viewModel.scannedVideos,
+                                            deleteScannedVideo:
+                                                viewModel.deleteScannedVideo,
+                                            routeToVideoPage:
+                                                viewModel.routeToVideoPage,
                                           ),
                                         ),
                                 ],
                               ),
-                              Positioned(
-                                bottom: 30,
-                                left: 0,
-                                right: 0,
-                                child: ThemeButton(
-                                  width: 1.sw,
-                                  height: 50.h,
-                                  elevation: 5,
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 20.w),
-                                  color: AppTheme().primaryColor,
-                                  borderRadius: BorderRadius.circular(15),
-                                  onTap: () {
-                                    viewModel.showUploadVideosDialog();
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Upload now',
-                                        style: AppTheme()
-                                            .paragraphSemiBoldText
-                                            .copyWith(),
-                                      ),
-                                    ],
+                              if (viewModel.scannedVideos.length != 0)
+                                Positioned(
+                                  bottom: 30,
+                                  left: 0,
+                                  right: 0,
+                                  child: ThemeButton(
+                                    width: 1.sw,
+                                    height: 50.h,
+                                    elevation: 5,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 20.w),
+                                    color: AppTheme().primaryColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                    onTap: () {
+                                      viewModel.showUploadVideosDialog();
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'Upload now',
+                                          style: AppTheme()
+                                              .paragraphSemiBoldText
+                                              .copyWith(),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                   ),

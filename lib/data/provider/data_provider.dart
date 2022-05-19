@@ -283,21 +283,35 @@ class DataProvider implements DataRepository {
     }
   }
 
+  //Todo add cache
   @override
   Future<Either<Failure, List<TradeItem>>> getTradePoints(
     TradePointCategory category,
     TradePointDirection direction,
     bool expired,
   ) async {
-    try {
-      final remoteData = await remoteDataSource.getTradePoints(
-        category,
-        direction,
-        expired,
-      );
-      return Right(remoteData);
-    } on ServerFailure catch (e) {
-      return Left(e);
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.getTradePoints(
+          category,
+          direction,
+          expired,
+        );
+        localDataSource.cacheLastTradePoints(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localData = await localDataSource.getLastTradePoints(
+          category,
+          direction,
+        );
+        return Right(localData);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
     }
   }
 
@@ -307,12 +321,25 @@ class DataProvider implements DataRepository {
       WinPointDirection direction,
       bool expired,
       List<double> coordinates) async {
-    try {
-      final remoteData = await remoteDataSource.getWinPoints(
-          category, direction, expired, coordinates);
-      return Right(remoteData);
-    } on ServerFailure catch (e) {
-      return Left(e);
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.getWinPoints(
+            category, direction, expired, coordinates);
+        localDataSource.cacheLastWinPoints(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localData = await localDataSource.getLastWinPoints(
+          category,
+          direction,
+        );
+        return Right(localData);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
     }
   }
 
@@ -378,6 +405,16 @@ class DataProvider implements DataRepository {
     try {
       final remoteData =
           await remoteDataSource.getProductsConsumed(order, direction);
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteAccount(String password) async {
+    try {
+      final remoteData = await remoteDataSource.deleteAccount(password);
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

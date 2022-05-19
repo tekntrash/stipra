@@ -67,7 +67,8 @@ class LocationServiceImpl extends LocationService {
   showLocationPermissionDialog({Function()? onRequestGranted}) {
     LockOverlayDialog().showCustomOverlay(
       child: LocationPermissionDialog(
-        descriptionText: 'We need your location to verify your videos.',
+        descriptionText:
+            'Stipra is using your location for provides products to you which can disposable on that location. Stipra using your location to verify your disposed products.',
         button1Text: 'Open Settings',
         button2Text: 'Cancel',
         onButton1Tap: () async {

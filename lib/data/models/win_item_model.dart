@@ -2,9 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:hive/hive.dart';
 import 'package:stipra/domain/entities/win_item.dart';
 
-class WinItemModel extends WinItem {
+part 'win_item_model.g.dart';
+
+// ignore: must_be_immutable
+@HiveType(typeId: 4)
+class WinItemModel extends WinItem with HiveObjectMixin {
   WinItemModel({
     this.item,
     this.images,
@@ -27,14 +32,23 @@ class WinItemModel extends WinItem {
           bincolor: bincolor,
         );
 
+  @HiveField(0)
   int? item;
+  @HiveField(1)
   List<String>? images;
+  @HiveField(2)
   String? name;
+  @HiveField(3)
   String? description;
+  @HiveField(4)
   String? points;
+  @HiveField(5)
   String? enddate;
+  @HiveField(6)
   String? barcode;
+  @HiveField(7)
   String? geo;
+  @HiveField(8)
   String? bincolor;
 
   fromRawJson(String str) => fromJson(json.decode(str));

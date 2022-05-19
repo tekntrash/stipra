@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:lottie/lottie.dart';
@@ -17,16 +19,53 @@ import '../../../../../shared/app_theme.dart';
 /// that can be used in a sliver list
 /// Also check if the list is empty and display a message if it is empty
 
-class VideosWaitingList extends StatelessWidget {
+class VideosWaitingList extends StatefulWidget {
   final List<ScannedVideoModel> scannedVideos;
+  final Function(ScannedVideoModel) deleteScannedVideo;
+  final Function(BuildContext, ScannedVideoModel) routeToVideoPage;
   const VideosWaitingList({
     Key? key,
     required this.scannedVideos,
+    required this.deleteScannedVideo,
+    required this.routeToVideoPage,
   }) : super(key: key);
 
   @override
+  State<VideosWaitingList> createState() => _VideosWaitingListState();
+}
+
+class _VideosWaitingListState extends State<VideosWaitingList>
+    with TickerProviderStateMixin {
+  late final Map<String, AnimationController> _animationControllers;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationControllers = {};
+
+    widget.scannedVideos.forEach((scannedVideo) {
+      _animationControllers[scannedVideo.videoPath] =
+          AnimationController(vsync: this)
+            ..addStatusListener((status) async {
+              if (status == AnimationStatus.completed) {
+                await widget.deleteScannedVideo(scannedVideo);
+                _animationControllers[scannedVideo.videoPath]?.dispose();
+              }
+            });
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.scannedVideos.forEach((scannedVideo) {
+      _animationControllers[scannedVideo.videoPath]?.dispose();
+    });
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return scannedVideos.length == 0
+    return widget.scannedVideos.length == 0
         ? SliverToBoxAdapter(
             child: Center(
               child: Text(
@@ -37,23 +76,54 @@ class VideosWaitingList extends StatelessWidget {
               ),
             ),
           )
-        : SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return buildItem(context, index);
-              },
-              childCount: scannedVideos.length,
+        : SlidableAutoCloseBehavior(
+            child: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return buildItem(context, index);
+                },
+                childCount: widget.scannedVideos.length,
+              ),
             ),
           );
   }
+
+  /* Widget wrapWithSlidable(BuildContext context, int index) {
+    return Slidable(
+      key: ValueKey('${widget.scannedVideos[index].videoPath}'),
+      endActionPane: ActionPane(
+        motion: ScrollMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (context) {
+              widget.deleteScannedVideo(widget.scannedVideos[index]);
+            },
+            backgroundColor: Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Delete',
+          ),
+        ],
+        extentRatio: 0.33,
+        dismissible: DismissiblePane(
+          onDismissed: () {
+            widget.deleteScannedVideo(widget.scannedVideos[index]);
+          },
+        ),
+      ),
+      child: buildItem(context, index),
+    );
+  }*/
 
   /// Build a single item in the list
   /// Until thumbnail is ready it is showing a [SvgPicture]
   /// Also convert the date to a readable format
   Widget buildItem(BuildContext context, int index) {
     final newDate = Jiffy(
-      '${DateTime.fromMillisecondsSinceEpoch(scannedVideos[index].timeStamp)}',
+      '${DateTime.fromMillisecondsSinceEpoch(widget.scannedVideos[index].timeStamp)}',
     ).yMMMMd;
+
+    log('Updated build item!!!');
 
     return AnimatedSwitcher(
       duration: Duration(milliseconds: 200),
@@ -64,7 +134,7 @@ class VideosWaitingList extends StatelessWidget {
         );
       },
       child: StatefulBuilder(builder: (context, setState) {
-        if (scannedVideos[index].isUploaded) {
+        if (widget.scannedVideos[index].isUploaded) {
           return Container(
             key: GlobalKey(),
             margin: EdgeInsets.only(bottom: 8.w),
@@ -80,6 +150,13 @@ class VideosWaitingList extends StatelessWidget {
                     width: 96,
                     height: 96,
                     repeat: false,
+                    onLoaded: (composition) {
+                      _animationControllers[
+                          widget.scannedVideos[index].videoPath]!
+                        ..duration = composition.duration
+                        ..reset()
+                        ..forward();
+                    },
                   ),
                 ],
               ),
@@ -94,7 +171,7 @@ class VideosWaitingList extends StatelessWidget {
                 ),
             child: GestureDetector(
               onTap: () {
-                //
+                widget.routeToVideoPage(context, widget.scannedVideos[index]);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(
@@ -119,31 +196,32 @@ class VideosWaitingList extends StatelessWidget {
                           ),
                           child: FutureBuilder(
                               future:
-                                  File(scannedVideos[index].videoPath).exists(),
+                                  File(widget.scannedVideos[index].videoPath)
+                                      .exists(),
                               builder: (context, snapshot) {
                                 return Center(
-                                  child: snapshot.hasData &&
-                                          snapshot.data == true
-                                      ? Container(
-                                          width: double.infinity,
-                                          height: double.infinity,
-                                          child: FutureBuilder<File?>(
-                                            future: genThumbnailFile(
-                                                scannedVideos[index].videoPath),
-                                            builder: ((context, snapshot) =>
-                                                AnimatedSwitcher(
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  transitionBuilder:
-                                                      (Widget child,
-                                                          Animation<double>
-                                                              animation) {
-                                                    return FadeTransition(
-                                                        child: child,
-                                                        opacity: animation);
-                                                  },
-                                                  child:
-                                                      (snapshot.connectionState ==
+                                  child:
+                                      snapshot.hasData && snapshot.data == true
+                                          ? Container(
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              child: FutureBuilder<File?>(
+                                                future: genThumbnailFile(widget
+                                                    .scannedVideos[index]
+                                                    .videoPath),
+                                                builder: ((context, snapshot) =>
+                                                    AnimatedSwitcher(
+                                                      duration: Duration(
+                                                          milliseconds: 300),
+                                                      transitionBuilder:
+                                                          (Widget child,
+                                                              Animation<double>
+                                                                  animation) {
+                                                        return FadeTransition(
+                                                            child: child,
+                                                            opacity: animation);
+                                                      },
+                                                      child: (snapshot.connectionState ==
                                                                   ConnectionState
                                                                       .done &&
                                                               snapshot.data !=
@@ -175,16 +253,16 @@ class VideosWaitingList extends StatelessWidget {
                                                                     .greyScale0,
                                                               ),
                                                             ),
-                                                )),
-                                          ),
-                                        )
-                                      : SvgPicture.asset(
-                                          'assets/images/image_box.svg',
-                                          width: 32,
-                                          height: 32,
-                                          key: GlobalKey(),
-                                          color: AppTheme().greyScale0,
-                                        ),
+                                                    )),
+                                              ),
+                                            )
+                                          : SvgPicture.asset(
+                                              'assets/images/image_box.svg',
+                                              width: 32,
+                                              height: 32,
+                                              key: GlobalKey(),
+                                              color: AppTheme().greyScale0,
+                                            ),
                                 );
                               }),
                         ),
@@ -232,15 +310,17 @@ class VideosWaitingList extends StatelessWidget {
                               valueListenable: locator<ScannedVideoService>()
                                   .uploadingVideosNotifier,
                               builder: (context, value, child) {
-                                if (value[scannedVideos[index].videoPath] !=
+                                if (value[widget
+                                        .scannedVideos[index].videoPath] !=
                                     null) {
-                                  return ValueListenableBuilder(
-                                    valueListenable:
-                                        value[scannedVideos[index].videoPath]!
-                                            .progressNotifier,
+                                  return ValueListenableBuilder<double>(
+                                    valueListenable: value[widget
+                                            .scannedVideos[index].videoPath]!
+                                        .progressNotifier,
                                     builder: (context, value, child) {
-                                      if (value == 1.0) {
-                                        scannedVideos[index].isUploaded = true;
+                                      if (value >= 100) {
+                                        widget.scannedVideos[index].isUploaded =
+                                            true;
                                         WidgetsBinding.instance
                                             ?.addPostFrameCallback(
                                           (timeStamp) {
@@ -248,7 +328,8 @@ class VideosWaitingList extends StatelessWidget {
                                           },
                                         );
                                       }
-                                      return Text('Value: $value');
+                                      return Text(
+                                          '${value.toStringAsFixed(0)}%');
                                     },
                                   );
                                 }

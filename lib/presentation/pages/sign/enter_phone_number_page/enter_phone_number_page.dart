@@ -46,6 +46,7 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //LockOverlay().closeOverlay();
     return ViewModelBuilder<EnterPhoneNumberViewModel>.reactive(
       viewModelBuilder: () => EnterPhoneNumberViewModel(
         isSignIn: widget.isSignIn,

@@ -49,13 +49,13 @@ class _BoardScreenState extends State<BoardScreen> {
         image: '2.png',
         title: 'AI based recognition',
         subTitle:
-            'Our impressive AI system identified in the videous you made. Check how many points you made for each video you made. You can use the trash cans you use regularly: the system geolocates them automatically.',
+            'Our impressive AI system identified in the videos you made. Check how many points you earned for each video you made. You can use the trash cans you use regularly: the system geolocates them automatically.',
       ),
       BoardModel(
           image: '4.png',
           title: 'Recycle properly and earn',
           subTitle:
-              'Trade your points for perks, deals, and even donate them to charities. Yes: Stipra is the only service which actually rewards you for proper recycling. So, not only you are helping the nature, but also being rewared for it!'),
+              'Trade your points for perks, deals, and even donate them to charities. Yes: Stipra is the only service which actually rewards you for proper recycling. So, not only you are helping nature, but also being rewarded for it!'),
       /*BoardModel(
         image: '5.png',
         title: 'Neigborhood',

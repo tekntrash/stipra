@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
 import 'package:stipra/domain/entities/trade_item.dart';
 
-class TradeItemModel extends TradeItem {
+part 'trade_item_model.g.dart';
+
+@HiveType(typeId: 5)
+class TradeItemModel extends TradeItem with HiveObjectMixin {
   TradeItemModel({
     this.id,
     this.item,
@@ -29,16 +33,27 @@ class TradeItemModel extends TradeItem {
           maximumpoints: maximumpoints,
         );
 
+  @HiveField(0)
   int? item;
+  @HiveField(1)
   String? id;
+  @HiveField(2)
   String? image;
+  @HiveField(3)
   String? level;
+  @HiveField(4)
   String? name;
+  @HiveField(5)
   String? category;
+  @HiveField(6)
   String? enddate;
+  @HiveField(7)
   String? description;
+  @HiveField(8)
   String? points;
+  @HiveField(9)
   String? minimumpoints;
+  @HiveField(10)
   String? maximumpoints;
 
   fromRawJson(String str) => fromJson(json.decode(str));

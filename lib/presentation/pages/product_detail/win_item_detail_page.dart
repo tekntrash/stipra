@@ -216,30 +216,34 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
         clipBehavior: Clip.none,
         children: [
           Positioned.fill(
-            child: ImageFiltered(
-              imageFilter: new ImageFilter.blur(sigmaX: 0.1, sigmaY: 0.1),
-              child: CarouselSlider.builder(
-                options: CarouselOptions(
-                  height: 250.h,
-                  autoPlay: false,
-                  initialPage: 0,
-                  scrollPhysics: AlwaysScrollableScrollPhysics(),
-                  enableInfiniteScroll: false,
-                  enlargeCenterPage: false,
-                  viewportFraction: 1,
-                  onScrolled: (value) {
-                    dotPosition.value = value;
-                  },
-                ),
-                carouselController: carouselController,
-                itemCount: imgLength,
-                itemBuilder:
-                    (BuildContext context, int itemIndex, int pageViewIndex) =>
-                        ImageBox(
-                  width: 1.sw,
-                  height: 300.h,
-                  url: widget.winItem.images![itemIndex],
-                  fit: BoxFit.scaleDown,
+            child: Hero(
+              tag: '${widget.winItem.name}',
+              transitionOnUserGestures: false,
+              child: ImageFiltered(
+                imageFilter: new ImageFilter.blur(sigmaX: 0.1, sigmaY: 0.1),
+                child: CarouselSlider.builder(
+                  options: CarouselOptions(
+                    height: 250.h,
+                    autoPlay: false,
+                    initialPage: 0,
+                    scrollPhysics: AlwaysScrollableScrollPhysics(),
+                    enableInfiniteScroll: false,
+                    enlargeCenterPage: false,
+                    viewportFraction: 1,
+                    onScrolled: (value) {
+                      dotPosition.value = value;
+                    },
+                  ),
+                  carouselController: carouselController,
+                  itemCount: imgLength,
+                  itemBuilder: (BuildContext context, int itemIndex,
+                          int pageViewIndex) =>
+                      ImageBox(
+                    width: 1.sw,
+                    height: 300.h,
+                    url: widget.winItem.images![itemIndex],
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
               ),
             ),

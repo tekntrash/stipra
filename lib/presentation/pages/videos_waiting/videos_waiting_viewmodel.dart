@@ -1,15 +1,19 @@
 import 'dart:developer';
 
-import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stipra/data/enums/trade_point_category.dart';
-import 'package:stipra/data/models/my_trade_model.dart';
+import 'package:stipra/core/utils/router/app_navigator.dart';
 import 'package:stipra/data/models/scanned_video_model.dart';
-import 'package:stipra/data/models/trade_item_model.dart';
+import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
+import 'package:stipra/presentation/widgets/overlay/lock_overlay.dart';
+import 'package:stipra/presentation/widgets/overlay/lock_overlay_dialog.dart';
+import 'package:stipra/presentation/widgets/overlay/widgets/location_permission_dialog.dart';
 
 import '../../../core/services/scanned_video_service.dart';
-import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
+import 'package:video_player/video_player.dart';
+
+part 'widgets/video_widget.dart';
 
 /// VideoViewModel uses for get video results from [ScannedVideoService]
 
@@ -37,5 +41,23 @@ class VideosWaitingViewModel extends BaseViewModel {
 
   Future<void> showUploadVideosDialog() async {
     locator<ScannedVideoService>().informAboutUploadedVideoWithDialog();
+  }
+
+  Future<void> deleteScannedVideo(ScannedVideoModel scannedVideo) async {
+    await locator<ScannedVideoService>().deleteScannedVideo(scannedVideo);
+    scannedVideos.remove(scannedVideo);
+    notifyListeners();
+  }
+
+  Future routeToVideoPage(
+      BuildContext context, ScannedVideoModel scannedVideo) async {
+    AppNavigator.pushWithOutAnim(
+      context: context,
+      child: VideoWidget(
+        fileLink: scannedVideo.videoPath,
+        scannedVideoModel: scannedVideo,
+        deleteScannedVideo: deleteScannedVideo,
+      ),
+    );
   }
 }

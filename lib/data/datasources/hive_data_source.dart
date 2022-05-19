@@ -4,6 +4,10 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:stipra/data/enums/trade_point_category.dart';
+import 'package:stipra/data/models/trade_item_model.dart';
+import 'package:stipra/data/models/win_item_model.dart';
+import 'package:stipra/data/enums/win_point_category.dart';
 import '../models/user_model.dart';
 
 import '../../core/errors/exception.dart';
@@ -21,6 +25,8 @@ class HiveDataSource implements LocalDataRepository {
   /// These are the keys for the hive box names
   final _scannedVideosBoxName = 'scanned_videos';
   final _userBoxName = 'users';
+  final _winPointBoxName = 'win_points';
+  final _tradePointBoxName = 'trade_points';
 
   @override
   late Stream<UserModel> userStream;
@@ -35,8 +41,12 @@ class HiveDataSource implements LocalDataRepository {
     Hive.registerAdapter(BarcodeTimeStampModelAdapter());
     Hive.registerAdapter(ScannedVideoModelAdapter());
     Hive.registerAdapter(UserModelAdapter());
+    Hive.registerAdapter(WinItemModelAdapter());
+    Hive.registerAdapter(TradeItemModelAdapter());
     await Hive.openBox<ScannedVideoModel>(_scannedVideosBoxName);
     await Hive.openBox<UserModel>(_userBoxName);
+    await Hive.openBox<WinItemModel>(_winPointBoxName);
+    await Hive.openBox<TradeItemModel>(_tradePointBoxName);
     if (Hive.box<UserModel>(_userBoxName).values.length <= 0) {
       await cacheUser(UserModel());
     }
@@ -159,5 +169,62 @@ class HiveDataSource implements LocalDataRepository {
     }
 
     return false;
+  }
+
+  @override
+  Future<void> deleteScannedVideo(ScannedVideoModel scannedVideoModel) async {
+    var box = Hive.box<ScannedVideoModel>(_scannedVideosBoxName);
+    final List<ScannedVideoModel> _scannedVideos =
+        List.from(box.values.toList());
+    for (ScannedVideoModel scannedVideo in _scannedVideos) {
+      if (scannedVideo == scannedVideoModel) {
+        await scannedVideo.delete();
+        return;
+      }
+    }
+  }
+
+  @override
+  Future<void> cacheLastWinPoints(List<WinItemModel> winItems) async {
+    var box = Hive.box<WinItemModel>(_winPointBoxName);
+    await box.clear();
+    await box.addAll(winItems);
+  }
+
+  @override
+  Future<List<WinItemModel>> getLastWinPoints(
+    WinPointCategory category,
+    WinPointDirection direction,
+  ) async {
+    var box = Hive.box<WinItemModel>(_winPointBoxName);
+    return box.values.toList();
+    //Todo need backend support
+    /*if (category == WinPointCategory.All) {
+      return box.values.toList();
+    }else{
+      return box.values.where((element) => element.)
+    }*/
+  }
+
+  @override
+  Future<void> cacheLastTradePoints(List<TradeItemModel> tradeItems) async {
+    var box = Hive.box<TradeItemModel>(_tradePointBoxName);
+    await box.clear();
+    await box.addAll(tradeItems);
+  }
+
+  @override
+  Future<List<TradeItemModel>> getLastTradePoints(
+    TradePointCategory category,
+    TradePointDirection direction,
+  ) async {
+    var box = Hive.box<TradeItemModel>(_tradePointBoxName);
+    return box.values.toList();
+    //Todo need backend support
+    /*if (category == TradePointCategory.All) {
+      return box.values.toList();
+    }else{
+      return box.values.where((element) => element.)
+    }*/
   }
 }

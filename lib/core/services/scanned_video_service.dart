@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
 import '../errors/failure.dart';
 import 'location_service.dart';
 import '../../presentation/widgets/scanned_video/upload_inform_box.dart';
@@ -87,6 +88,19 @@ class ScannedVideoService {
           },
         ),
       );
+    } else if (!isConnected) {
+      SnackbarOverlay().show(
+        addFrameCallback: true,
+        onTap: () {
+          SnackbarOverlay().closeCustomOverlay();
+        },
+        text:
+            'There is no connectivity right now: please connect to your mobile operator or wifi.',
+        buttonText: 'OK',
+      );
+      Future.delayed(Duration(seconds: 6), () {
+        SnackbarOverlay().closeCustomOverlay();
+      });
     }
   }
 
@@ -110,6 +124,62 @@ class ScannedVideoService {
   }
 
   Future<void> uploadScannedVideos(
+      List<ScannedVideoModel> scannedVideos) async {
+    final location = await getLocationWithPermRequest(onRequestGranted: () {
+      uploadScannedVideos(scannedVideos);
+    });
+    if (location == null) {
+      return;
+    }
+    final dataRepository = locator<DataRepository>();
+
+    for (ScannedVideoModel scannedVideo in scannedVideos) {
+      final barcodeTimeStamps = scannedVideo.barcodeTimeStamps;
+      final path = scannedVideo.videoPath;
+      final isExists = await File(path).exists();
+      if (isExists) {
+        Future.wait(barcodeTimeStamps.map((barcodeTimeStamp) async {
+          await locator<DataRepository>().sendBarcode(
+            barcodeTimeStamp.barcode,
+            path,
+            location[0],
+            location[1],
+          );
+        }));
+        final cancelToken = CancelToken();
+        final progressNotifier = ValueNotifier<double>(0.0);
+        uploadingVideosNotifier.value[path] = UploadingVideo(
+          progressNotifier: progressNotifier,
+          cancelToken: cancelToken,
+          scannedVideo: scannedVideo,
+        );
+        uploadingVideosNotifier.notifyListeners();
+        final data = await dataRepository.sendScannedVideo(
+          path,
+          location[0],
+          location[1],
+          cancelToken: cancelToken,
+          progressNotifier: progressNotifier,
+        );
+        if (data is Right) {
+          uploadingVideosNotifier.value.remove(path);
+          uploadingVideosNotifier.notifyListeners();
+
+          await scannedVideo.delete();
+          await File(path).delete().then((value) {
+            log('Deleted video path: $path');
+          });
+        } else {
+          uploadingVideosNotifier.value.remove(path);
+          uploadingVideosNotifier.notifyListeners();
+        }
+      } else {
+        await scannedVideo.delete();
+      }
+    }
+  }
+
+  /*Future<void> uploadScannedVideos(
       List<ScannedVideoModel> scannedVideos) async {
     final location = await getLocationWithPermRequest(onRequestGranted: () {
       uploadScannedVideos(scannedVideos);
@@ -185,7 +255,7 @@ class ScannedVideoService {
         i++;
       });
     });
-  }
+  }*/
 
   Future<List<ScannedVideoModel>> getVideosWaiting() async {
     final dataRepository = locator<LocalDataRepository>();
@@ -195,6 +265,15 @@ class ScannedVideoService {
       return scannedVideo.isUploaded != true;
     }).toList();
     return unUploadedScannedVideos;
+  }
+
+  Future<void> deleteScannedVideo(ScannedVideoModel scannedVideo) async {
+    final dataRepository = locator<LocalDataRepository>();
+    await dataRepository.deleteScannedVideo(scannedVideo);
+    File videoFile = File(scannedVideo.videoPath);
+    if (videoFile.existsSync()) {
+      await videoFile.delete();
+    }
   }
 }
 

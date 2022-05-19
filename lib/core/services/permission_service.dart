@@ -12,6 +12,7 @@ abstract class PermissionService {
     Function()? onRequestGranted,
     Function()? onDenied,
     required String description,
+    bool dontAskIfFirstTime: false,
   });
 
   void showLocationPermissionDialog(Permission requestedPermission,
@@ -29,6 +30,7 @@ class PermissionServiceImpl extends PermissionService {
     Function()? onDenied,
     bool alreadyRequested: false,
     required String description,
+    bool dontAskIfFirstTime: false,
   }) async {
     PermissionStatus permission;
     if (overridePermission != null) {
@@ -43,6 +45,9 @@ class PermissionServiceImpl extends PermissionService {
       log('Permission granted');
     } else if (permission == PermissionStatus.permanentlyDenied ||
         alreadyRequested) {
+      if (dontAskIfFirstTime) {
+        return;
+      }
       //final isOpened = await Geolocator.openAppSettings();
       //if (isOpened) {
       //  log('App settings opened');

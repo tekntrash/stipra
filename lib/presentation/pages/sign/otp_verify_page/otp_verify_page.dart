@@ -27,7 +27,8 @@ class OtpVerifyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<OtpVerifyViewModel>.reactive(
-      viewModelBuilder: () => OtpVerifyViewModel(otp: userModel.otp ?? ''),
+      viewModelBuilder: () =>
+          OtpVerifyViewModel(userModel: userModel, otp: userModel.otp ?? ''),
       builder: (context, viewModel, child) {
         return Scaffold(
           backgroundColor: AppTheme().whiteColor,

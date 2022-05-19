@@ -96,4 +96,6 @@ abstract class RemoteDataRepository {
 
   Future<List<ProductConsumedModel>> getProductsConsumed(
       MyProductOrder order, MyProductDirection direction);
+
+  Future<void> deleteAccount(String password);
 }

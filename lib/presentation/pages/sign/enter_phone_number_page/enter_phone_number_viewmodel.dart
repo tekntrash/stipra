@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/core/utils/router/app_router.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/services/location_service.dart';
 import '../../../../core/utils/router/app_navigator.dart';
@@ -114,8 +115,6 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
     } else {
       final failure = (response as Left).value;
       if (failure is PhoneVerifyFailure) {
-        await locator<LocalDataRepository>().cacheUser(failure.userModel);
-        await locator<DataRepository>().getPoints();
         SnackbarOverlay().show(
           text: '${failure.errorMessage}',
           buttonText: 'OK',
@@ -125,13 +124,17 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
           onTap: () async {
             SnackbarOverlay().closeCustomOverlay();
             final logged = await AppNavigator.pushWithFadeIn<bool>(
-              context: context,
+              context: AppRouter().mainNavigatorKey!.currentState!.context,
               child: OtpVerifyPage(
                 phoneNumber: phoneNumber,
                 userModel: failure.userModel,
               ),
             );
-            if (logged) onVerified?.call();
+            if (logged) {
+              await locator<LocalDataRepository>().cacheUser(failure.userModel);
+              await locator<DataRepository>().getPoints();
+              onVerified?.call();
+            }
           },
           removeDuration: Duration(seconds: 5),
           forceOverlay: true,
@@ -177,17 +180,23 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
       geo.longitude,
     );
     if (response is Right) {
-      await locator<LocalDataRepository>().cacheUser((response as Right).value);
-      await locator<DataRepository>().getPoints();
       log('Cached user reg ${locator<LocalDataRepository>().getUser()}');
       if (onLogged != null) {
-        AppNavigator.pushWithFadeIn<bool>(
+        LockOverlay().closeOverlay();
+        final isLogged = await AppNavigator.pushWithFadeIn<bool>(
           context: context,
           child: OtpVerifyPage(
             phoneNumber: phoneNumber,
             userModel: (response as Right).value,
           ),
         );
+        if (isLogged) {
+          await locator<LocalDataRepository>()
+              .cacheUser((response as Right).value);
+          await locator<DataRepository>().getPoints();
+          onLogged!();
+        }
+        log('Is pin confirmed: $isLogged');
       } else {
         Navigator.of(context).pop();
       }

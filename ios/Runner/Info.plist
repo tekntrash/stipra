@@ -23,15 +23,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>We are identifying barcodes of scanned products so you can earn points. Also we need to use camera for profile photo capture.</string>
+	<string>Stipra requires camera to make videos of disposed products in order to award points and does not share those with anyone.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We are showing products for your location for see products near around you, location should be active.</string>
+	<string>Stipra requires geolocation to show relevant products only and does not share this information with anyone.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We are showing products for your location for see products near around you, location should be active.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Save audio in video</string>
+	<string>Stipra requires geolocation to show relevant products only and does not share this information with anyone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Save video in gallery and get images from gallery for profile photo upload.</string>
+	<string>The app needs access to your gallery for your profile's photo and does not share those with anyone. </string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

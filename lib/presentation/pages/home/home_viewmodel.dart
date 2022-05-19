@@ -81,7 +81,7 @@ class HomeViewModel extends BaseViewModel {
     await locator<PermissionService>().requestPermission(
       Permission.camera,
       description:
-          'We need to access your camera to identify barcodes of products you will scan.',
+          'Stipra requires camera to make videos of disposed products in order to award points and does not share those with anyone.',
       onRequestGranted: () {
         LockOverlayDialog().closeOverlay();
 
@@ -95,6 +95,7 @@ class HomeViewModel extends BaseViewModel {
           askForCameraPermission();
         }
       },
+      dontAskIfFirstTime: true,
     );
   }
 
@@ -102,7 +103,8 @@ class HomeViewModel extends BaseViewModel {
   Future<void> askForStoragePermission() async {
     await locator<PermissionService>().requestPermission(
       Permission.storage,
-      description: 'We need to access your storage to save your videos.',
+      description:
+          'Stipra requires storage to store the videos before sending them for analysis and does not share those with anyone.',
       onRequestGranted: () {
         askForLocationPermission();
       },
@@ -113,17 +115,30 @@ class HomeViewModel extends BaseViewModel {
           askForStoragePermission();
         }
       },
+      dontAskIfFirstTime: true,
     );
   }
 
   /// Wait for location permission response then if granted get products, if not granted and if it is not ios show error to open settings
   Future<void> askForLocationPermission() async {
     await locator<PermissionService>().requestPermission(
-        Permission.locationWhenInUse,
-        description:
-            'We need your location to find available disposable products around you.',
-        onDenied: () async {
-      if (Platform.isIOS) {
+      Permission.locationWhenInUse,
+      description:
+          'Stipra requires geolocation to show relevant products only and does not share this information with anyone.',
+      onDenied: () async {
+        if (Platform.isIOS) {
+          await Future.wait([
+            getWinItems(request: false),
+            informAboutUploadedVideo(),
+          ]);
+          isInited = true;
+          isLoading = false;
+          notifyListeners();
+        } else {
+          askForLocationPermission();
+        }
+      },
+      onRequestGranted: () async {
         await Future.wait([
           getWinItems(request: false),
           informAboutUploadedVideo(),
@@ -131,18 +146,9 @@ class HomeViewModel extends BaseViewModel {
         isInited = true;
         isLoading = false;
         notifyListeners();
-      } else {
-        askForLocationPermission();
-      }
-    }, onRequestGranted: () async {
-      await Future.wait([
-        getWinItems(request: false),
-        informAboutUploadedVideo(),
-      ]);
-      isInited = true;
-      isLoading = false;
-      notifyListeners();
-    });
+      },
+      dontAskIfFirstTime: true,
+    );
   }
 
   /// Control the local storage if there are any videos waiting for upload

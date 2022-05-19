@@ -1,3 +1,8 @@
+import 'package:stipra/data/enums/trade_point_category.dart';
+import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/data/models/trade_item_model.dart';
+import 'package:stipra/data/models/win_item_model.dart';
+
 import '../../data/models/scanned_video_model.dart';
 import '../../data/models/user_model.dart';
 
@@ -19,6 +24,8 @@ abstract class LocalDataRepository {
 
   Future<List<ScannedVideoModel>> getScannedVideos();
 
+  Future<void> deleteScannedVideo(ScannedVideoModel scannedVideoModel);
+
   UserModel getUser();
 
   late Stream<UserModel> userStream;
@@ -26,4 +33,22 @@ abstract class LocalDataRepository {
   Future<void> cacheUser(UserModel userModel);
 
   Future<bool> isFirstTimeLogin();
+
+  Future<List<WinItemModel>> getLastWinPoints(
+    WinPointCategory category,
+    WinPointDirection direction,
+  );
+
+  Future<void> cacheLastWinPoints(
+    List<WinItemModel> winItems,
+  );
+
+  Future<List<TradeItemModel>> getLastTradePoints(
+    TradePointCategory category,
+    TradePointDirection direction,
+  );
+
+  Future<void> cacheLastTradePoints(
+    List<TradeItemModel> tradeItems,
+  );
 }

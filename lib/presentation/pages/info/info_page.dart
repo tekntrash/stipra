@@ -73,10 +73,6 @@ class _InfoPageState extends State<InfoPage> {
                                       SizedBox(
                                         height: 30.h,
                                       ),
-                                      buildButtonTitle('Info'),
-                                      SizedBox(
-                                        height: 20.h,
-                                      ),
                                       buildProfileButton(
                                         'What is Stipra',
                                         onTap: () {
@@ -113,17 +109,6 @@ class _InfoPageState extends State<InfoPage> {
           ),
         );
       },
-    );
-  }
-
-  Widget buildButtonTitle(String title) {
-    return Container(
-      margin: EdgeInsets.only(left: 20.w),
-      width: double.infinity,
-      child: Text(
-        title,
-        style: AppTheme().smallParagraphMediumText,
-      ),
     );
   }
 

@@ -178,8 +178,8 @@ class RestApiHttpService {
 
     Options options = await prepareOptions(authorize: apiRequest.authorize);
 
-    var mfile = MultipartFile.fromBytes(
-      file.readAsBytesSync(),
+    var mfile = await MultipartFile.fromFile(
+      file.path,
       filename: file.path.split('/').last,
     );
     var formData = FormData();

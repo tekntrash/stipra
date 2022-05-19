@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/pages/delete_account/delete_account_page.dart';
 import 'package:stipra/presentation/pages/my_products/my_products_page.dart';
 import 'package:stipra/presentation/pages/my_trades/my_trades_page.dart';
 import 'package:stipra/presentation/pages/videos_waiting/videos_waiting_page.dart';
@@ -53,6 +54,13 @@ class ProfileViewModel extends BaseViewModel {
     AppNavigator.push(
       context: context,
       child: MyProductsPage(),
+    );
+  }
+
+  routeToDeleteAccount(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: DeleteAccountPage(),
     );
   }
 

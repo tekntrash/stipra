@@ -99,4 +99,6 @@ abstract class DataRepository {
 
   Future<Either<Failure, List<ProductConsumed>>> getProductsConsumed(
       MyProductOrder order, MyProductDirection direction);
+
+  Future<Either<Failure, void>> deleteAccount(String password);
 }

@@ -1,6 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:stipra/data/models/trade_item_model.dart';
+import 'package:stipra/data/enums/trade_point_category.dart';
+import 'package:stipra/data/models/win_item_model.dart';
+import 'package:stipra/data/enums/win_point_category.dart';
 import '../../core/errors/exception.dart';
 import '../models/scanned_video_model.dart';
 import '../models/user_model.dart';
@@ -83,6 +87,42 @@ class JsonLocalDataSource implements LocalDataRepository {
   @override
   Future<bool> isFirstTimeLogin() {
     // TODO: implement isFirstTimeLogin
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteScannedVideo(ScannedVideoModel scannedVideoModel) {
+    // TODO: implement deleteScannedVideo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> cacheLastWinPoints(
+    List<WinItemModel> winItems,
+  ) {
+    // TODO: implement cacheLastWinPoints
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<WinItemModel>> getLastWinPoints(
+    WinPointCategory category,
+    WinPointDirection direction,
+  ) {
+    // TODO: implement getLastWinPoints
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> cacheLastTradePoints(List<TradeItemModel> tradeItems) {
+    // TODO: implement cacheLastTradePoints
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<TradeItemModel>> getLastTradePoints(
+      TradePointCategory category, TradePointDirection direction) {
+    // TODO: implement getLastTradePoints
     throw UnimplementedError();
   }
 }

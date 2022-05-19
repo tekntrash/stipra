@@ -81,15 +81,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                         SizedBox(
                                           height: 80.h,
                                         ),
-                                        buildButtonTitle('Profile'),
-                                        SizedBox(
-                                          height: 20.h,
-                                        ),
                                         buildProfileButton(
                                           'Edit Profile',
                                           onTap: () {
                                             viewModel
                                                 .routeToEditProfile(context);
+                                          },
+                                        ),
+                                        buildProfileButton(
+                                          'Remove profile',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToDeleteAccount(context);
                                           },
                                         ),
                                         buildProfileButton(
@@ -256,17 +259,6 @@ class _ProfilePageState extends State<ProfilePage> {
             style: AppTheme().smallParagraphSemiBoldText,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget buildButtonTitle(String title) {
-    return Container(
-      margin: EdgeInsets.only(left: 20.w),
-      width: double.infinity,
-      child: Text(
-        title,
-        style: AppTheme().smallParagraphMediumText,
       ),
     );
   }

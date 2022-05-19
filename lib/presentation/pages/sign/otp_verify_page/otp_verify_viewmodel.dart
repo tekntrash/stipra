@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/data/models/user_model.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../data/enums/sms_action_type.dart';
 import '../../../../domain/repositories/data_repository.dart';
@@ -18,7 +19,9 @@ import '../../../widgets/overlay/lock_overlay.dart';
 
 class OtpVerifyViewModel extends BaseViewModel {
   String otp;
+  final UserModel userModel;
   OtpVerifyViewModel({
+    required this.userModel,
     required this.otp,
   });
 
@@ -69,8 +72,8 @@ class OtpVerifyViewModel extends BaseViewModel {
     notifyListeners();
     await locator<DataRepository>().smsConfirm(
       SmsActionType.confirm,
-      locator<LocalDataRepository>().getUser().alogin ?? '',
-      locator<LocalDataRepository>().getUser().userid ?? '',
+      userModel.alogin ?? '',
+      userModel.userid ?? '',
     );
     Navigator.of(context).pop(true);
   }
@@ -81,8 +84,8 @@ class OtpVerifyViewModel extends BaseViewModel {
     notifyListeners();
     final result = await locator<DataRepository>().smsConfirm(
       reachedLimit ? SmsActionType.confirmemail : SmsActionType.send,
-      locator<LocalDataRepository>().getUser().alogin ?? '',
-      locator<LocalDataRepository>().getUser().userid ?? '',
+      userModel.alogin ?? '',
+      userModel.userid ?? '',
     );
     log('message: $result');
     waitBeforeResend.value = 60;
