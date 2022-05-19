@@ -73,15 +73,16 @@ class _TopBar extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    BarcodeWidget(
-                      barcode: productConsumed.barcode?.length == 8
-                          ? Barcode.ean8()
-                          : Barcode.ean13(),
-                      data: productConsumed.barcode ?? '',
-                      drawText: false,
-                      height: 20.w,
-                      margin: EdgeInsets.only(left: 10.w),
-                    ),
+                    if (productConsumed.barcode?.isNotEmpty == true)
+                      BarcodeWidget(
+                        barcode: productConsumed.barcode?.length == 8
+                            ? Barcode.ean8()
+                            : Barcode.ean13(),
+                        data: productConsumed.barcode ?? '',
+                        drawText: false,
+                        height: 20.w,
+                        margin: EdgeInsets.only(left: 10.w),
+                      ),
                     Container(
                       alignment: Alignment.centerLeft,
                       margin: EdgeInsets.only(left: 10.w),
