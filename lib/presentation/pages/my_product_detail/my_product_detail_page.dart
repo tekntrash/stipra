@@ -9,6 +9,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
+import 'package:stipra/presentation/pages/chart/chart_page.dart';
 import '../../../data/models/win_item_model.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../core/utils/time_converter/time_converter.dart';
@@ -127,7 +128,7 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                     ],
                   ),
                   Positioned(
-                    bottom: 30,
+                    bottom: 15 + 50.h + 15,
                     left: 0,
                     right: 0,
                     child: ThemeButton(
@@ -164,6 +165,43 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                           ),
                           Text(
                             'See Locations',
+                            style: AppTheme().paragraphSemiBoldText.copyWith(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 15,
+                    left: 0,
+                    right: 0,
+                    child: ThemeButton(
+                      width: 1.sw,
+                      height: 50.h,
+                      elevation: 5,
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      color: AppTheme().primaryColor,
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () {
+                        AppNavigator.push(
+                          context: context,
+                          child: RadarChartSample1(
+                              productBarcode: widget.productConsumed.barcode),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.leaderboard,
+                            color: Colors.white,
+                            size: 26,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            'See nutrition stats',
                             style: AppTheme().paragraphSemiBoldText.copyWith(),
                           ),
                         ],

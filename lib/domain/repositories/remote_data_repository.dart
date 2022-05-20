@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
+import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
@@ -98,4 +99,6 @@ abstract class RemoteDataRepository {
       MyProductOrder order, MyProductDirection direction);
 
   Future<void> deleteAccount(String password);
+
+  Future<FoodFactModel> getFoodFact(String barcode);
 }

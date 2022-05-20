@@ -249,10 +249,10 @@ class RestApiHttpService {
         }
         return List<T>.from(data.map((x) => parseModel.fromJson(x)));
       } catch (e) {
-        return parseModel.fromJson({});
+        return <T>[];
       }
     } else {
-      return [parseModel.fromJson({})];
+      return <T>[];
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
+import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
@@ -329,6 +330,8 @@ class DataProvider implements DataRepository {
         return Right(remoteData);
       } on ServerException {
         return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        return Left(e);
       }
     } else {
       try {
@@ -415,6 +418,16 @@ class DataProvider implements DataRepository {
   Future<Either<Failure, void>> deleteAccount(String password) async {
     try {
       final remoteData = await remoteDataSource.deleteAccount(password);
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, FoodFactModel>> getFoodFact(String barcode) async {
+    try {
+      final remoteData = await remoteDataSource.getFoodFact(barcode);
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

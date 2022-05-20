@@ -46,6 +46,7 @@ class PermissionServiceImpl extends PermissionService {
     } else if (permission == PermissionStatus.permanentlyDenied ||
         alreadyRequested) {
       if (dontAskIfFirstTime) {
+        if (onDenied != null) onDenied();
         return;
       }
       //final isOpened = await Geolocator.openAppSettings();

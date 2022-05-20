@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
+import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/domain/entities/my_trade.dart';
 import 'package:stipra/domain/entities/product_consumed.dart';
 import 'package:stipra/domain/entities/search_dto.dart';
@@ -101,4 +102,6 @@ abstract class DataRepository {
       MyProductOrder order, MyProductDirection direction);
 
   Future<Either<Failure, void>> deleteAccount(String password);
+
+  Future<Either<Failure, FoodFactModel>> getFoodFact(String barcode);
 }

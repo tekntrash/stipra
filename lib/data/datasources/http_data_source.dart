@@ -8,6 +8,7 @@ import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
@@ -848,6 +849,28 @@ class HttpDataSource implements RemoteDataRepository {
       log('Response of delete: ${response}');
 
       return;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<FoodFactModel> getFoodFact(String barcode) async {
+    try {
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandle<FoodFactModel>(
+        RestApiRequest(
+          endPoint:
+              'https://world.openfoodfacts.org/api/v0/product/$barcode.json',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {},
+        ),
+        parseModel: FoodFactModel(),
+        isRawJson: false,
+      );
+
+      return response;
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

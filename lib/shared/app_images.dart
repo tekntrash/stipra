@@ -6,6 +6,7 @@ class AppImages {
   static final avatar = 'avatar.svg';
   static final uploadComplete = 'upload-complete.json';
   static final goodBye = 'good_bye.json';
+  static final searchNotFound = 'search-not-found.json';
 }
 
 extension AppImagesExtension on String {

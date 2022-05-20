@@ -88,12 +88,8 @@ class HomeViewModel extends BaseViewModel {
         askForStoragePermission();
       },
       onDenied: () {
-        if (Platform.isIOS) {
-          LockOverlayDialog().closeOverlay();
-          askForStoragePermission();
-        } else {
-          askForCameraPermission();
-        }
+        LockOverlayDialog().closeOverlay();
+        askForStoragePermission();
       },
       dontAskIfFirstTime: true,
     );
@@ -109,11 +105,7 @@ class HomeViewModel extends BaseViewModel {
         askForLocationPermission();
       },
       onDenied: () {
-        if (Platform.isIOS) {
-          askForLocationPermission();
-        } else {
-          askForStoragePermission();
-        }
+        askForLocationPermission();
       },
       dontAskIfFirstTime: true,
     );
@@ -126,17 +118,17 @@ class HomeViewModel extends BaseViewModel {
       description:
           'Stipra requires geolocation to show relevant products only and does not share this information with anyone.',
       onDenied: () async {
-        if (Platform.isIOS) {
-          await Future.wait([
-            getWinItems(request: false),
-            informAboutUploadedVideo(),
-          ]);
-          isInited = true;
-          isLoading = false;
-          notifyListeners();
-        } else {
+        //if (Platform.isIOS) {
+        await Future.wait([
+          getWinItems(request: false),
+          informAboutUploadedVideo(),
+        ]);
+        isInited = true;
+        isLoading = false;
+        notifyListeners();
+        /*} else {
           askForLocationPermission();
-        }
+        }*/
       },
       onRequestGranted: () async {
         await Future.wait([
