@@ -14,6 +14,7 @@ import 'package:stipra/presentation/widgets/image_box.dart';
 import 'package:stipra/shared/app_images.dart';
 import 'package:stipra/shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const fashionColor = Color.fromARGB(255, 231, 30, 50);
 const artColor = Color.fromARGB(255, 60, 233, 230);
@@ -403,6 +404,60 @@ class _RadarChartSample1State extends State<RadarChartSample1> {
                                 ),
                           ),
                         )),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        top: viewModel.foodFact.product?.ingredientsTextEn !=
+                                null
+                            ? 0
+                            : 100,
+                        bottom: viewModel.foodFact.product?.ingredientsTextEn !=
+                                null
+                            ? 25
+                            : 0,
+                      ),
+                      alignment: Alignment.bottomCenter,
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Data from ',
+                              style: AppTheme()
+                                  .extraSmallParagraphRegularText
+                                  .copyWith(
+                                    color: Colors.black,
+                                  ),
+                            ),
+                            WidgetSpan(
+                              child: GestureDetector(
+                                onTap: () {
+                                  launchUrl(Uri.parse(
+                                      'https://world.openfoodfacts.org/'));
+                                },
+                                child: Text(
+                                  'https://world.openfoodfacts.org/',
+                                  style: AppTheme()
+                                      .extraSmallParagraphRegularText
+                                      .copyWith(
+                                        color: Colors.black,
+                                      ),
+                                ),
+                              ),
+                            ),
+                            TextSpan(
+                              text: '. For reference only',
+                              style: AppTheme()
+                                  .extraSmallParagraphRegularText
+                                  .copyWith(
+                                    color: Colors.black,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   /*SliverToBoxAdapter(
                     child: CurvedContainer(
                       radius: 20,
