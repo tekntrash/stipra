@@ -128,7 +128,8 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                     ],
                   ),
                   Positioned(
-                    bottom: 15 + 50.h + 15,
+                    //bottom: 15 + 50.h + 15,
+                    bottom: 30,
                     left: 0,
                     right: 0,
                     child: ThemeButton(
@@ -171,7 +172,7 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  /*Positioned(
                     bottom: 15,
                     left: 0,
                     right: 0,
@@ -183,11 +184,11 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                       color: AppTheme().primaryColor,
                       borderRadius: BorderRadius.circular(15),
                       onTap: () {
-                        AppNavigator.push(
+                        /*AppNavigator.push(
                           context: context,
                           child: RadarChartSample1(
                               productBarcode: widget.productConsumed.barcode),
-                        );
+                        );*/
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -207,7 +208,7 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                         ],
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),

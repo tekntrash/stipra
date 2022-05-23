@@ -11,6 +11,7 @@ class WinItem extends Equatable {
     this.barcode,
     this.geo,
     this.bincolor,
+    this.categorydatabase,
   });
 
   int? item;
@@ -22,6 +23,7 @@ class WinItem extends Equatable {
   String? barcode;
   String? geo;
   String? bincolor;
+  String? categorydatabase;
 
   @override
   List<Object?> get props => [
@@ -33,6 +35,7 @@ class WinItem extends Equatable {
         enddate,
         barcode,
         geo,
-        bincolor
+        bincolor,
+        categorydatabase,
       ];
 }

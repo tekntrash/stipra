@@ -20,6 +20,7 @@ class WinItemModel extends WinItem with HiveObjectMixin {
     this.barcode,
     this.geo,
     this.bincolor,
+    this.categorydatabase,
   }) : super(
           item: item,
           images: images,
@@ -30,6 +31,7 @@ class WinItemModel extends WinItem with HiveObjectMixin {
           barcode: barcode,
           geo: geo,
           bincolor: bincolor,
+          categorydatabase: categorydatabase,
         );
 
   @HiveField(0)
@@ -50,6 +52,8 @@ class WinItemModel extends WinItem with HiveObjectMixin {
   String? geo;
   @HiveField(8)
   String? bincolor;
+  @HiveField(9)
+  String? categorydatabase;
 
   fromRawJson(String str) => fromJson(json.decode(str));
 
@@ -67,6 +71,8 @@ class WinItemModel extends WinItem with HiveObjectMixin {
         barcode: json["barcode"] == null ? null : json["barcode"],
         geo: json["geo"] == null ? null : json["geo"],
         bincolor: json["bincolor"] == null ? null : json["bincolor"],
+        categorydatabase:
+            json["categorydatabase"] == null ? null : json["categorydatabase"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -79,6 +85,7 @@ class WinItemModel extends WinItem with HiveObjectMixin {
         "barcode": barcode == null ? null : barcode,
         "geo": geo == null ? null : geo,
         "bincolor": bincolor == null ? null : bincolor,
+        "categorydatabase": categorydatabase == null ? null : categorydatabase,
       };
 
   Color getBinColor() {

@@ -1,10 +1,16 @@
+import 'dart:ui';
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/data/models/food_fact_model.dart';
+import 'package:stipra/data/models/win_item_model.dart';
 import 'package:stipra/presentation/pages/chart/chart_viewmodel.dart';
+import 'package:stipra/presentation/widgets/curved_container.dart';
 import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
+import 'package:stipra/presentation/widgets/image_box.dart';
 import 'package:stipra/shared/app_images.dart';
 import 'package:stipra/shared/app_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,9 +23,11 @@ const offRoadColor = Color.fromARGB(179, 45, 236, 93);
 
 class RadarChartSample1 extends StatefulWidget {
   final String? productBarcode;
+  final WinItemModel winItem;
   const RadarChartSample1({
     Key? key,
     required this.productBarcode,
+    required this.winItem,
   }) : super(key: key);
 
   @override
@@ -27,239 +35,490 @@ class RadarChartSample1 extends StatefulWidget {
 }
 
 class _RadarChartSample1State extends State<RadarChartSample1> {
-  int selectedDataSetIndex = -1;
-
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<ChartViewModel>.reactive(
-      viewModelBuilder: () => ChartViewModel(widget.productBarcode ?? ''),
-      onModelReady: (model) => model.init(),
-      builder: (context, viewModel, child) {
-        if (!viewModel.isInited)
-          return Container(
-            color: AppTheme().greyScale5,
-            child: CustomLoadIndicator(),
-          );
-        if (!viewModel.isFoodExists) {
-          return Scaffold(
-            backgroundColor: AppTheme().greyScale5,
-            body: Container(
-              color: AppTheme().greyScale5,
-              child: SafeArea(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        color: Colors.transparent,
-                        child: LottieBuilder.asset(
-                          AppImages.searchNotFound.lottiePath,
-                          width: 256,
-                          reverse: true,
-                          //repeat: false,
+    return Scaffold(
+      /*appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            //color: AppTheme().darkPrimaryColor,
+            gradient: AppTheme().gradientPrimary,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text('Detail'),
+        centerTitle: true,
+        actions: [],
+      ),*/
+      backgroundColor: AppTheme().whiteColor,
+      body: SafeArea(
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                expandedHeight: 256.h,
+                floating: false,
+                pinned: true,
+                automaticallyImplyLeading: false,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                /*title: AppBar(
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                      //color: AppTheme().darkPrimaryColor,
+                      gradient: AppTheme().gradientPrimary,
+                    ),
+                  ),
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  title: Text('Detail'),
+                  centerTitle: true,
+                  actions: [],
+                ),*/
+                flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.parallax,
+                  background: Container(
+                    margin: EdgeInsets.only(top: kToolbarHeight),
+                    child: buildImageBox(),
+                  ),
+                  titlePadding: EdgeInsets.zero,
+                  expandedTitleScale: 1,
+                  centerTitle: true,
+                  title: Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      height: kToolbarHeight,
+                      child: AppBar(
+                        flexibleSpace: Container(
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                            gradient: AppTheme().gradientPrimary,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Text(
-                        'We could not find this product.',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme().greyScale1,
+                        leading: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
+                        title: Text('Detail'),
+                        centerTitle: true,
+                        actions: [],
                       ),
-                      SizedBox(
-                        height: 48,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        }
-        return Scaffold(
-          backgroundColor: AppTheme().greyScale5,
-          body: GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedDataSetIndex = -1;
-              });
-            },
-            child: Container(
-              color: Colors.transparent,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ];
+          },
+          body: ViewModelBuilder<ChartViewModel>.reactive(
+            viewModelBuilder: () => ChartViewModel(widget.productBarcode ?? ''),
+            onModelReady: (model) => model.init(),
+            builder: (context, viewModel, child) {
+              if (!viewModel.isInited)
+                return Stack(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: AppTheme().blackColor.withOpacity(0.33),
-                            borderRadius: BorderRadius.circular(10),
+                    Positioned(
+                      top: -450.h,
+                      child: IgnorePointer(
+                        ignoring: true,
+                        child: ImageFiltered(
+                          imageFilter:
+                              new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                          child: Container(
+                            width: 1.sw,
+                            height: 450.h,
+                            color: Colors.black.withOpacity(0.10),
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                        ),
+                      ),
+                    ),
+                    CurvedContainer(
+                      radius: 20,
+                      child: Container(
+                        color: Color.fromARGB(255, 253, 253, 253),
+                        child: Container(
+                          color: AppTheme().greyScale5,
+                          child: CustomLoadIndicator(),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              if (!viewModel.isFoodExists) {
+                return Container(
+                  width: 1.sw,
+                  color: AppTheme().greyScale5,
+                  child: SafeArea(
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: -450.h,
+                          child: IgnorePointer(
+                            ignoring: true,
+                            child: ImageFiltered(
+                              imageFilter: new ImageFilter.blur(
+                                  sigmaX: 5.0, sigmaY: 5.0),
+                              child: Container(
+                                width: 1.sw,
+                                height: 450.h,
+                                color: Colors.black.withOpacity(0.10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        CurvedContainer(
+                          radius: 20,
+                          child: Container(
+                            color: Color.fromARGB(255, 253, 253, 253),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    color: Colors.transparent,
+                                    child: LottieBuilder.asset(
+                                      AppImages.searchNotFound.lottiePath,
+                                      width: 256,
+                                      reverse: true,
+                                      //repeat: false,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  Text(
+                                    'We could not find this product.',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme().greyScale1,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 48,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Positioned(
+                          top: -450,
+                          child: IgnorePointer(
+                            ignoring: true,
+                            child: ImageFiltered(
+                              imageFilter: new ImageFilter.blur(
+                                  sigmaX: 5.0, sigmaY: 5.0),
+                              child: Container(
+                                width: 1.sw,
+                                height: 450.h,
+                                color: Colors.black.withOpacity(0.10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        CurvedContainer(
+                          radius: 20,
+                          child: Container(
+                            color: Color.fromARGB(255, 253, 253, 253),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 7.5.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    height: 25.h,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.local_activity_rounded,
+                                        size: 32,
+                                      ),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Text(
+                                        'Nutrition',
+                                        style: AppTheme()
+                                            .paragraphRegularText
+                                            .copyWith(
+                                              fontSize: AppTheme()
+                                                      .paragraphRegularText
+                                                      .fontSize! *
+                                                  1.1,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 8.h,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      //crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                      mainAxisExtent: 100,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        final nutritionCategory =
+                            viewModel.nutritionCategories[index];
+                        return Container(
+                          margin: EdgeInsets.only(left: 7.5, right: 7.5),
+                          child: Card(
+                            elevation: 3.75,
+                            borderOnForeground: true,
+                            clipBehavior: Clip.antiAlias,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Center(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                    ),
+                                    child: AutoSizeText(
+                                      '${nutritionCategory.name}',
+                                      style: AppTheme()
+                                          .extraSmallParagraphRegularText,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '${nutritionCategory.value}',
+                                    style: AppTheme().paragraphSemiBoldText,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                      childCount: viewModel.nutritionCategories.length,
+                    ),
+                  ),
+                  if (viewModel.foodFact.product?.ingredientsTextEn != null)
+                    SliverToBoxAdapter(
+                      child: CurvedContainer(
+                        radius: 20,
+                        child: Container(
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 7.5.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                  height: 25.h,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.donut_small_rounded,
+                                      size: 32,
+                                    ),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    Text(
+                                      'Ingredients',
+                                      style: AppTheme()
+                                          .paragraphRegularText
+                                          .copyWith(
+                                            fontSize: AppTheme()
+                                                    .paragraphRegularText
+                                                    .fontSize! *
+                                                1.1,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  height: 8.h,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (viewModel.foodFact.product?.ingredientsTextEn != null)
+                    SliverPadding(
+                        padding: EdgeInsets.only(
+                          bottom: 25.h,
+                          left: 10,
+                          right: 10,
+                        ),
+                        sliver: SliverToBoxAdapter(
+                          child: Text(
+                            '${viewModel.foodFact.product?.ingredientsTextEn}',
+                            style: AppTheme()
+                                .extraSmallParagraphRegularText
+                                .copyWith(
+                                  fontSize: 16,
+                                  color: AppTheme().greyScale2,
+                                ),
+                          ),
+                        )),
+                  /*SliverToBoxAdapter(
+                    child: CurvedContainer(
+                      radius: 20,
+                      child: Container(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 7.5.w),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              const SizedBox(height: 10),
-                              Text(
-                                'Categories'.toUpperCase(),
-                                style: TextStyle(
-                                  color: AppTheme().whiteColor,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.w300,
-                                ),
+                              Container(
+                                height: 25.h,
                               ),
-                              const SizedBox(height: 10),
-                              ...rawDataSets(viewModel.foodFact)
-                                  .asMap()
-                                  .map((index, value) {
-                                    final isSelected =
-                                        index == selectedDataSetIndex;
-                                    return MapEntry(
-                                      index,
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedDataSetIndex = index;
-                                          });
-                                        },
-                                        child: AnimatedContainer(
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 2),
-                                          height: 26,
-                                          decoration: BoxDecoration(
-                                            color: isSelected
-                                                ? AppTheme()
-                                                    .greyScale1
-                                                    .withOpacity(0.5)
-                                                : Colors.transparent,
-                                            borderRadius:
-                                                BorderRadius.circular(46),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 4.0, horizontal: 6),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              AnimatedContainer(
-                                                duration: const Duration(
-                                                    milliseconds: 400),
-                                                curve: Curves.easeInToLinear,
-                                                padding: EdgeInsets.all(
-                                                    isSelected ? 8 : 6),
-                                                decoration: BoxDecoration(
-                                                  color: value.color,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              AnimatedDefaultTextStyle(
-                                                duration: const Duration(
-                                                    milliseconds: 300),
-                                                curve: Curves.easeInToLinear,
-                                                style: TextStyle(
-                                                  color: isSelected
-                                                      ? value.color
-                                                      : AppTheme().greyScale5,
-                                                ),
-                                                child: Text(value.title),
-                                              ),
-                                            ],
-                                          ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.rule,
+                                    size: 32,
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  Text(
+                                    'Allergens',
+                                    style: AppTheme()
+                                        .paragraphRegularText
+                                        .copyWith(
+                                          fontSize: AppTheme()
+                                                  .paragraphRegularText
+                                                  .fontSize! *
+                                              1.1,
                                         ),
-                                      ),
-                                    );
-                                  })
-                                  .values
-                                  .toList()
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                height: 8.h,
+                              ),
                             ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        AspectRatio(
-                          aspectRatio: 1,
-                          child: RadarChart(
-                            RadarChartData(
-                              radarTouchData: RadarTouchData(touchCallback:
-                                  (FlTouchEvent event, response) {
-                                if (!event.isInterestedForInteractions) {
-                                  setState(() {
-                                    selectedDataSetIndex = -1;
-                                  });
-                                  return;
-                                }
-                                setState(() {
-                                  selectedDataSetIndex = response
-                                          ?.touchedSpot?.touchedDataSetIndex ??
-                                      -1;
-                                });
-                              }),
-                              dataSets: showingDataSets(viewModel.foodFact),
-                              radarBackgroundColor: Colors.transparent,
-                              borderData: FlBorderData(show: false),
-                              radarBorderData:
-                                  BorderSide(color: Colors.transparent),
-                              titlePositionPercentageOffset: 0.2,
-                              titleTextStyle: TextStyle(
-                                  color: AppTheme().blackColor, fontSize: 14),
-                              getTitle: (index) {
-                                switch (index) {
-                                  case 0:
-                                    return 'Carbonhydrates';
-                                  case 2:
-                                    return 'Fat';
-                                  case 1:
-                                    return 'Protein';
-                                  case 3:
-                                    return 'Sugar';
-                                  default:
-                                    return '';
-                                }
-                              },
-                              tickCount: 1,
-                              ticksTextStyle: const TextStyle(
-                                  color: Colors.transparent, fontSize: 64),
-                              tickBorderData:
-                                  BorderSide(color: Colors.transparent),
-                              gridBorderData: BorderSide(
-                                  color: AppTheme().greyScale1, width: 2),
-                            ),
-                            swapAnimationDuration:
-                                const Duration(milliseconds: 400),
-                          ),
+                  ),
+                  SliverPadding(
+                      padding: EdgeInsets.only(
+                        bottom: 25.h,
+                        left: 10,
+                        right: 10,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Text(
+                          '${viewModel.foodFact.product?.allergensFromIngredients}',
+                          style: AppTheme()
+                              .extraSmallParagraphRegularText
+                              .copyWith(
+                                fontSize: 16,
+                                color: AppTheme().greyScale2,
+                              ),
                         ),
-                        SizedBox(
-                          height: 30.h,
-                        ),
-                      ],
+                      )),*/
+                  /*SliverToBoxAdapter(
+                    child: Column(
+                      children: [],
                     ),
-                  ],
+                  )*/
+                ],
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildImageBox() {
+    int imgLength =
+        widget.winItem.images?.where((e) => e.isNotEmpty).length ?? 0;
+
+    return Container(
+      height: 350.h,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(
+            child: ImageFiltered(
+              imageFilter: new ImageFilter.blur(sigmaX: 0.1, sigmaY: 0.1),
+              child: ImageBox(
+                width: 1.sw,
+                height: 300.h,
+                url: widget.winItem.images![0],
+                fit: BoxFit.scaleDown,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            child: IgnorePointer(
+              ignoring: true,
+              child: ImageFiltered(
+                imageFilter: new ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                child: Container(
+                  width: 1.sw,
+                  height: 450.h,
+                  color: Colors.black.withOpacity(0.10),
                 ),
               ),
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
+}
 
+/*
   List<RadarDataSet> showingDataSets(FoodFactModel foodFact) {
     return [
       RadarDataSet(
@@ -365,3 +624,4 @@ class RawDataSet {
     required this.values,
   });
 }
+*/

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:barcode_widget/barcode_widget.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/presentation/pages/chart/chart_page.dart';
 import '../../../data/models/win_item_model.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../core/utils/time_converter/time_converter.dart';
@@ -75,9 +78,32 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
             title: Text('Detail'),
             centerTitle: true,
             actions: [
+              if (widget.winItem.categorydatabase ==
+                      WinPointCategory.Groceries_Food.index.toString() ||
+                  widget.winItem.categorydatabase ==
+                      WinPointCategory.Baby.index.toString())
+                Container(
+                  //padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.local_activity_rounded,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                    onPressed: () {
+                      AppNavigator.push(
+                        context: context,
+                        child: RadarChartSample1(
+                          winItem: widget.winItem,
+                          productBarcode: widget.winItem.barcode,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               Container(
                 margin: EdgeInsets.only(right: 5),
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: IconButton(
                   icon: Icon(
                     Icons.public,
