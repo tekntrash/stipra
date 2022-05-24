@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:rest_api_package/rest_api_package.dart';
+import 'package:stipra/core/utils/lottie/lottie_cache.dart';
 import 'core/services/permission_service.dart';
 import 'core/services/location_service.dart';
 import 'core/services/scanned_video_service.dart';
@@ -77,5 +78,8 @@ Future<void> init() async {
   //!External
   locator.registerLazySingleton(
     () => InternetConnectionChecker(),
+  );
+  locator.registerLazySingleton<LottieCache>(
+    () => LottieCache(),
   );
 }

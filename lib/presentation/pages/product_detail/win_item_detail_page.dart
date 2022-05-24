@@ -93,9 +93,8 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
                     onPressed: () {
                       AppNavigator.push(
                         context: context,
-                        child: RadarChartSample1(
+                        child: ChartPage(
                           winItem: widget.winItem,
-                          productBarcode: widget.winItem.barcode,
                         ),
                       );
                     },

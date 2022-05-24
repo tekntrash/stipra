@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/core/utils/lottie/lottie_cache.dart';
+import 'package:stipra/shared/app_images.dart';
 import '../../../core/platform/app_info.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../data/models/user_model.dart';
@@ -29,6 +31,8 @@ class SplashViewModel extends BaseViewModel {
     AppInfo.buildNumber = packageInfo.buildNumber;
 
     await exitIfNotKeepLogged();
+
+    locator<LottieCache>().add(AppImages.searchNotFound.lottiePath);
 
     //await Future.delayed(Duration(milliseconds: 250));
     final isFirstLogin =
