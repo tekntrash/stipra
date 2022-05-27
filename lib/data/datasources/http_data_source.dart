@@ -53,8 +53,10 @@ class HttpDataSource implements RemoteDataRepository {
   /// Send a request to [newapp/barcode.php] with
   /// [barcode] [videoName] [latitude] [longitude] parameters
   @override
-  Future<void> sendBarcode(String barcode, String videoName, double latitude,
-      double longitude) async {
+  Future<void> sendBarcode(String barcode, String barcodeTimestamp,
+      String videoName, double latitude, double longitude) async {
+    final _timeStamp = int.parse(barcodeTimestamp) ~/ 1000;
+
     final result = await locator<RestApiHttpService>().request(
       RestApiRequest(
           endPoint: baseUrl + 'newapp/barcode.php',
@@ -65,6 +67,7 @@ class HttpDataSource implements RemoteDataRepository {
                 'Latitude:$latitude,Longitude:$longitude^${videoName.split('/').last}',
             'g': '$latitude,$longitude',
             'i': locator<LocalDataRepository>().getUser().userid,
+            't': _timeStamp,
           }),
       removeBaseUrl: true,
     );
@@ -80,6 +83,7 @@ class HttpDataSource implements RemoteDataRepository {
   @override
   Future<bool> sendScannedVideo(
     String videoPath,
+    String videoDate,
     double latitude,
     double longitude, {
     dynamic cancelToken,
@@ -95,6 +99,7 @@ class HttpDataSource implements RemoteDataRepository {
           'video-filename':
               'Latitude:$latitude,Longitude:$longitude^${file.path.split('/').last}',
           'submit': '',
+          'videodate': '$videoDate',
         },
       ),
       fileFieldName: 'fileToUpload',
@@ -109,7 +114,7 @@ class HttpDataSource implements RemoteDataRepository {
     );
     if (result.data != null && result.data.toString().contains('Saved file')) {
       log('sendScannedVideo result: $result');
-      callPythonForScannedVideo(videoPath, latitude, longitude);
+      callPythonForScannedVideo(videoPath, videoDate, latitude, longitude);
       return true;
     } else {
       throw ServerException();
@@ -423,21 +428,24 @@ class HttpDataSource implements RemoteDataRepository {
   }
 
   @override
-  Future<bool> callPythonForScannedVideo(
-      String videoPath, double latitude, double longitude) async {
+  Future<bool> callPythonForScannedVideo(String videoPath, String videoDate,
+      double latitude, double longitude) async {
+    log('SAVE.PHP   videodate: $videoDate');
     final result = await locator<RestApiHttpService>().requestForm(
       RestApiRequest(
         endPoint: baseUrl + 'newapp/save.php',
-        requestMethod: RequestMethod.GET,
+        requestMethod: RequestMethod.POST,
         queryParameters: {
           'filename':
               'Latitude:$latitude,Longitude:$longitude^${videoPath.split('/').last}',
           'alogin': locator<LocalDataRepository>().getUser().alogin,
           'submit': '',
         },
+        body: {
+          'videodate': '$videoDate',
+        },
       ),
     );
-    //log('CallPythonForScannedVideo result: $result');
     if (result.data != null && result.data.toString().contains('Saved file')) {
       return true;
     } else {
@@ -871,6 +879,31 @@ class HttpDataSource implements RemoteDataRepository {
       );
 
       return response;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<bool> isVideoAlreadyUploaded(String path, String creationDate) async {
+    try {
+      final response = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/checkfiles.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'checkfiles',
+            'alogin': '${locator<LocalDataRepository>().getUser().alogin}',
+            'userid': '${locator<LocalDataRepository>().getUser().userid}',
+            'filename': '$path',
+          },
+        ),
+      );
+      if (response.data.contains('not found')) {
+        return false;
+      }
+      return true;
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

@@ -21,7 +21,7 @@ import '../../../../../shared/app_theme.dart';
 
 class VideosWaitingList extends StatefulWidget {
   final List<ScannedVideoModel> scannedVideos;
-  final Function(ScannedVideoModel) deleteScannedVideo;
+  final Function(ScannedVideoModel, bool) deleteScannedVideo;
   final Function(BuildContext, ScannedVideoModel) routeToVideoPage;
   const VideosWaitingList({
     Key? key,
@@ -48,7 +48,7 @@ class _VideosWaitingListState extends State<VideosWaitingList>
           AnimationController(vsync: this)
             ..addStatusListener((status) async {
               if (status == AnimationStatus.completed) {
-                await widget.deleteScannedVideo(scannedVideo);
+                widget.deleteScannedVideo(scannedVideo, false);
                 _animationControllers[scannedVideo.videoPath]?.dispose();
               }
             });
@@ -321,6 +321,7 @@ class _VideosWaitingListState extends State<VideosWaitingList>
                                       if (value >= 100) {
                                         widget.scannedVideos[index].isUploaded =
                                             true;
+                                        widget.scannedVideos[index].save();
                                         WidgetsBinding.instance
                                             ?.addPostFrameCallback(
                                           (timeStamp) {

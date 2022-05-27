@@ -25,15 +25,15 @@ abstract class RemoteDataRepository {
 
   Future<List<ProductModel>> getProducts();
 
-  Future<void> sendBarcode(
-      String barcode, String videoName, double latitude, double longitude);
+  Future<void> sendBarcode(String barcode, String barcodeTimestamp,
+      String videoName, double latitude, double longitude);
 
   Future<bool> sendScannedVideo(
-      String videoPath, double latitude, double longitude,
+      String videoPath, String videoDate, double latitude, double longitude,
       {dynamic cancelToken, ValueNotifier<double>? progressNotifier});
 
   Future<bool> callPythonForScannedVideo(
-      String videoPath, double latitude, double longitude);
+      String videoPath, String videoDate, double latitude, double longitude);
 
   Future<UserModel> login(
       String emailAddress, String password, bool? stayLoggedIn, String geo);
@@ -101,4 +101,6 @@ abstract class RemoteDataRepository {
   Future<void> deleteAccount(String password);
 
   Future<FoodFactModel> getFoodFact(String barcode);
+
+  Future<bool> isVideoAlreadyUploaded(String path, String creationDate);
 }

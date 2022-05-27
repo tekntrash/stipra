@@ -5,7 +5,7 @@ part of '../videos_waiting_viewmodel.dart';
 class VideoWidget extends StatefulWidget {
   final ScannedVideoModel scannedVideoModel;
   final String fileLink;
-  final Function(ScannedVideoModel) deleteScannedVideo;
+  final Function(ScannedVideoModel, bool) deleteScannedVideo;
 
   VideoWidget({
     Key? key,
@@ -70,7 +70,8 @@ class _VideoWidgetState extends State<VideoWidget> {
                       LockOverlayDialog().closeOverlay();
                       LockOverlay().showClassicLoadingOverlay();
                       //await Future.delayed(Duration(seconds: 1));
-                      await widget.deleteScannedVideo(widget.scannedVideoModel);
+                      await widget.deleteScannedVideo(
+                          widget.scannedVideoModel, true);
                       LockOverlay().closeOverlay();
                       Navigator.pop(context);
                     },

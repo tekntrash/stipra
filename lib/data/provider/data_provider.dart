@@ -86,11 +86,15 @@ class DataProvider implements DataRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendBarcode(String barcode, String videoName,
-      double latitude, double longitude) async {
+  Future<Either<Failure, void>> sendBarcode(
+      String barcode,
+      String barcodeTimestamp,
+      String videoName,
+      double latitude,
+      double longitude) async {
     try {
       final remoteData = await remoteDataSource.sendBarcode(
-          barcode, videoName, latitude, longitude);
+          barcode, barcodeTimestamp, videoName, latitude, longitude);
       return Right(remoteData);
     } on ServerException {
       return Left(ServerFailure());
@@ -99,18 +103,19 @@ class DataProvider implements DataRepository {
 
   @override
   Future<Either<Failure, bool>> sendScannedVideo(
-      String videoPath, double latitude, double longitude,
+      String videoPath, String videoDate, double latitude, double longitude,
       {dynamic cancelToken, ValueNotifier<double>? progressNotifier}) async {
     try {
       final remoteData = await remoteDataSource.sendScannedVideo(
         videoPath,
+        videoDate,
         latitude,
         longitude,
         cancelToken: cancelToken,
         progressNotifier: progressNotifier,
       );
       return Right(remoteData);
-    } on ServerException {
+    } catch (e) {
       return Left(ServerFailure());
     }
   }
@@ -223,11 +228,11 @@ class DataProvider implements DataRepository {
   }
 
   @override
-  Future<Either<Failure, void>> callPythonForScannedVideo(
-      String videoPath, double latitude, double longitude) async {
+  Future<Either<Failure, void>> callPythonForScannedVideo(String videoPath,
+      String videoDate, double latitude, double longitude) async {
     try {
       final remoteData = await remoteDataSource.callPythonForScannedVideo(
-          videoPath, latitude, longitude);
+          videoPath, videoDate, latitude, longitude);
       return Right(remoteData);
     } on ServerException {
       return Left(ServerFailure());
@@ -431,6 +436,20 @@ class DataProvider implements DataRepository {
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> isVideoAlreadyUploaded(
+      String path, String creationDate) async {
+    try {
+      final remoteData =
+          await remoteDataSource.isVideoAlreadyUploaded(path, creationDate);
+      return Right(remoteData);
+    } on ServerFailure catch (e) {
+      return Left(e);
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 }

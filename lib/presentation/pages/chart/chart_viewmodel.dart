@@ -43,7 +43,10 @@ class ChartViewModel extends BaseViewModel {
       isFoodExists = true;
     }
     log('Hiearcayh ${foodFact.product?.ingredientsHierarchy}');
-    log('Allergens ${foodFact.product?.allergensFromIngredients}');
+    log('Nutri ${foodFact.product?.toJson()}');
+    log('Carbo per100 ${foodFact.product?.nutriments?.carbohydrates100G}');
+    log('Carbo unit ${foodFact.product?.nutriments?.carbohydratesUnit}');
+    log('Carbo value ${foodFact.product?.nutriments?.carbohydratesValue}');
     log('En ${foodFact.product?.ingredientsTextEn}');
     setNutritions();
   }
@@ -53,42 +56,58 @@ class ChartViewModel extends BaseViewModel {
     if (foodFact.product?.nutriments?.proteins100G != null)
       nutritionCategories.add(_NutritionCategory(
         name: 'Protein',
-        value: foodFact.product!.nutriments!.proteins100G!.toString(),
+        value: foodFact.product!.nutriments!.proteins100G!,
+        dailyReference: 50,
+        type: 'g',
       ));
     if (foodFact.product?.nutriments?.carbohydrates100G != null)
       nutritionCategories.add(_NutritionCategory(
-        name: 'Carbohydrates',
-        value: foodFact.product!.nutriments!.carbohydrates100G!.toString(),
+        name: 'Carbohydrate',
+        value: foodFact.product!.nutriments!.carbohydrates100G!,
+        dailyReference: 275,
+        type: 'g',
       ));
     if (foodFact.product?.nutriments?.energyKcal100G != null)
       nutritionCategories.add(_NutritionCategory(
-        name: 'Energy (kcal)',
-        value: foodFact.product!.nutriments!.energyKcal100G!.toString(),
+        name: 'Energy',
+        value: foodFact.product!.nutriments!.energyKcal100G!,
+        dailyReference: 2000,
+        type: 'kcal',
       ));
     if (foodFact.product?.nutriments?.fat100G != null)
       nutritionCategories.add(_NutritionCategory(
         name: 'Fat',
-        value: foodFact.product!.nutriments!.fat100G!.toString(),
+        value: foodFact.product!.nutriments!.fat100G!,
+        dailyReference: 78,
+        type: 'g',
       ));
     if (foodFact.product?.nutriments?.salt100G != null)
       nutritionCategories.add(_NutritionCategory(
         name: 'Salt',
-        value: foodFact.product!.nutriments!.salt100G!.toString(),
+        value: foodFact.product!.nutriments!.salt100G!,
+        dailyReference: 6,
+        type: 'g',
       ));
     if (foodFact.product?.nutriments?.saturatedFat100G != null)
       nutritionCategories.add(_NutritionCategory(
         name: 'Saturated fat',
-        value: foodFact.product!.nutriments!.saturatedFat100G!.toString(),
+        value: foodFact.product!.nutriments!.saturatedFat100G!,
+        dailyReference: 20,
+        type: 'g',
       ));
     if (foodFact.product?.nutriments?.sodium100G != null)
       nutritionCategories.add(_NutritionCategory(
         name: 'Sodium',
-        value: foodFact.product!.nutriments!.sodium100G!.toString(),
+        value: foodFact.product!.nutriments!.sodium100G!,
+        dailyReference: 2.3,
+        type: 'g',
       ));
     if (foodFact.product?.nutriments?.sugars100G != null)
       nutritionCategories.add(_NutritionCategory(
         name: 'Sugars',
-        value: foodFact.product!.nutriments!.sugars100G!.toString(),
+        value: foodFact.product!.nutriments!.sugars100G!,
+        dailyReference: 50,
+        type: 'g',
       ));
     return nutritionCategories;
   }
@@ -96,6 +115,13 @@ class ChartViewModel extends BaseViewModel {
 
 class _NutritionCategory {
   final String name;
-  final String value;
-  _NutritionCategory({required this.name, required this.value});
+  final num value;
+  final num dailyReference;
+  final String type;
+  _NutritionCategory({
+    required this.name,
+    required this.value,
+    required this.dailyReference,
+    required this.type,
+  });
 }

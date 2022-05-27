@@ -22,6 +22,12 @@ class _NutrientsList extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
+        Text(
+          'These values are shown per 100g.',
+          style: AppTheme().extraSmallParagraphRegularText.copyWith(),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
         Container(
           height: 8.h,
         ),
@@ -44,6 +50,13 @@ class _NutrientsList extends StatelessWidget {
   }
 
   Widget buildItem({required nutrient}) {
+    var value =
+        //    (100 - ((nutrient.value / nutrient.dailyReference) * 100) % 20);
+
+        (100 - ((nutrient.value / nutrient.dailyReference) * 100) % 20);
+    if (nutrient.value == 0) {
+      value = 0;
+    }
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -62,14 +75,21 @@ class _NutrientsList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Energy',
+                '${nutrient.name}',
                 style: AppTheme().smallParagraphMediumText.copyWith(
                       fontSize: 14,
                       color: AppTheme().greyScale1,
                     ),
               ),
               Text(
-                '341 (kcal) per 100g',
+                '${nutrient.value} ${nutrient.type} per 100 g',
+                style: AppTheme().extraSmallParagraphRegularText.copyWith(
+                      fontSize: 14,
+                      color: AppTheme().greyScale2,
+                    ),
+              ),
+              Text(
+                'Max ${nutrient.dailyReference} ${nutrient.type} per day',
                 style: AppTheme().extraSmallParagraphRegularText.copyWith(
                       fontSize: 14,
                       color: AppTheme().greyScale2,
@@ -87,7 +107,7 @@ class _NutrientsList extends StatelessWidget {
               ),
               child: Center(
                 child: _NutrientGaugeBar(
-                  viewModel: viewModel,
+                  value: value.toDouble(),
                 ),
               ),
             ),

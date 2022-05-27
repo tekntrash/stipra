@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:google_mlkit_barcode_scanning/barcode_scanner.dart';
 import 'package:google_mlkit_commons/commons.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
@@ -193,16 +194,17 @@ class BarcodeScanViewModel extends BaseViewModel {
       isExit = await showExitOrSaveDialog();
     }
     if (!isExit) {
+      final _timeStamp = timeStamp;
       LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
       final fileVideo = changeFileNameOnlySync(
         File(originalFileVideo!.path),
-        '${timeStamp}${locator<LocalDataRepository>().getUser().alogin}.mp4',
+        '$_timeStamp${locator<LocalDataRepository>().getUser().alogin}.mp4',
       );
       showSnackbarForInformation(context);
 
       locator<LocalDataRepository>().saveScannedVideo(
         ScannedVideoModel(
-          timeStamp: int.parse(timeStamp),
+          timeStamp: int.parse(_timeStamp),
           videoPath: fileVideo.path,
           isUploaded: false,
           barcodeTimeStamps: barcodeTimeStamps,
@@ -212,7 +214,7 @@ class BarcodeScanViewModel extends BaseViewModel {
           await locator<NetworkInfo>().isConnectedForUpload;
       log('isConnectedForUpload $isConnectedForUpload');
       if (isConnectedForUpload) {
-        _sendVideoAndBarcodes(fileVideo.path);
+        _sendVideoAndBarcodes(fileVideo.path, _timeStamp);
       }
       log('Video saved to ${fileVideo.path}');
     }
@@ -274,7 +276,7 @@ class BarcodeScanViewModel extends BaseViewModel {
       SnackbarOverlay().show(
         addFrameCallback: true,
         onTap: () {
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
             AppNavigator.push(
               context: AppRouter().mainNavigatorKey!.currentState!.context,
               child: EnterPhoneNumberScreen(isSignIn: true),
@@ -291,10 +293,10 @@ class BarcodeScanViewModel extends BaseViewModel {
   }
 
   /// Send the video and barcodes to server with location
-  Future<void> _sendVideoAndBarcodes(String path) async {
+  Future<void> _sendVideoAndBarcodes(String path, String _timestamp) async {
     final location = await locator<ScannedVideoService>()
         .getLocationWithPermRequest(onRequestGranted: () {
-      _sendVideoAndBarcodes(path);
+      _sendVideoAndBarcodes(path, _timestamp);
     });
     if (location == null) {
       return;
@@ -302,15 +304,20 @@ class BarcodeScanViewModel extends BaseViewModel {
     barcodeTimeStamps.forEach((element) {
       locator<DataRepository>().sendBarcode(
         element.barcode,
+        element.timeStamp,
         path,
         location[0],
         location[1],
       );
     });
 
+    final dateFormat = DateFormat('dd-MM-yy')
+        .format(DateTime.fromMillisecondsSinceEpoch(int.parse(_timestamp)));
+
     final bool? isUploaded =
         await locator<RemoteDataRepository>().sendScannedVideo(
       path,
+      dateFormat,
       location[0],
       location[1],
     );

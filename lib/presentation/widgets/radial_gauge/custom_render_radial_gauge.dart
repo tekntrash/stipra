@@ -75,6 +75,31 @@ class CustomRenderRadialGauge extends RenderBox {
       }
     }
 
+    final textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 12,
+    );
+    var textSpan = TextSpan(
+      text: '${axes?.first.pointers?.first.value.toInt()}',
+      style: textStyle,
+    );
+
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.start,
+    );
+    textPainter.layout(
+      minWidth: 0,
+      maxWidth: size.width,
+    );
+    textPainter.paint(
+      context.canvas,
+      Offset(
+        offset.dx + size.width / 2 - textPainter.width / 2,
+        offset.dy + size.height / 2,
+      ),
+    );
     super.paint(context, offset);
   }
 
@@ -330,7 +355,6 @@ class CustomRenderRadialGauge extends RenderBox {
     //Todo dsadsa
     //TODO ds
     final outerRadius = innerRadius + renderWidth;
-    print('What is this: ${segment.minAngle} ${innerRadius} ${outerRadius}');
 
     //context.canvas.restore();
 

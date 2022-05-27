@@ -27,14 +27,18 @@ abstract class DataRepository {
   Future<Either<Failure, List<Product>>> getProducts();
 
   Future<Either<Failure, void>> sendBarcode(
-      String barcode, String videoName, double latitude, double longitude);
+      String barcode,
+      String barcodeTimestamp,
+      String videoName,
+      double latitude,
+      double longitude);
 
   Future<Either<Failure, bool>> sendScannedVideo(
-      String videoPath, double latitude, double longitude,
+      String videoPath, String videoDate, double latitude, double longitude,
       {dynamic cancelToken, ValueNotifier<double>? progressNotifier});
 
   Future<Either<Failure, void>> callPythonForScannedVideo(
-      String videoPath, double latitude, double longitude);
+      String videoPath, String videoDate, double latitude, double longitude);
 
   Future<Either<Failure, User>> login(
       String emailAddress, String password, bool? stayLoggedIn, String geo);
@@ -104,4 +108,7 @@ abstract class DataRepository {
   Future<Either<Failure, void>> deleteAccount(String password);
 
   Future<Either<Failure, FoodFactModel>> getFoodFact(String barcode);
+
+  Future<Either<Failure, bool>> isVideoAlreadyUploaded(
+      String path, String creationDate);
 }

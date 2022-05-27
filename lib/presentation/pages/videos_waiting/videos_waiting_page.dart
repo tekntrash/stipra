@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/widgets/theme_button.dart';
 
+import '../../../core/services/scanned_video_service.dart';
+import '../../../injection_container.dart';
 import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/custom_load_indicator.dart';
@@ -138,18 +142,45 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
                                     color: AppTheme().primaryColor,
                                     borderRadius: BorderRadius.circular(15),
                                     onTap: () {
-                                      viewModel.showUploadVideosDialog();
+                                      if (locator<ScannedVideoService>()
+                                              .uploadingVideosNotifier
+                                              .value
+                                              .length ==
+                                          0) {
+                                        viewModel.showUploadVideosDialog();
+                                      } else {
+                                        Map<String, UploadingVideo>
+                                            uploadingVideos =
+                                            locator<ScannedVideoService>()
+                                                .uploadingVideosNotifier
+                                                .value;
+                                        //for each map
+                                        for (MapEntry<String,
+                                                UploadingVideo> entry
+                                            in uploadingVideos.entries) {
+                                          entry.value.cancelToken.cancel();
+                                        }
+                                      }
                                     },
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          'Upload now',
-                                          style: AppTheme()
-                                              .paragraphSemiBoldText
-                                              .copyWith(),
-                                        ),
+                                        ValueListenableBuilder<
+                                                Map<String, UploadingVideo>>(
+                                            valueListenable:
+                                                locator<ScannedVideoService>()
+                                                    .uploadingVideosNotifier,
+                                            builder: (context, value, child) {
+                                              return Text(
+                                                value.length == 0
+                                                    ? 'Upload now'
+                                                    : 'Cancel',
+                                                style: AppTheme()
+                                                    .paragraphSemiBoldText
+                                                    .copyWith(),
+                                              );
+                                            }),
                                       ],
                                     ),
                                   ),

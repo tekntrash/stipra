@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
 import '../errors/failure.dart';
 import 'location_service.dart';
@@ -51,6 +53,21 @@ class ScannedVideoService {
       });
       return scannedVideos;
     });
+
+    for (ScannedVideoModel scannedVideo in scannedVideos) {
+      final dateFormat = DateFormat('dd-MM-yy')
+          .format(DateTime.fromMillisecondsSinceEpoch(scannedVideo.timeStamp));
+      log('Date format: $dateFormat');
+      final result = await locator<DataRepository>()
+          .isVideoAlreadyUploaded(scannedVideo.videoPath, dateFormat);
+      if (result is Right) {
+        if ((result as Right).value == true) {
+          scannedVideo.isUploaded = true;
+          await scannedVideo.save();
+        }
+      }
+    }
+
     final unUploadedScannedVideos = scannedVideos.where((scannedVideo) {
       return scannedVideo.isUploaded != true;
     }).toList();
@@ -134,13 +151,20 @@ class ScannedVideoService {
     final dataRepository = locator<DataRepository>();
 
     for (ScannedVideoModel scannedVideo in scannedVideos) {
+      if (uploadingVideosNotifier.value[scannedVideo.videoPath] != null) {
+        uploadingVideosNotifier.value[scannedVideo.videoPath]!.cancelToken
+            .cancel();
+        uploadingVideosNotifier.value.remove(scannedVideo);
+      }
       final barcodeTimeStamps = scannedVideo.barcodeTimeStamps;
       final path = scannedVideo.videoPath;
       final isExists = await File(path).exists();
       if (isExists) {
         Future.wait(barcodeTimeStamps.map((barcodeTimeStamp) async {
+          log('Barcode timestamp: ${barcodeTimeStamp.timeStamp}');
           await locator<DataRepository>().sendBarcode(
             barcodeTimeStamp.barcode,
+            barcodeTimeStamp.timeStamp,
             path,
             location[0],
             location[1],
@@ -154,8 +178,15 @@ class ScannedVideoService {
           scannedVideo: scannedVideo,
         );
         uploadingVideosNotifier.notifyListeners();
+
+        log('Scanned video timestamp: ${scannedVideo.timeStamp}');
+        final dateFormat = DateFormat('dd-MM-yy').format(
+            DateTime.fromMillisecondsSinceEpoch(scannedVideo.timeStamp));
+        log('Date format date: $dateFormat');
+
         final data = await dataRepository.sendScannedVideo(
           path,
+          dateFormat,
           location[0],
           location[1],
           cancelToken: cancelToken,
@@ -165,13 +196,37 @@ class ScannedVideoService {
           uploadingVideosNotifier.value.remove(path);
           uploadingVideosNotifier.notifyListeners();
 
-          await scannedVideo.delete();
-          await File(path).delete().then((value) {
-            log('Deleted video path: $path');
-          });
+          final deleteFile = File(path);
+          try {
+            await deleteFile.delete();
+            scannedVideo.isUploaded = true;
+            await scannedVideo.save();
+          } catch (e) {
+            SnackbarOverlay().show(
+              addFrameCallback: true,
+              onTap: () {
+                SnackbarOverlay().closeCustomOverlay();
+              },
+              removeDuration: Duration(seconds: 5),
+              text: 'Something went wrong, please try again later.',
+              buttonText: 'OK',
+              buttonTextColor: Colors.red,
+            );
+          }
         } else {
           uploadingVideosNotifier.value.remove(path);
           uploadingVideosNotifier.notifyListeners();
+
+          SnackbarOverlay().show(
+            addFrameCallback: true,
+            onTap: () {
+              SnackbarOverlay().closeCustomOverlay();
+            },
+            removeDuration: Duration(seconds: 5),
+            text: 'Something went wrong, please try again later.',
+            buttonText: 'OK',
+            buttonTextColor: Colors.red,
+          );
         }
       } else {
         await scannedVideo.delete();

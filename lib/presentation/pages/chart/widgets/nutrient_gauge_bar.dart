@@ -1,10 +1,10 @@
 part of '../chart_page.dart';
 
 class _NutrientGaugeBar extends StatelessWidget {
-  final ChartViewModel viewModel;
+  final double value;
   const _NutrientGaugeBar({
     Key? key,
-    required this.viewModel,
+    required this.value,
   }) : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class _NutrientGaugeBar extends StatelessWidget {
           maxAngle: 100,
           pointers: [
             RadialNeedlePointer(
-              value: 0,
+              value: value,
               thicknessStart: 1,
               thicknessEnd: 3,
               length: 1,
