@@ -217,16 +217,17 @@ class ScannedVideoService {
           uploadingVideosNotifier.value.remove(path);
           uploadingVideosNotifier.notifyListeners();
 
-          SnackbarOverlay().show(
-            addFrameCallback: true,
-            onTap: () {
-              SnackbarOverlay().closeCustomOverlay();
-            },
-            removeDuration: Duration(seconds: 5),
-            text: 'Something went wrong, please try again later.',
-            buttonText: 'OK',
-            buttonTextColor: Colors.red,
-          );
+          if (!cancelToken.isCancelled)
+            SnackbarOverlay().show(
+              addFrameCallback: true,
+              onTap: () {
+                SnackbarOverlay().closeCustomOverlay();
+              },
+              removeDuration: Duration(seconds: 5),
+              text: 'Something went wrong, please try again later.',
+              buttonText: 'OK',
+              buttonTextColor: Colors.red,
+            );
         }
       } else {
         await scannedVideo.delete();
