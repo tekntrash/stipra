@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/home/home_page.dart';
 import 'package:stipra/presentation/pages/my_trades/widgets/my_trades_category_list.dart';
@@ -42,6 +43,7 @@ class _MyTradesPageState extends State<MyTradesPage>
               gradient: AppTheme().gradientPrimary,
             ),
             child: SafeArea(
+              bottom: false,
               child: NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {

@@ -53,6 +53,7 @@ class PerkDetailViewModel extends BaseViewModel {
     }
     showDialog(
       context: context,
+      useSafeArea: false,
       builder: (context) => TradeDialog(
         tradeItem: tradeItem,
         button1Text: 'Trade',

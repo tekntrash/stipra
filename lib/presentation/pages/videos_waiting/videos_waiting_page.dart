@@ -45,6 +45,7 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
               gradient: AppTheme().gradientPrimary,
             ),
             child: SafeArea(
+              bottom: false,
               child: NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {

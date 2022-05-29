@@ -58,28 +58,53 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
         return Scaffold(
           backgroundColor: AppTheme().whiteColor,
           body: SafeArea(
-            child: Form(
-              key: viewModel.formKey,
-              autovalidateMode: AutovalidateMode.disabled,
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        TopBarWidget(
-                            isSignIn: viewModel.isSignIn,
-                            hideBackButton: widget.hideBackButton),
-                        if (viewModel.isSignIn != true)
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+                SystemChannels.textInput.invokeMethod('TextInput.hide');
+              },
+              child: Form(
+                key: viewModel.formKey,
+                autovalidateMode: AutovalidateMode.disabled,
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          TopBarWidget(
+                              isSignIn: viewModel.isSignIn,
+                              hideBackButton: widget.hideBackButton),
+                          if (viewModel.isSignIn != true)
+                            FieldBuilderAuto(
+                              key: GlobalKey(),
+                              controller: viewModel.name.textController,
+                              validator: viewModel.name.validate,
+                              text: 'Name',
+                              hint: 'Your name',
+                              margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+                              autovalidateMode: true,
+                              style: AppTheme().smallParagraphRegularText,
+                              keyboardType: TextInputType.name,
+                              titleStyle:
+                                  AppTheme().smallParagraphMediumText.copyWith(
+                                        fontSize: AppTheme()
+                                            .paragraphSemiBoldText
+                                            .fontSize,
+                                      ),
+                            ),
+                          if (viewModel.isSignIn != true)
+                            SizedBox(
+                              height: 15.h,
+                            ),
                           FieldBuilderAuto(
-                            key: GlobalKey(),
-                            controller: viewModel.name.textController,
-                            validator: viewModel.name.validate,
-                            text: 'Name',
-                            hint: 'Your name',
+                            controller: viewModel.email.textController,
+                            validator: viewModel.email.validate,
+                            text: 'Email Address',
+                            hint: 'Email address',
                             margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
                             autovalidateMode: true,
                             style: AppTheme().smallParagraphRegularText,
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.emailAddress,
                             titleStyle: AppTheme()
                                 .smallParagraphMediumText
                                 .copyWith(
@@ -87,154 +112,135 @@ class _EnterPhoneNumberScreenState extends State<EnterPhoneNumberScreen> {
                                       AppTheme().paragraphSemiBoldText.fontSize,
                                 ),
                           ),
-                        if (viewModel.isSignIn != true)
-                          SizedBox(
-                            height: 15.h,
+                          SizedBox(height: 15.h),
+                          FieldBuilderAuto(
+                            controller: viewModel.password.textController,
+                            validator: viewModel.password.validate,
+                            obscureVisibility: true,
+                            text: 'Password',
+                            hint: 'Your password',
+                            margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
+                            autovalidateMode: true,
+                            style: AppTheme().smallParagraphRegularText,
+                            titleStyle: AppTheme()
+                                .smallParagraphMediumText
+                                .copyWith(
+                                  fontSize:
+                                      AppTheme().paragraphSemiBoldText.fontSize,
+                                ),
                           ),
-                        FieldBuilderAuto(
-                          controller: viewModel.email.textController,
-                          validator: viewModel.email.validate,
-                          text: 'Email Address',
-                          hint: 'Email address',
-                          margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
-                          autovalidateMode: true,
-                          style: AppTheme().smallParagraphRegularText,
-                          keyboardType: TextInputType.emailAddress,
-                          titleStyle: AppTheme()
-                              .smallParagraphMediumText
-                              .copyWith(
-                                fontSize:
-                                    AppTheme().paragraphSemiBoldText.fontSize,
-                              ),
-                        ),
-                        SizedBox(height: 15.h),
-                        FieldBuilderAuto(
-                          controller: viewModel.password.textController,
-                          validator: viewModel.password.validate,
-                          obscureVisibility: true,
-                          text: 'Password',
-                          hint: 'Your password',
-                          margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
-                          autovalidateMode: true,
-                          style: AppTheme().smallParagraphRegularText,
-                          titleStyle: AppTheme()
-                              .smallParagraphMediumText
-                              .copyWith(
-                                fontSize:
-                                    AppTheme().paragraphSemiBoldText.fontSize,
-                              ),
-                        ),
-                        /*Container(
-                          margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0),
-                          child: Text(
-                            '* Password must contain 1 uppercase, 1 lowercase and 1 number.',
-                            style: AppTheme().extraSmallParagraphRegularText,
-                          ),
-                        ),*/
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        if (viewModel.isSignIn != true)
-                          PhoneNumberField(
-                            viewModel: viewModel,
-                          ),
-                        if (viewModel.isSignIn != true)
-                          Container(
-                            alignment: Alignment.centerLeft,
+                          /*Container(
                             margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0),
                             child: Text(
-                              '* You will receive a confirmation code.',
-                              style: AppTheme().smallParagraphRegularText,
+                              '* Password must contain 1 uppercase, 1 lowercase and 1 number.',
+                              style: AppTheme().extraSmallParagraphRegularText,
                             ),
-                          ),
-                        if (viewModel.isSignIn != true)
+                          ),*/
                           SizedBox(
                             height: 15.h,
                           ),
-                        KeepSignedButton(onTap: () {
-                          setState(() {});
-                        }),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          child: VerifyNumberButton(
-                            viewModel: viewModel,
+                          if (viewModel.isSignIn != true)
+                            PhoneNumberField(
+                              viewModel: viewModel,
+                            ),
+                          if (viewModel.isSignIn != true)
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              margin: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 0),
+                              child: Text(
+                                '* You will receive a confirmation code.',
+                                style: AppTheme().smallParagraphRegularText,
+                              ),
+                            ),
+                          if (viewModel.isSignIn != true)
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                          KeepSignedButton(onTap: () {
+                            setState(() {});
+                          }),
+                          SizedBox(
+                            height: 5.h,
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            viewModel.changeSignPage();
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            padding: EdgeInsets.only(bottom: 10.h, top: 15.h),
-                            alignment: Alignment.bottomCenter,
-                            child: RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                  text: viewModel.isSignIn
-                                      ? 'Don\' have an account? '
-                                      : 'Already have an account? ',
-                                  style: AppTheme()
-                                      .smallParagraphMediumText
-                                      .copyWith(color: Colors.black),
-                                ),
-                                TextSpan(
-                                  text: viewModel.isSignIn
-                                      ? 'Create one'
-                                      : 'Sign in',
-                                  style: AppTheme()
-                                      .smallParagraphMediumText
-                                      .copyWith(
-                                        color: AppTheme().primaryColor,
-                                      ),
-                                ),
-                              ]),
+                        ],
+                      ),
+                    ),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            child: VerifyNumberButton(
+                              viewModel: viewModel,
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            viewModel.onForgotPassword(context);
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            margin: EdgeInsets.only(top: 0.h),
-                            padding: EdgeInsets.only(top: 10.h, bottom: 30.h),
-                            alignment: Alignment.bottomCenter,
-                            child: RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                  text: 'Forgot password? ',
-                                  style: AppTheme()
-                                      .smallParagraphMediumText
-                                      .copyWith(color: Colors.black),
-                                ),
-                                TextSpan(
-                                  text: 'Reset it now',
-                                  style: AppTheme()
-                                      .smallParagraphMediumText
-                                      .copyWith(
-                                        color: AppTheme().primaryColor,
-                                      ),
-                                ),
-                              ]),
+                          GestureDetector(
+                            onTap: () {
+                              viewModel.changeSignPage();
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              padding: EdgeInsets.only(bottom: 10.h, top: 15.h),
+                              alignment: Alignment.bottomCenter,
+                              child: RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                    text: viewModel.isSignIn
+                                        ? 'Don\' have an account? '
+                                        : 'Already have an account? ',
+                                    style: AppTheme()
+                                        .smallParagraphMediumText
+                                        .copyWith(color: Colors.black),
+                                  ),
+                                  TextSpan(
+                                    text: viewModel.isSignIn
+                                        ? 'Create one'
+                                        : 'Sign in',
+                                    style: AppTheme()
+                                        .smallParagraphMediumText
+                                        .copyWith(
+                                          color: AppTheme().primaryColor,
+                                        ),
+                                  ),
+                                ]),
+                              ),
                             ),
                           ),
-                        )
-                      ],
+                          GestureDetector(
+                            onTap: () {
+                              viewModel.onForgotPassword(context);
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              margin: EdgeInsets.only(top: 0.h),
+                              padding: EdgeInsets.only(top: 10.h, bottom: 30.h),
+                              alignment: Alignment.bottomCenter,
+                              child: RichText(
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                    text: 'Forgot password? ',
+                                    style: AppTheme()
+                                        .smallParagraphMediumText
+                                        .copyWith(color: Colors.black),
+                                  ),
+                                  TextSpan(
+                                    text: 'Reset it now',
+                                    style: AppTheme()
+                                        .smallParagraphMediumText
+                                        .copyWith(
+                                          color: AppTheme().primaryColor,
+                                        ),
+                                  ),
+                                ]),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart' show Right;
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class VideosWaitingViewModel extends BaseViewModel {
     AppNavigator.pushWithOutAnim(
       context: context,
       child: VideoWidget(
-        fileLink: scannedVideo.videoPath,
+        fileLink: File(scannedVideo.videoPath),
         scannedVideoModel: scannedVideo,
         deleteScannedVideo: deleteScannedVideo,
       ),

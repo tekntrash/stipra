@@ -4,7 +4,7 @@ part of '../videos_waiting_viewmodel.dart';
 
 class VideoWidget extends StatefulWidget {
   final ScannedVideoModel scannedVideoModel;
-  final String fileLink;
+  final File fileLink;
   final Function(ScannedVideoModel, bool) deleteScannedVideo;
 
   VideoWidget({
@@ -25,7 +25,7 @@ class _VideoWidgetState extends State<VideoWidget> {
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.network(
+    _controller = VideoPlayerController.file(
       widget.fileLink,
     )..initialize().then((_) {
         _controller.addListener(() {

@@ -15,20 +15,18 @@ class ClassicLoadingOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned.fill(
       right: 0,
-      child: SafeArea(
-        child: Material(
-          color: Colors.black26,
+      child: Material(
+        color: Colors.black26,
+        child: Center(
           child: Center(
-            child: Center(
-              child: Container(
-                width: 48,
-                height: 48,
-                child: CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.transparent,
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(AppTheme().whiteColor),
-                  strokeWidth: 3.25,
-                ),
+            child: Container(
+              width: 48,
+              height: 48,
+              child: CircularProgressIndicator.adaptive(
+                backgroundColor: Colors.transparent,
+                valueColor:
+                    AlwaysStoppedAnimation<Color>(AppTheme().whiteColor),
+                strokeWidth: 3.25,
               ),
             ),
           ),

@@ -32,6 +32,7 @@ class _MyProductsPageState extends State<MyProductsPage>
               gradient: AppTheme().gradientPrimary,
             ),
             child: SafeArea(
+              bottom: false,
               child: NestedScrollView(
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) {
