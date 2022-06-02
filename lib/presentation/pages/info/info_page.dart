@@ -88,6 +88,13 @@ class _InfoPageState extends State<InfoPage> {
                                         },
                                       ),
                                       buildProfileButton(
+                                        'Points and levels',
+                                        onTap: () {
+                                          viewModel
+                                              .routeToPointsAndLevels(context);
+                                        },
+                                      ),
+                                      buildProfileButton(
                                         'Contact',
                                         onTap: () {
                                           viewModel.routeToContact(context);

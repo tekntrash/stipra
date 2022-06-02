@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/delete_account/delete_account_page.dart';
-import 'package:stipra/presentation/pages/my_level/my_level_page.dart';
 import 'package:stipra/presentation/pages/my_products/my_products_page.dart';
-import 'package:stipra/presentation/pages/my_profile/my_profile_page.dart';
 import 'package:stipra/presentation/pages/my_trades/my_trades_page.dart';
 import 'package:stipra/presentation/pages/videos_waiting/videos_waiting_page.dart';
 import '../../../core/utils/router/app_navigator.dart';
@@ -16,11 +14,25 @@ import '../sign/change_password/change_password_page.dart';
 /// Profile Controller for handling routes in there
 /// Also handles the buttons from here
 
-class ProfileViewModel extends BaseViewModel {
-  routeToMyProfile(BuildContext context) {
+class MyProfileViewModel extends BaseViewModel {
+  routeToChangePassword(BuildContext context) {
     AppNavigator.push(
       context: context,
-      child: MyProfilePage(),
+      child: ChangePasswordPage(),
+    );
+  }
+
+  routeToChangeEmail(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: ChangeEmailPage(),
+    );
+  }
+
+  routeToEditProfile(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: EditProfilePage(),
     );
   }
 
@@ -38,17 +50,17 @@ class ProfileViewModel extends BaseViewModel {
     );
   }
 
-  routeToLevelPage(BuildContext context) {
-    AppNavigator.push(
-      context: context,
-      child: MyLevelPage(),
-    );
-  }
-
   routeToProductsConsumed(BuildContext context) {
     AppNavigator.push(
       context: context,
       child: MyProductsPage(),
+    );
+  }
+
+  routeToDeleteAccount(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: DeleteAccountPage(),
     );
   }
 

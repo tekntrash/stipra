@@ -24,6 +24,7 @@ import 'domain/repositories/remote_data_repository.dart';
 
 //* Get general singleton with plugin
 final locator = GetIt.instance;
+bool isDebugMode = false;
 
 Future<void> init() async {
   //* We will use these usecases in future (for clean code) currently we are not using usecases.

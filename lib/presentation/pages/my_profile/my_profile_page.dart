@@ -12,7 +12,7 @@ import '../../../data/models/user_model.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../domain/repositories/local_data_repository.dart';
 import '../../../injection_container.dart';
-import 'profile_viewmodel.dart';
+import 'my_profile_viewmodel.dart';
 import '../sign/enter_phone_number_page/enter_phone_number_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../sign/otp_verify_page/otp_verify_page.dart';
@@ -30,15 +30,15 @@ part 'widgets/top_bar.dart';
 /// and buttons for profile page UI
 /// It is using ViewModelBuilder to handle the state of the page with ProfileViewModel
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class MyProfilePage extends StatefulWidget {
+  const MyProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  /// Building ProfilePage ui but it depends on user state
+class _MyProfilePageState extends State<MyProfilePage> {
+  /// Building MyProfilePage ui but it depends on user state
   /// if user is logged in or not
   /// If logged in it will show the profile page ui
   /// If not it will show the sign in page ui
@@ -46,8 +46,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final isLogged = locator<LocalDataRepository>().getUser().userid != null;
     return isLogged
-        ? ViewModelBuilder<ProfileViewModel>.reactive(
-            viewModelBuilder: () => ProfileViewModel(),
+        ? ViewModelBuilder<MyProfileViewModel>.reactive(
+            viewModelBuilder: () => MyProfileViewModel(),
             builder: (context, viewModel, child) {
               return Scaffold(
                 appBar: PreferredSize(
@@ -82,50 +82,35 @@ class _ProfilePageState extends State<ProfilePage> {
                                           height: 80.h,
                                         ),
                                         buildProfileButton(
-                                          'My Profile',
-                                          onTap: () {
-                                            viewModel.routeToMyProfile(context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'My Products',
-                                          onTap: () {
-                                            viewModel.routeToProductsConsumed(
-                                                context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'My Level',
-                                          onTap: () {
-                                            viewModel.routeToLevelPage(context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'My Trades',
-                                          onTap: () {
-                                            viewModel.routeToMyTrades(context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'Videos Waiting',
+                                          'Edit Profile',
                                           onTap: () {
                                             viewModel
-                                                .routeToVideosWaiting(context);
+                                                .routeToEditProfile(context);
                                           },
                                         ),
-                                        /*buildProfileButton(
-                                          'Configuration',
-                                          onTap: () {},
-                                        ),*/
                                         buildProfileButton(
-                                          'Logout',
+                                          'Remove profile',
                                           onTap: () {
-                                            viewModel.logout(context);
-                                            setState(() {});
+                                            viewModel
+                                                .routeToDeleteAccount(context);
+                                          },
+                                        ),
+                                        buildProfileButton(
+                                          'Change Email',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToChangeEmail(context);
+                                          },
+                                        ),
+                                        buildProfileButton(
+                                          'Change Password',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToChangePassword(context);
                                           },
                                         ),
                                         Container(
-                                          height: 150.h,
+                                          height: 250.h,
                                         ),
                                       ],
                                     ),

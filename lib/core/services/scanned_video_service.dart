@@ -208,7 +208,9 @@ class ScannedVideoService {
                 SnackbarOverlay().closeCustomOverlay();
               },
               removeDuration: Duration(seconds: 5),
-              text: 'Something went wrong, please try again later.',
+              text: isDebugMode
+                  ? '$e'
+                  : 'Something went wrong, please try again later.',
               buttonText: 'OK',
               buttonTextColor: Colors.red,
             );
@@ -217,17 +219,20 @@ class ScannedVideoService {
           uploadingVideosNotifier.value.remove(path);
           uploadingVideosNotifier.notifyListeners();
 
-          if (!cancelToken.isCancelled)
+          if (!cancelToken.isCancelled) {
             SnackbarOverlay().show(
               addFrameCallback: true,
               onTap: () {
                 SnackbarOverlay().closeCustomOverlay();
               },
               removeDuration: Duration(seconds: 5),
-              text: 'Something went wrong, please try again later.',
+              text: isDebugMode
+                  ? '${(data as Left)}'
+                  : 'Something went wrong, please try again later.',
               buttonText: 'OK',
               buttonTextColor: Colors.red,
             );
+          }
         }
       } else {
         await scannedVideo.delete();

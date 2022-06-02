@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/pages/info/widgets/points_and_levels.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../domain/repositories/local_data_repository.dart';
 import '../../../injection_container.dart';
@@ -21,6 +22,13 @@ class InfoViewModel extends BaseViewModel {
     AppNavigator.push(
       context: context,
       child: HowToMakeVideoPage(),
+    );
+  }
+
+  routeToPointsAndLevels(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: PointsAndLevels(),
     );
   }
 

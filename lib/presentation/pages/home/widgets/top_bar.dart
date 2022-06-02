@@ -7,6 +7,7 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stipra/data/models/user_model.dart';
 import 'package:stipra/domain/repositories/data_repository.dart';
 import 'package:stipra/injection_container.dart';
+import 'package:stipra/presentation/pages/my_level/my_level_page.dart';
 import 'package:stipra/presentation/widgets/avatar_image.dart';
 import 'package:stipra/shared/app_images.dart';
 import '../../../../core/utils/router/app_navigator.dart';
@@ -69,7 +70,7 @@ class _TopBarState extends State<TopBar> {
                   onTap: () {
                     AppNavigator.push(
                       context: context,
-                      child: MyTradesPage(),
+                      child: MyLevelPage(),
                     );
                   },
                   child: Container(
