@@ -48,7 +48,11 @@ class _TopBarState extends State<TopBar> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(right: 20, left: 20),
+          margin: EdgeInsets.only(
+              right: 20,
+              left: (widget.replaceSideBarWithBack && !widget.hideBack)
+                  ? 10
+                  : 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,10 +62,14 @@ class _TopBarState extends State<TopBar> {
                   onTap: () {
                     Navigator.of(context).pop();
                   },
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: 24,
+                  child: Container(
+                    color: Colors.transparent,
+                    padding: EdgeInsets.only(left: 10, top: 10, bottom: 10),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                      size: 24,
+                    ),
                   ),
                 ),
               if (widget.replaceSideBarWithBack && widget.hideBack) Container(),

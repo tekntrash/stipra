@@ -27,13 +27,16 @@ class WinItemModelAdapter extends TypeAdapter<WinItemModel> {
       geo: fields[7] as String?,
       bincolor: fields[8] as String?,
       categorydatabase: fields[9] as String?,
+      featuredend: fields[11] as DateTime?,
+      featuredstart: fields[10] as DateTime?,
+      id: fields[12] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, WinItemModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.item)
       ..writeByte(1)
@@ -53,7 +56,13 @@ class WinItemModelAdapter extends TypeAdapter<WinItemModel> {
       ..writeByte(8)
       ..write(obj.bincolor)
       ..writeByte(9)
-      ..write(obj.categorydatabase);
+      ..write(obj.categorydatabase)
+      ..writeByte(10)
+      ..write(obj.featuredstart)
+      ..writeByte(11)
+      ..write(obj.featuredend)
+      ..writeByte(12)
+      ..write(obj.id);
   }
 
   @override

@@ -22,18 +22,24 @@ import '../../widgets/overlay/lock_overlay_dialog.dart';
 class HomeViewModel extends BaseViewModel {
   late bool isInited;
   late List<WinItemModel> winItems;
+  late List<WinItemModel> featuredItems;
   late WinPointCategory selectedCategory;
   late WinPointDirection selectedDirection;
   late bool selectedExpire;
+  late bool selectedOutside;
   late bool isLoading;
+  late bool isFeaturedClosed;
 
   /// Init this controller and set default parameters for this controller
   /// Also request permissions if not granted
   init() async {
     winItems = [];
+    featuredItems = [];
     isInited = false;
     isLoading = true;
     selectedExpire = false;
+    selectedOutside = false;
+    isFeaturedClosed = false;
     selectedCategory = WinPointCategory.All;
     selectedDirection = WinPointDirection.asc;
     await Future.wait([
@@ -61,12 +67,27 @@ class HomeViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  String? requestKey;
+
   /// Change expired parameter of products then re-request products
   Future<void> onShowExpiredChanged(bool status) async {
     selectedExpire = status;
     isLoading = true;
     notifyListeners();
-    await getWinItems();
+    final myKey = UniqueKey().toString();
+    requestKey = myKey;
+    await getWinItems(key: myKey);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> onShowOutsideChanged(bool status) async {
+    selectedOutside = status;
+    isLoading = true;
+    notifyListeners();
+    final myKey = UniqueKey().toString();
+    requestKey = myKey;
+    await getWinItems(key: myKey);
     isLoading = false;
     notifyListeners();
   }
@@ -121,6 +142,7 @@ class HomeViewModel extends BaseViewModel {
         //if (Platform.isIOS) {
         await Future.wait([
           getWinItems(request: false),
+          getFeaturedItems(),
           informAboutUploadedVideo(),
         ]);
         isInited = true;
@@ -133,6 +155,7 @@ class HomeViewModel extends BaseViewModel {
       onRequestGranted: () async {
         await Future.wait([
           getWinItems(request: false),
+          getFeaturedItems(),
           informAboutUploadedVideo(),
         ]);
         isInited = true;
@@ -150,19 +173,37 @@ class HomeViewModel extends BaseViewModel {
   }
 
   /// Get products from backend with location and with the help of singleton and data repository
-  Future getWinItems({bool request: true}) async {
+  Future getWinItems({bool request: true, String? key}) async {
     final location = await locator<ScannedVideoService>()
         .getLocationWithPermRequest(request: request);
     final data = await locator<DataRepository>().getWinPoints(
       selectedCategory,
       selectedDirection,
       selectedExpire,
+      selectedOutside,
       location ?? [0, 0],
     );
+    if (key != null && key != requestKey) {
+      return;
+    }
     if (data is Right) {
       winItems = (data as Right).value;
     } else {
       winItems = [];
     }
+  }
+
+  Future getFeaturedItems() async {
+    final data = await locator<DataRepository>().getWinPointsFeatured();
+    if (data is Right) {
+      featuredItems = (data as Right).value;
+    } else {
+      featuredItems = [];
+    }
+  }
+
+  void closeFeatured() {
+    isFeaturedClosed = true;
+    notifyListeners();
   }
 }

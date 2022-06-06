@@ -294,10 +294,10 @@ class _MyLevelPageState extends State<MyLevelPage> {
       margin: EdgeInsets.only(bottom: 20),
       child: ListTile(
         onTap: () {
-          AppNavigator.push(
+          /*AppNavigator.push(
             context: context,
             child: MyLevelPage(),
-          );
+          );*/
         },
         leading: LocalImageBox(
           width: 64,

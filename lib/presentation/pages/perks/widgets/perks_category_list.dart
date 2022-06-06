@@ -50,7 +50,7 @@ class PerksCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'Perks', //'Products on ${selectedCategory.getCategoryName}',
+                            'Redeem', //'Products on ${selectedCategory.getCategoryName}',
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),

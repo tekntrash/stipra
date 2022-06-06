@@ -25,7 +25,7 @@ class PerksList extends StatelessWidget {
         ? SliverToBoxAdapter(
             child: Center(
               child: Text(
-                'No perks available',
+                'No redeem available',
                 style: AppTheme().paragraphSemiBoldText.copyWith(
                       color: AppTheme().greyScale0,
                     ),

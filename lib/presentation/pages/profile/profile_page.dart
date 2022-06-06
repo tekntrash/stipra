@@ -88,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           },
                                         ),
                                         buildProfileButton(
-                                          'My Products',
+                                          'My Earnings',
                                           onTap: () {
                                             viewModel.routeToProductsConsumed(
                                                 context);
@@ -101,7 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           },
                                         ),
                                         buildProfileButton(
-                                          'My Trades',
+                                          'My Redeems',
                                           onTap: () {
                                             viewModel.routeToMyTrades(context);
                                           },

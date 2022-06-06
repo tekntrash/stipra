@@ -88,8 +88,12 @@ abstract class DataRepository {
     TradePointDirection direction,
     bool expired,
   );
-  Future<Either<Failure, List<WinItem>>> getWinPoints(WinPointCategory category,
-      WinPointDirection direction, bool expired, List<double> coordinates);
+  Future<Either<Failure, List<WinItem>>> getWinPoints(
+      WinPointCategory category,
+      WinPointDirection direction,
+      bool expired,
+      bool outsideGeo,
+      List<double> coordinates);
 
   Future<Either<Failure, SearchDto>> search(String text);
 
@@ -111,4 +115,8 @@ abstract class DataRepository {
 
   Future<Either<Failure, bool>> isVideoAlreadyUploaded(
       String path, String creationDate);
+
+  Future<Either<Failure, List<WinItem>>> getWinPointsFeatured();
+
+  Future<Either<Failure, void>> addSeenWinPoint(String id);
 }

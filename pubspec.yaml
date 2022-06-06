@@ -96,6 +96,7 @@ dependencies:
   d_chart: ^0.0.4
   pretty_gauge: ^1.0.1
   gauges: ^1.0.0
+  flutter_logs: ^2.1.6
 
 dependency_overrides:
   permission_handler: ^9.2.0

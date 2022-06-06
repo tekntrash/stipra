@@ -28,7 +28,7 @@ class MyTradesList extends StatelessWidget {
         ? SliverToBoxAdapter(
             child: Center(
               child: Text(
-                'No perks available',
+                'No redeem available',
                 style: AppTheme().paragraphSemiBoldText.copyWith(
                       color: AppTheme().greyScale0,
                     ),
@@ -126,7 +126,7 @@ class MyTradesList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${myTrades[index].totalpointstraded} Points traded ',
+                                '${myTrades[index].totalpointstraded} Points redeemed ',
                                 style: AppTheme().paragraphBoldText.copyWith(
                                       color: AppTheme().greyScale0,
                                     ),
@@ -173,7 +173,7 @@ class MyTradesList extends StatelessWidget {
                               Container(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Trade was made on:',
+                                  'Redeemed on:',
                                   style: AppTheme()
                                       .extraSmallParagraphSemiBoldText
                                       .copyWith(

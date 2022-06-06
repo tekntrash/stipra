@@ -326,11 +326,12 @@ class DataProvider implements DataRepository {
       WinPointCategory category,
       WinPointDirection direction,
       bool expired,
+      bool outsideGeo,
       List<double> coordinates) async {
     if (await networkInfo.isConnected) {
       try {
         final remoteData = await remoteDataSource.getWinPoints(
-            category, direction, expired, coordinates);
+            category, direction, expired, outsideGeo, coordinates);
         localDataSource.cacheLastWinPoints(remoteData);
         return Right(remoteData);
       } on ServerException {
@@ -450,6 +451,58 @@ class DataProvider implements DataRepository {
       return Left(e);
     } on ServerException {
       return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<WinItem>>> getWinPointsFeatured() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.getWinPointsFeatured();
+        //localDataSource.cacheLastWinPointsFeatured(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        return Left(e);
+      }
+    } else {
+      try {
+        /*final localData = await localDataSource.getLastWinPoints(
+          category,
+          direction,
+        );*/
+        //return Right(localData);
+        return Left(CacheFailure());
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addSeenWinPoint(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.addSeenWinPoint(id);
+        //localDataSource.cacheLastWinPointsFeatured(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        return Left(e);
+      }
+    } else {
+      try {
+        /*final localData = await localDataSource.getLastWinPoints(
+          category,
+          direction,
+        );*/
+        //return Right(localData);
+        return Left(CacheFailure());
+      } on CacheException {
+        return Left(CacheFailure());
+      }
     }
   }
 }

@@ -6,6 +6,7 @@ import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/custom_load_indicator.dart';
 import 'home_viewmodel.dart';
+import 'widgets/featured_list.dart';
 import 'widgets/product_offer/product_offers_list.dart';
 import 'widgets/top_bar.dart';
 import 'widgets/win_point_category_list.dart';
@@ -79,8 +80,8 @@ class _HomePageState extends State<HomePage>
                             height: 0.75.sh,
                             child: Center(
                               child: Container(
-                                width: 48.w,
-                                height: 48.w,
+                                width: 64.w,
+                                height: 64.w,
                                 child: CircularProgressIndicator.adaptive(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                     AppTheme().darkPrimaryColor,
@@ -94,6 +95,64 @@ class _HomePageState extends State<HomePage>
                             //mainAxisSize: MainAxisSize.min,
                             physics: AlwaysScrollableScrollPhysics(),
                             slivers: [
+                              if (!viewModel.isFeaturedClosed)
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 15.w, right: 15.w, top: 25.h),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Featured',
+                                          style: AppTheme()
+                                              .largeParagraphBoldText
+                                              .copyWith(
+                                                color: AppTheme().greyScale0,
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            child: IconButton(
+                                              onPressed: () {
+                                                viewModel.closeFeatured();
+                                              },
+                                              icon: Icon(
+                                                Icons.close,
+                                                size: AppTheme()
+                                                        .largeParagraphBoldText
+                                                        .fontSize! *
+                                                    1.2,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              !viewModel.isInited
+                                  ? SliverToBoxAdapter(
+                                      child: CustomLoadIndicator())
+                                  : (!viewModel.isFeaturedClosed)
+                                      ? SliverPadding(
+                                          padding: EdgeInsets.only(
+                                            top: 25.h,
+                                            // bottom: 12.5.h,
+                                            left: 15.w,
+                                            right: 15.w,
+                                          ),
+                                          sliver: FeaturedList(
+                                            featuredItems:
+                                                viewModel.featuredItems,
+                                          ),
+                                        )
+                                      : SliverToBoxAdapter(
+                                          child: Container(),
+                                        ),
                               SliverPersistentHeader(
                                 pinned: true,
                                 floating: true,
@@ -122,6 +181,12 @@ class _HomePageState extends State<HomePage>
                                           onShowExpiredChanged: (bool value) {
                                             viewModel
                                                 .onShowExpiredChanged(value);
+                                          },
+                                          selectedOutside:
+                                              viewModel.selectedOutside,
+                                          onShowOutsideChanged: (bool value) {
+                                            viewModel
+                                                .onShowOutsideChanged(value);
                                           },
                                         ),
                                         SizedBox(
@@ -173,7 +238,7 @@ class PersistentHeader extends SliverPersistentHeaderDelegate {
 
   @override
   double get maxExtent =>
-      ((AppTheme().largeParagraphBoldText.fontSize?.h) ?? 0) +
+      (((AppTheme().largeParagraphBoldText.fontSize?.h) ?? 0) * 1.2) +
       10.h +
       35.h +
       25.h +
@@ -181,7 +246,7 @@ class PersistentHeader extends SliverPersistentHeaderDelegate {
 
   @override
   double get minExtent =>
-      ((AppTheme().largeParagraphBoldText.fontSize?.h) ?? 0) +
+      (((AppTheme().largeParagraphBoldText.fontSize?.h) ?? 0) * 1.2) +
       10.h +
       35.h +
       25.h +

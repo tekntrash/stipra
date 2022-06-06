@@ -51,7 +51,7 @@ class VideosWaitingCategoryList extends StatelessWidget {
             height: 10.h,
           ),
           Container(
-            margin: EdgeInsets.only(left: 15.w),
+            margin: EdgeInsets.only(left: 15.w, right: 15.w),
             height: 80.h,
             child: Text(
               'Below the videos you made which are waiting to be sent automatically as soon as you reach a wifi location. That way you do not spend data on your contract.',

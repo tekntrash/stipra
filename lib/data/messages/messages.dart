@@ -4,7 +4,7 @@ class Messages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'en_US': {
-          'products_page_title': 'Products',
+          'products_page_title': 'Earn',
           'products_page_category_all': 'All',
           'products_page_category_automotive': 'Automotive',
           'products_page_category_baby': 'Baby',
@@ -94,7 +94,7 @@ class Messages extends Translations {
           'remove_profile_current_password_title': 'Current Password',
           'remove_profile_current_password_hint': 'Password',
           'remove_profile_confirm_button_text': 'Confirm',
-          'my_products_title': 'My Products',
+          'my_products_title': 'My Earnings',
           'my_products_not_exists_text':
               'You don\'t have any products yet. Make videos of your household garbage as you dispose of the individual items and you will earn points',
           'my_products_scan_button_text': 'Scan',

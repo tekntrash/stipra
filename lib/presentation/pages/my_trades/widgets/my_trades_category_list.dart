@@ -34,7 +34,7 @@ class MyTradesCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'My Trades',
+                            'My Redeems',
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),

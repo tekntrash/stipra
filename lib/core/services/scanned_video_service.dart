@@ -209,7 +209,7 @@ class ScannedVideoService {
               },
               removeDuration: Duration(seconds: 5),
               text: isDebugMode
-                  ? '$e'
+                  ? 'Delete error: $e'
                   : 'Something went wrong, please try again later.',
               buttonText: 'OK',
               buttonTextColor: Colors.red,
@@ -227,7 +227,7 @@ class ScannedVideoService {
               },
               removeDuration: Duration(seconds: 5),
               text: isDebugMode
-                  ? '${(data as Left)}'
+                  ? 'Type: ${(data as Left)} Value: ${(data as Left).value}'
                   : 'Something went wrong, please try again later.',
               buttonText: 'OK',
               buttonTextColor: Colors.red,

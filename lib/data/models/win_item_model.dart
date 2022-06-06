@@ -21,6 +21,9 @@ class WinItemModel extends WinItem with HiveObjectMixin {
     this.geo,
     this.bincolor,
     this.categorydatabase,
+    this.featuredend,
+    this.featuredstart,
+    this.id,
   }) : super(
           item: item,
           images: images,
@@ -32,6 +35,9 @@ class WinItemModel extends WinItem with HiveObjectMixin {
           geo: geo,
           bincolor: bincolor,
           categorydatabase: categorydatabase,
+          featuredend: featuredend,
+          featuredstart: featuredstart,
+          id: id,
         );
 
   @HiveField(0)
@@ -54,6 +60,12 @@ class WinItemModel extends WinItem with HiveObjectMixin {
   String? bincolor;
   @HiveField(9)
   String? categorydatabase;
+  @HiveField(10)
+  DateTime? featuredstart;
+  @HiveField(11)
+  DateTime? featuredend;
+  @HiveField(12)
+  String? id;
 
   fromRawJson(String str) => fromJson(json.decode(str));
 
@@ -73,6 +85,13 @@ class WinItemModel extends WinItem with HiveObjectMixin {
         bincolor: json["bincolor"] == null ? null : json["bincolor"],
         categorydatabase:
             json["categorydatabase"] == null ? null : json["categorydatabase"],
+        featuredstart: json["featuredstart"] == null
+            ? null
+            : DateTime.parse(json["featuredstart"]),
+        featuredend: json["featuredend"] == null
+            ? null
+            : DateTime.parse(json["featuredend"]),
+        id: json["id"] == null ? null : json["id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -86,6 +105,13 @@ class WinItemModel extends WinItem with HiveObjectMixin {
         "geo": geo == null ? null : geo,
         "bincolor": bincolor == null ? null : bincolor,
         "categorydatabase": categorydatabase == null ? null : categorydatabase,
+        "featuredstart": featuredstart == null
+            ? null
+            : "${featuredstart?.year.toString().padLeft(4, '0')}-${featuredstart?.month.toString().padLeft(2, '0')}-${featuredstart?.day.toString().padLeft(2, '0')}",
+        "featuredend": featuredend == null
+            ? null
+            : "${featuredend?.year.toString().padLeft(4, '0')}-${featuredend?.month.toString().padLeft(2, '0')}-${featuredend?.day.toString().padLeft(2, '0')}",
+        "id": id == null ? null : id,
       };
 
   Color getBinColor() {

@@ -44,7 +44,7 @@ class MyProductsCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'My Products',
+                            'My Earnings',
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),

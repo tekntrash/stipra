@@ -82,8 +82,12 @@ abstract class RemoteDataRepository {
     TradePointDirection direction,
     bool expired,
   );
-  Future<List<WinItemModel>> getWinPoints(WinPointCategory category,
-      WinPointDirection direction, bool expired, List<double> coordinates);
+  Future<List<WinItemModel>> getWinPoints(
+      WinPointCategory category,
+      WinPointDirection direction,
+      bool expired,
+      bool outsideGeo,
+      List<double> coordinates);
 
   Future<SearchDtoModel> search(String text);
 
@@ -103,4 +107,8 @@ abstract class RemoteDataRepository {
   Future<FoodFactModel> getFoodFact(String barcode);
 
   Future<bool> isVideoAlreadyUploaded(String path, String creationDate);
+
+  Future<List<WinItemModel>> getWinPointsFeatured();
+
+  Future<void> addSeenWinPoint(String id);
 }

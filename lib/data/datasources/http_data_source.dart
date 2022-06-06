@@ -6,6 +6,8 @@ import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
+import 'package:stipra/core/utils/router/app_navigator.dart';
+import 'package:stipra/core/utils/router/app_router.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 import 'package:stipra/data/models/food_fact_model.dart';
@@ -14,6 +16,7 @@ import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
+import 'package:stipra/presentation/widgets/snackbar_show.dart';
 import '../enums/change_email_action_type.dart';
 import '../enums/change_password_action_type.dart';
 import '../enums/change_profile_action_type.dart';
@@ -117,6 +120,11 @@ class HttpDataSource implements RemoteDataRepository {
       callPythonForScannedVideo(videoPath, videoDate, latitude, longitude);
       return true;
     } else {
+      if (isDebugMode) {
+        SnackbarShow.showAndClear(
+            AppRouter().mainNavigatorKey!.currentState!.context,
+            'Error: ${result.data}');
+      }
       throw ServerException();
     }
   }
@@ -615,7 +623,9 @@ class HttpDataSource implements RemoteDataRepository {
       WinPointCategory category,
       WinPointDirection direction,
       bool expired,
+      bool outsideGeo,
       List<double> coordinates) async {
+    log('Outside geo: $outsideGeo');
     try {
       final response = await locator<RestApiHttpService>()
           .requestFormAndHandleList<WinItemModel>(
@@ -627,6 +637,7 @@ class HttpDataSource implements RemoteDataRepository {
             'category': category.index,
             'direction': direction.name,
             'includeexpired': expired ? 'yes' : 'no',
+            if (outsideGeo) 'includeoutsidegeo': outsideGeo ? 'yes' : 'no',
             'latitude': coordinates[0],
             'longitude': coordinates[1],
           },
@@ -904,6 +915,51 @@ class HttpDataSource implements RemoteDataRepository {
         return false;
       }
       return true;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<List<WinItemModel>> getWinPointsFeatured() async {
+    try {
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandleList<WinItemModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/winpoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'show',
+            'onlyfeatured': 'yes',
+          },
+        ),
+        parseModel: WinItemModel(),
+        isRawJson: true,
+      );
+
+      return response;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<void> addSeenWinPoint(String id) async {
+    try {
+      await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/winpoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'update',
+            'id': id,
+          },
+        ),
+      );
+
+      return;
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

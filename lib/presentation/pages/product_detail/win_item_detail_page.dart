@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/domain/repositories/data_repository.dart';
+import 'package:stipra/injection_container.dart';
 import 'package:stipra/presentation/pages/chart/chart_page.dart';
 import '../../../data/models/win_item_model.dart';
 import '../../../core/utils/router/app_navigator.dart';
@@ -27,9 +29,11 @@ part 'top_bar.dart';
 
 class WinItemDetailPage extends StatefulWidget {
   final WinItemModel winItem;
+  final String? heroTag;
   const WinItemDetailPage({
     Key? key,
     required this.winItem,
+    this.heroTag,
   }) : super(key: key);
 
   @override
@@ -43,6 +47,7 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
   void initState() {
     carouselController = CarouselController();
     dotPosition = ValueNotifier(0.0);
+    locator<DataRepository>().addSeenWinPoint(widget.winItem.id!);
     super.initState();
   }
 
@@ -242,7 +247,9 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
         children: [
           Positioned.fill(
             child: Hero(
-              tag: '${widget.winItem.name}',
+              tag: widget.heroTag != null
+                  ? widget.heroTag!
+                  : '${widget.winItem.name}',
               transitionOnUserGestures: false,
               child: ImageFiltered(
                 imageFilter: new ImageFilter.blur(sigmaX: 0.1, sigmaY: 0.1),
