@@ -197,6 +197,9 @@ class HomeViewModel extends BaseViewModel {
     final data = await locator<DataRepository>().getWinPointsFeatured();
     if (data is Right) {
       featuredItems = (data as Right).value;
+      if (featuredItems.length == 0) {
+        isFeaturedClosed = true;
+      }
     } else {
       featuredItems = [];
     }

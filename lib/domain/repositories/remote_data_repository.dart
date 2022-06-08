@@ -111,4 +111,6 @@ abstract class RemoteDataRepository {
   Future<List<WinItemModel>> getWinPointsFeatured();
 
   Future<void> addSeenWinPoint(String id);
+
+  Future<List<TradeItemModel>> getTradePointsFeatured();
 }

@@ -505,4 +505,30 @@ class DataProvider implements DataRepository {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, List<TradeItem>>> getTradePointsFeatured() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.getTradePointsFeatured();
+        //localDataSource.cacheLastWinPointsFeatured(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        return Left(e);
+      }
+    } else {
+      try {
+        /*final localData = await localDataSource.getLastWinPoints(
+          category,
+          direction,
+        );*/
+        //return Right(localData);
+        return Left(CacheFailure());
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
 }

@@ -14,17 +14,21 @@ class ScannedVideoModel extends ScannedVideo with HiveObjectMixin {
   bool isUploaded;
   @HiveField(3)
   List<BarcodeTimeStampModel> barcodeTimeStamps;
+  @HiveField(4)
+  List<double>? location;
 
   ScannedVideoModel({
     required this.timeStamp,
     required this.videoPath,
     required this.isUploaded,
     required this.barcodeTimeStamps,
+    this.location,
   }) : super(
           timeStamp: timeStamp,
           videoPath: videoPath,
           isUploaded: isUploaded,
           barcodeTimeStamps: barcodeTimeStamps,
+          location: location,
         );
 
   factory ScannedVideoModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +39,9 @@ class ScannedVideoModel extends ScannedVideo with HiveObjectMixin {
       barcodeTimeStamps: (json['barcodeTimeStamps'] as List)
           .map((e) => BarcodeTimeStampModel.fromJson(e))
           .toList(),
+      location: json['location'] == null
+          ? null
+          : (json['location'] as List).map((e) => e as double).toList(),
     );
   }
 
@@ -44,6 +51,7 @@ class ScannedVideoModel extends ScannedVideo with HiveObjectMixin {
       'videoPath': videoPath,
       'isUploaded': isUploaded,
       'barcodeTimeStamps': barcodeTimeStamps,
+      'location': location,
     };
   }
 }

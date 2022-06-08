@@ -13,21 +13,26 @@ import '../../../injection_container.dart';
 class PerksViewModel extends BaseViewModel {
   late bool isInited;
   late List<TradeItemModel> tradeItems;
+  late List<TradeItemModel> featuredItems;
   late TradePointCategory selectedCategory;
   late TradePointDirection selectedDirection;
   late bool selectedExpire;
   late bool isLoading;
+  late bool isFeaturedClosed;
 
   /// Initialize the view model with the default category and direction
   init() async {
     tradeItems = [];
+    featuredItems = [];
     isInited = false;
     isLoading = true;
     selectedExpire = false;
+    isFeaturedClosed = false;
     selectedCategory = TradePointCategory.All;
     selectedDirection = TradePointDirection.asc;
     await Future.wait([
       getTradePoints(),
+      getFeaturedItems(),
     ]);
     isInited = true;
     isLoading = false;
@@ -77,5 +82,22 @@ class PerksViewModel extends BaseViewModel {
       tradeItems = [];
     }
     log('Trade items: $tradeItems');
+  }
+
+  Future getFeaturedItems() async {
+    final data = await locator<DataRepository>().getTradePointsFeatured();
+    if (data is Right) {
+      featuredItems = (data as Right).value;
+      if (featuredItems.length == 0) {
+        isFeaturedClosed = true;
+      }
+    } else {
+      featuredItems = [];
+    }
+  }
+
+  void closeFeatured() {
+    isFeaturedClosed = true;
+    notifyListeners();
   }
 }

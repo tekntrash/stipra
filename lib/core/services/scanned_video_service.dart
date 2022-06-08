@@ -142,12 +142,6 @@ class ScannedVideoService {
 
   Future<void> uploadScannedVideos(
       List<ScannedVideoModel> scannedVideos) async {
-    final location = await getLocationWithPermRequest(onRequestGranted: () {
-      uploadScannedVideos(scannedVideos);
-    });
-    if (location == null) {
-      return;
-    }
     final dataRepository = locator<DataRepository>();
 
     for (ScannedVideoModel scannedVideo in scannedVideos) {
@@ -166,8 +160,8 @@ class ScannedVideoService {
             barcodeTimeStamp.barcode,
             barcodeTimeStamp.timeStamp,
             path,
-            location[0],
-            location[1],
+            scannedVideo.location?[0] ?? 0,
+            scannedVideo.location?[1] ?? 0,
           );
         }));
         final cancelToken = CancelToken();
@@ -187,8 +181,8 @@ class ScannedVideoService {
         final data = await dataRepository.sendScannedVideo(
           path,
           dateFormat,
-          location[0],
-          location[1],
+          scannedVideo.location?[0] ?? 0,
+          scannedVideo.location?[1] ?? 0,
           cancelToken: cancelToken,
           progressNotifier: progressNotifier,
         );
@@ -239,84 +233,6 @@ class ScannedVideoService {
       }
     }
   }
-
-  /*Future<void> uploadScannedVideos(
-      List<ScannedVideoModel> scannedVideos) async {
-    final location = await getLocationWithPermRequest(onRequestGranted: () {
-      uploadScannedVideos(scannedVideos);
-    });
-    if (location == null) {
-      return;
-    }
-    final dataRepository = locator<DataRepository>();
-    var futureList = List.from(scannedVideos)
-        .map<Future<Either<Failure, bool>>>((scannedVideo) async {
-      final barcodeTimeStamps =
-          (scannedVideo as ScannedVideoModel).barcodeTimeStamps;
-      final path = scannedVideo.videoPath;
-      final isExists = await File(path).exists();
-      if (isExists) {
-        Future.wait(barcodeTimeStamps.map((barcodeTimeStamp) async {
-          await locator<DataRepository>().sendBarcode(
-            barcodeTimeStamp.barcode,
-            path,
-            location[0],
-            location[1],
-          );
-        }));
-        final cancelToken = CancelToken();
-        final progressNotifier = ValueNotifier<double>(0.0);
-        uploadingVideosNotifier.value[path] = UploadingVideo(
-          progressNotifier: progressNotifier,
-          cancelToken: cancelToken,
-          scannedVideo: scannedVideo,
-        );
-        uploadingVideosNotifier.notifyListeners();
-        final data = await dataRepository.sendScannedVideo(
-          path,
-          location[0],
-          location[1],
-          cancelToken: cancelToken,
-          progressNotifier: progressNotifier,
-        );
-        if (data is Right) {
-          uploadingVideosNotifier.value.remove(path);
-          uploadingVideosNotifier.notifyListeners();
-          return Right(true);
-        } else {
-          uploadingVideosNotifier.value.remove(path);
-          uploadingVideosNotifier.notifyListeners();
-          return Left(data as Failure);
-        }
-      } else {
-        return Left(DeletedFileFailure());
-      }
-    }).toList();
-    await Future.wait(futureList).then((list) {
-      int i = 0;
-      list.forEach((either) {
-        if (either.isRight()) {
-          final path = scannedVideos[i].videoPath;
-          log('Uploaded video path: $path');
-
-          scannedVideos[i].delete();
-          File(path).delete().then((value) {
-            log('Deleted video path: $path');
-          });
-        }
-        if (either.isLeft()) {
-          var failure = (either as Left).value;
-          if (failure is ServerFailure) {
-            log('ServerFailure');
-          } else if (failure is DeletedFileFailure) {
-            log('DeletedFileFailure path: ${scannedVideos[i].videoPath}');
-            scannedVideos[i].delete();
-          }
-        }
-        i++;
-      });
-    });
-  }*/
 
   Future<List<ScannedVideoModel>> getVideosWaiting() async {
     final dataRepository = locator<LocalDataRepository>();

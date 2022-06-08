@@ -119,4 +119,6 @@ abstract class DataRepository {
   Future<Either<Failure, List<WinItem>>> getWinPointsFeatured();
 
   Future<Either<Failure, void>> addSeenWinPoint(String id);
+
+  Future<Either<Failure, List<TradeItem>>> getTradePointsFeatured();
 }

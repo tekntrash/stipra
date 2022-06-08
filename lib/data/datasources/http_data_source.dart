@@ -487,7 +487,7 @@ class HttpDataSource implements RemoteDataRepository {
 
     log('changeProfilePicture result: $result');
     if (result.data != null && result.data.toString().contains('File saved')) {
-      log('sendScannedVideo result: $result');
+      log('change profile pic result: $result');
       return true;
     } else {
       throw ServerException();
@@ -960,6 +960,30 @@ class HttpDataSource implements RemoteDataRepository {
       );
 
       return;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<List<TradeItemModel>> getTradePointsFeatured() async {
+    try {
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandleList<TradeItemModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/tradepoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'show',
+            'onlyfeatured': 'yes',
+          },
+        ),
+        parseModel: TradeItemModel(),
+        isRawJson: true,
+      );
+
+      return response;
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

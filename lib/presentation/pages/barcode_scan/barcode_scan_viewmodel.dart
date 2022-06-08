@@ -186,6 +186,7 @@ class BarcodeScanViewModel extends BaseViewModel {
 
     await controller?.stopImageStream();
     await Future.delayed(Duration(milliseconds: 100));
+    showSnackbarForInformation(context);
     XFile? originalFileVideo = await controller?.stopVideoRecording();
 
     var isExit = false;
@@ -194,36 +195,59 @@ class BarcodeScanViewModel extends BaseViewModel {
       isExit = await showExitOrSaveDialog();
     }
     if (!isExit) {
-      final _timeStamp = timeStamp;
-      LockOverlay().showClassicLoadingOverlay(buildAfterRebuild: true);
-      final fileVideo = changeFileNameOnlySync(
-        File(originalFileVideo!.path),
-        '$_timeStamp${locator<LocalDataRepository>().getUser().alogin}.mp4',
-      );
-      showSnackbarForInformation(context);
-
-      locator<LocalDataRepository>().saveScannedVideo(
-        ScannedVideoModel(
-          timeStamp: int.parse(_timeStamp),
-          videoPath: fileVideo.path,
-          isUploaded: false,
-          barcodeTimeStamps: barcodeTimeStamps,
-        ),
-      );
-      final isConnectedForUpload =
-          await locator<NetworkInfo>().isConnectedForUpload;
-      log('isConnectedForUpload $isConnectedForUpload');
-      if (isConnectedForUpload) {
-        _sendVideoAndBarcodes(fileVideo.path, _timeStamp);
-      }
-      log('Video saved to ${fileVideo.path}');
+      saveScannedVideosAndTryUpload(originalFileVideo, context);
     }
+
     await controller?.dispose();
     controller = null;
     LockOverlay().closeOverlay();
     Navigator.of(context).pop();
 
     return;
+  }
+
+  void saveScannedVideosAndTryUpload(
+      XFile? originalFileVideo, BuildContext context) async {
+    final location = await locator<ScannedVideoService>()
+        .getLocationWithPermRequest(onRequestGranted: () {
+      saveScannedVideosAndTryUpload(originalFileVideo, context);
+    });
+    if (location == null) {
+      SnackbarOverlay().show(
+        text: 'To upload these videos please enable location.',
+        buttonText: 'OK',
+        removeDuration: Duration(seconds: 5),
+      );
+      return;
+    }
+
+    final _timeStamp = timeStamp;
+
+    final fileVideo = changeFileNameOnlySync(
+      File(originalFileVideo!.path),
+      '$_timeStamp${locator<LocalDataRepository>().getUser().alogin}.mp4',
+    );
+
+    locator<LocalDataRepository>().saveScannedVideo(
+      ScannedVideoModel(
+        timeStamp: int.parse(_timeStamp),
+        videoPath: fileVideo.path,
+        isUploaded: false,
+        barcodeTimeStamps: barcodeTimeStamps,
+        location: location,
+      ),
+    );
+    final isConnectedForUpload =
+        await locator<NetworkInfo>().isConnectedForUpload;
+    log('isConnectedForUpload $isConnectedForUpload');
+    if (isConnectedForUpload) {
+      _sendVideoAndBarcodes(
+        fileVideo.path,
+        _timeStamp,
+        location,
+      );
+    }
+    log('Video saved to ${fileVideo.path}');
   }
 
   /// When user click exit button shows this dialog for 'Save Video' or 'Cancel'
@@ -293,14 +317,8 @@ class BarcodeScanViewModel extends BaseViewModel {
   }
 
   /// Send the video and barcodes to server with location
-  Future<void> _sendVideoAndBarcodes(String path, String _timestamp) async {
-    final location = await locator<ScannedVideoService>()
-        .getLocationWithPermRequest(onRequestGranted: () {
-      _sendVideoAndBarcodes(path, _timestamp);
-    });
-    if (location == null) {
-      return;
-    }
+  Future<void> _sendVideoAndBarcodes(
+      String path, String _timestamp, List<double> location) async {
     barcodeTimeStamps.forEach((element) {
       locator<DataRepository>().sendBarcode(
         element.barcode,

@@ -8,6 +8,7 @@ import '../../widgets/custom_load_indicator.dart';
 import '../barcode_scan/barcode_scan_page.dart';
 import '../home/widgets/bottom_bar.dart';
 import '../home/widgets/top_bar.dart';
+import 'widgets/perks_featured_list.dart';
 import 'widgets/perks_list.dart';
 import '../../widgets/local_image_box.dart';
 
@@ -84,6 +85,64 @@ class _PerksPageState extends State<PerksPage>
                             //mainAxisSize: MainAxisSize.min,
                             physics: AlwaysScrollableScrollPhysics(),
                             slivers: [
+                              if (!viewModel.isFeaturedClosed)
+                                SliverToBoxAdapter(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 15.w, right: 15.w, top: 25.h),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Featured',
+                                          style: AppTheme()
+                                              .largeParagraphBoldText
+                                              .copyWith(
+                                                color: AppTheme().greyScale0,
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            child: IconButton(
+                                              onPressed: () {
+                                                viewModel.closeFeatured();
+                                              },
+                                              icon: Icon(
+                                                Icons.close,
+                                                size: AppTheme()
+                                                        .largeParagraphBoldText
+                                                        .fontSize! *
+                                                    1.2,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              !viewModel.isInited
+                                  ? SliverToBoxAdapter(
+                                      child: CustomLoadIndicator())
+                                  : (!viewModel.isFeaturedClosed)
+                                      ? SliverPadding(
+                                          padding: EdgeInsets.only(
+                                            top: 25.h,
+                                            // bottom: 12.5.h,
+                                            left: 15.w,
+                                            right: 15.w,
+                                          ),
+                                          sliver: PerksFeaturedList(
+                                            featuredItems:
+                                                viewModel.featuredItems,
+                                          ),
+                                        )
+                                      : SliverToBoxAdapter(
+                                          child: Container(),
+                                        ),
                               SliverPersistentHeader(
                                 pinned: true,
                                 floating: true,

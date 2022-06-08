@@ -117,7 +117,11 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
                                           child: CustomLoadIndicator())
                                       : SliverPadding(
                                           padding: EdgeInsets.fromLTRB(
-                                              15.w, 0, 15.w, 50),
+                                            15.w,
+                                            0,
+                                            15.w,
+                                            80.h,
+                                          ),
                                           sliver: VideosWaitingList(
                                             scannedVideos:
                                                 viewModel.scannedVideos,
