@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
@@ -29,6 +30,10 @@ class SplashViewModel extends BaseViewModel {
 
     AppInfo.version = packageInfo.version;
     AppInfo.buildNumber = packageInfo.buildNumber;
+
+    final deviceInfoPlugin = DeviceInfoPlugin();
+    final deviceInfo = await deviceInfoPlugin.deviceInfo;
+    AppInfo.mobileInfo = deviceInfo.toMap();
 
     await exitIfNotKeepLogged();
 

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:lottie/lottie.dart';
@@ -76,14 +75,12 @@ class _VideosWaitingListState extends State<VideosWaitingList>
               ),
             ),
           )
-        : SlidableAutoCloseBehavior(
-            child: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return buildItem(context, index);
-                },
-                childCount: widget.scannedVideos.length,
-              ),
+        : SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return buildItem(context, index);
+              },
+              childCount: widget.scannedVideos.length,
             ),
           );
   }

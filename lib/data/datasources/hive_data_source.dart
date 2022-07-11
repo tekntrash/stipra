@@ -8,6 +8,7 @@ import 'package:stipra/data/enums/trade_point_category.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
+import '../models/error_model.dart';
 import '../models/user_model.dart';
 
 import '../../core/errors/exception.dart';
@@ -27,6 +28,7 @@ class HiveDataSource implements LocalDataRepository {
   final _userBoxName = 'users';
   final _winPointBoxName = 'win_points';
   final _tradePointBoxName = 'trade_points';
+  final _errorLogsBoxName = 'error_logs';
 
   @override
   late Stream<UserModel> userStream;
@@ -43,10 +45,12 @@ class HiveDataSource implements LocalDataRepository {
     Hive.registerAdapter(UserModelAdapter());
     Hive.registerAdapter(WinItemModelAdapter());
     Hive.registerAdapter(TradeItemModelAdapter());
+    Hive.registerAdapter(ErrorModelAdapter());
     await Hive.openBox<ScannedVideoModel>(_scannedVideosBoxName);
     await Hive.openBox<UserModel>(_userBoxName);
     await Hive.openBox<WinItemModel>(_winPointBoxName);
     await Hive.openBox<TradeItemModel>(_tradePointBoxName);
+    await Hive.openBox<ErrorModel>(_errorLogsBoxName);
     if (Hive.box<UserModel>(_userBoxName).values.length <= 0) {
       await cacheUser(UserModel());
     }
@@ -226,5 +230,17 @@ class HiveDataSource implements LocalDataRepository {
     }else{
       return box.values.where((element) => element.)
     }*/
+  }
+
+  @override
+  Future<void> logError(ErrorModel errorModel) async {
+    var box = Hive.box<ErrorModel>(_errorLogsBoxName);
+    await box.add(errorModel);
+  }
+
+  @override
+  Future<List<ErrorModel>> getLogs() async {
+    var box = Hive.box<ErrorModel>(_errorLogsBoxName);
+    return box.values.toList();
   }
 }

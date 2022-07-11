@@ -14,6 +14,9 @@ PODS:
     - SDWebImageWebPCoder
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
+  - flutter_logs (0.0.1):
+    - Flutter
+    - ZIPFoundation
   - flutter_vibrate (0.0.1):
     - Flutter
   - FMDB (2.7.5):
@@ -132,6 +135,7 @@ PODS:
   - video_thumbnail (0.0.1):
     - Flutter
     - libwebp
+  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
@@ -140,6 +144,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_image_compress (from `.symlinks/plugins/flutter_image_compress/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - flutter_logs (from `.symlinks/plugins/flutter_logs/ios`)
   - flutter_vibrate (from `.symlinks/plugins/flutter_vibrate/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_mlkit_barcode_scanning (from `.symlinks/plugins/google_mlkit_barcode_scanning/ios`)
@@ -178,6 +183,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - SDWebImage
     - SDWebImageWebPCoder
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   app_settings:
@@ -192,6 +198,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_image_compress/ios"
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  flutter_logs:
+    :path: ".symlinks/plugins/flutter_logs/ios"
   flutter_vibrate:
     :path: ".symlinks/plugins/flutter_vibrate/ios"
   geolocator_apple:
@@ -230,6 +238,7 @@ SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_image_compress: fd2b476345226e1a10ea352fa306af95704642c1
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  flutter_logs: 5d0dca26963e0f30b11a995a764744ef77d5d428
   flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
@@ -265,6 +274,7 @@ SPEC CHECKSUMS:
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
 PODFILE CHECKSUM: 4a5665bafd124e683e8a44d2efdd897c0b6a4428
 

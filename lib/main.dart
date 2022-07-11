@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:stipra/data/models/error_model.dart';
 import 'domain/repositories/local_data_repository.dart';
 import 'presentation/pages/splash/splash_page.dart';
 import 'shared/app_theme.dart';
@@ -12,12 +15,35 @@ import 'injection_container.dart';
 
 //* This is the main entry point of the application.
 Future<void> main() async {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await di.init();
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+      di.locator<LocalDataRepository>().logError(
+            ErrorModel(
+              tag: 'FMain',
+              message: details.toString(),
+              timestamp: DateTime.now().millisecondsSinceEpoch,
+              isUploaded: false,
+            ),
+          );
+    };
+    runApp(
+      StipraApplication(),
+    );
+  }, (Object error, StackTrace stack) {
+    di.locator<LocalDataRepository>().logError(
+          ErrorModel(
+            tag: 'FMain Guard',
+            message: 'Error: $error \nStackTrace: $stack',
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
+  });
+
   //* Ensure the app initalized
-  WidgetsFlutterBinding.ensureInitialized();
-  await di.init();
-  runApp(
-    StipraApplication(),
-  );
 }
 
 class StipraApplication extends StatelessWidget {

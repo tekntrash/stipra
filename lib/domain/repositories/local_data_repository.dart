@@ -3,6 +3,7 @@ import 'package:stipra/data/enums/win_point_category.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 
+import '../../data/models/error_model.dart';
 import '../../data/models/scanned_video_model.dart';
 import '../../data/models/user_model.dart';
 
@@ -51,4 +52,7 @@ abstract class LocalDataRepository {
   Future<void> cacheLastTradePoints(
     List<TradeItemModel> tradeItems,
   );
+
+  Future<void> logError(ErrorModel errorModel);
+  Future<List<ErrorModel>> getLogs();
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:stipra/data/models/error_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/enums/trade_point_category.dart';
 import 'package:stipra/data/models/win_item_model.dart';
@@ -123,6 +124,18 @@ class JsonLocalDataSource implements LocalDataRepository {
   Future<List<TradeItemModel>> getLastTradePoints(
       TradePointCategory category, TradePointDirection direction) {
     // TODO: implement getLastTradePoints
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> logError(ErrorModel errorModel) {
+    // TODO: implement logError
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ErrorModel>> getLogs() {
+    // TODO: implement getLogs
     throw UnimplementedError();
   }
 }

@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stipra/shared/app_theme.dart';
 
 import '../../../core/services/validator_service.dart';
+import '../../../core/utils/number_captcha/flutter_number_captcha.dart';
 import '../../../data/models/auto_validator_model.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
@@ -29,9 +30,18 @@ class ContactViewModel extends BaseViewModel {
 
   Future<void> sendMail(BuildContext context) async {
     if (isSending) return;
-    isSending = true;
-    notifyListeners();
     if (formKey.currentState?.validate() == true) {
+      bool isValid = await FlutterNumberCaptcha.show(
+        context,
+        titleText: 'Captcha',
+        placeholderText: 'Enter Number',
+        checkCaption: 'Check',
+        accentColor: AppTheme().darkPrimaryColor,
+        invalidText: 'Invalid code',
+      );
+      if (!isValid) return;
+      isSending = true;
+      notifyListeners();
       final result = await locator<DataRepository>().sendMail(
         name.textController.text,
         email.textController.text,

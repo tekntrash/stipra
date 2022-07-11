@@ -6,7 +6,9 @@ import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/domain/entities/win_item.dart';
+import '../../core/services/log_service.dart';
 import '../../domain/entities/trade_item.dart';
+import '../../injection_container.dart';
 import '../enums/change_email_action_type.dart';
 import '../enums/change_password_action_type.dart';
 import '../enums/change_profile_action_type.dart';
@@ -14,6 +16,7 @@ import '../enums/reset_password_action_type.dart';
 import '../enums/sms_action_type.dart';
 import '../enums/trade_point_category.dart';
 import '../enums/win_point_category.dart';
+import '../models/error_model.dart';
 import '../models/profile_model.dart';
 import '../models/trade_item_model.dart';
 import '../models/user_model.dart';
@@ -116,7 +119,18 @@ class DataProvider implements DataRepository {
       );
       return Right(remoteData);
     } catch (e) {
-      return Left(ServerFailure());
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider SendScannedVideo',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
+      if (e is ServerFailure) {
+        return Left(e);
+      }
+      return Left(ServerFailure(errorMessage: '$e'));
     }
   }
 
@@ -128,6 +142,14 @@ class DataProvider implements DataRepository {
           emailAddress, password, stayLoggedIn, geo);
       return Right(remoteData);
     } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider login',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       if (e is ServerFailure) {
         return Left(e);
       } else if (e is PhoneVerifyFailure) {
@@ -153,6 +175,14 @@ class DataProvider implements DataRepository {
           name, mobile, countrycode, stayLoggedIn, latitude, longitude);
       return Right(remoteData);
     } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider Register',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       if (e is ServerFailure) {
         return Left(e);
       }
@@ -171,6 +201,14 @@ class DataProvider implements DataRepository {
           await remoteDataSource.smsConfirm(action, emailAddres, userId);
       return Right(remoteData);
     } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider smsConfirm',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       if (e is ServerFailure) {
         return Left(e);
       } else if (e is PhoneSmsExceededLimit) {
@@ -191,6 +229,14 @@ class DataProvider implements DataRepository {
           .resetPassword(action, emailAddress, password: password);
       return Right(remoteData);
     } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider resetPassword',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       if (e is ServerFailure) {
         return Left(e);
       } else if (e is PhoneSmsExceededLimit) {
@@ -216,6 +262,14 @@ class DataProvider implements DataRepository {
           oldpassword: oldpassword, newpassword: newpassword);
       return Right(remoteData);
     } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider changePassword',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       if (e is ServerFailure) {
         return Left(e);
       } else if (e is PhoneSmsExceededLimit) {
@@ -234,7 +288,15 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.callPythonForScannedVideo(
           videoPath, videoDate, latitude, longitude);
       return Right(remoteData);
-    } on ServerException {
+    } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider callPythonForScannedVideo',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(ServerFailure());
     }
   }
@@ -246,8 +308,16 @@ class DataProvider implements DataRepository {
         imagePath,
       );
       return Right(remoteData);
-    } on ServerException {
-      return Left(ServerFailure());
+    } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider changeProfilePicture',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
+      return Left(ServerFailure(errorMessage: e.toString()));
     }
   }
 
@@ -270,6 +340,16 @@ class DataProvider implements DataRepository {
       return Left(ServerFailure());
     } on EmailVerifyFailure catch (e) {
       return Left(e);
+    } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider changeEmail',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
+      return Left(e);
     }
   }
 
@@ -285,6 +365,14 @@ class DataProvider implements DataRepository {
       );
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider changeprofile',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -307,6 +395,16 @@ class DataProvider implements DataRepository {
         return Right(remoteData);
       } on ServerException {
         return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider getTradePoints remote',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
+        return Left(e);
       }
     } else {
       try {
@@ -315,7 +413,15 @@ class DataProvider implements DataRepository {
           direction,
         );
         return Right(localData);
-      } on CacheException {
+      } catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider getTradePoints Cache',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(CacheFailure());
       }
     }
@@ -337,6 +443,14 @@ class DataProvider implements DataRepository {
       } on ServerException {
         return Left(ServerFailure());
       } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider getWinPoints remote',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(e);
       }
     } else {
@@ -346,7 +460,15 @@ class DataProvider implements DataRepository {
           direction,
         );
         return Right(localData);
-      } on CacheException {
+      } catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider getWinPoints Cache',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(CacheFailure());
       }
     }
@@ -360,6 +482,14 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.search(text);
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider search',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -384,6 +514,14 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.getPoints();
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider getPoints',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -394,6 +532,14 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.tradePoints(perkId, amount);
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider tradePoints',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -404,6 +550,14 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.getMyTrades();
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider getMyTrades',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -416,6 +570,14 @@ class DataProvider implements DataRepository {
           await remoteDataSource.getProductsConsumed(order, direction);
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider getProductsConsumed',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -426,6 +588,14 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.deleteAccount(password);
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider deleteAccount',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -436,6 +606,14 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.getFoodFact(barcode);
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider getFoodFact',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     }
   }
@@ -448,6 +626,14 @@ class DataProvider implements DataRepository {
           await remoteDataSource.isVideoAlreadyUploaded(path, creationDate);
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider isVideoAlreadyUploaded',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
       return Left(e);
     } on ServerException {
       return Left(ServerFailure());
@@ -464,6 +650,14 @@ class DataProvider implements DataRepository {
       } on ServerException {
         return Left(ServerFailure());
       } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider getWinPointsFeatured',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(e);
       }
     } else {
@@ -490,6 +684,14 @@ class DataProvider implements DataRepository {
       } on ServerException {
         return Left(ServerFailure());
       } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider addSeenWinPoint',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(e);
       }
     } else {
@@ -516,6 +718,14 @@ class DataProvider implements DataRepository {
       } on ServerException {
         return Left(ServerFailure());
       } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider getTradePointsFeatured',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(e);
       }
     } else {

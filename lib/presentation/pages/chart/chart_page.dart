@@ -1,34 +1,20 @@
-import 'dart:developer';
 import 'dart:ui';
 
-import 'package:barcode_widget/barcode_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:d_chart/d_chart.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:gauges/gauges.dart';
-import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
 import 'package:stacked/stacked.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stipra/core/utils/lottie/lottie_cache.dart';
-import 'package:stipra/data/enums/win_point_category.dart';
 import 'package:stipra/injection_container.dart';
-import 'package:stipra/presentation/pages/chart/chart_page.dart';
 import 'package:stipra/presentation/pages/chart/chart_viewmodel.dart';
 import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
 import 'package:stipra/presentation/widgets/radial_gauge/custom_radial_gauge.dart';
 import 'package:stipra/shared/app_images.dart';
 import '../../../data/models/win_item_model.dart';
-import '../../../core/utils/router/app_navigator.dart';
-import '../../../core/utils/time_converter/time_converter.dart';
-import '../../../data/models/product_model.dart';
-import '../barcode_scan/barcode_scan_page.dart';
-import '../map/map_controller.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/image_box.dart';
-import '../../widgets/local_image_box.dart';
-import '../../widgets/theme_button.dart';
 import '../../../shared/app_theme.dart';
 
 part 'widgets/not_found.dart';

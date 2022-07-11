@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:stipra/core/platform/app_info.dart';
 import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
 import '../errors/failure.dart';
 import 'location_service.dart';
@@ -26,11 +27,32 @@ class ScannedVideoService {
 
   listenInternetForInformation() {
     locator<NetworkInfo>().onInternetChange(
-      onConnect: () {
+      onConnect: () async {
         log('Internet is connected');
         if (_waitForConnection) {
           _waitForConnection = false;
           informAboutUploadedVideo();
+        }
+        final errors = await locator<LocalDataRepository>().getLogs();
+        if (errors.length > 0) {
+          String error = '********************* \n Start of error';
+          error += 'Mobile info: ${AppInfo.mobileInfo}\n';
+          for (var i = 0; i < errors.length; i++) {
+            error += '----------------------';
+            error += errors[i].toJson().toString();
+            error += '----------------------\n';
+          }
+          error += '********************* \n End of error';
+          final result = locator<DataRepository>().sendMail(
+            '${locator<LocalDataRepository>().getUser().name} & ${locator<LocalDataRepository>().getUser().userid}',
+            locator<LocalDataRepository>().getUser().alogin ?? 'Not logged',
+            error,
+          );
+          if (result is Right) {
+            for (var i = 0; i < errors.length; i++) {
+              errors[i].delete();
+            }
+          }
         }
       },
       onDisconnect: () {

@@ -118,6 +118,7 @@ class HttpDataSource implements RemoteDataRepository {
     if (result.data != null && result.data.toString().contains('Saved file')) {
       log('sendScannedVideo result: $result');
       callPythonForScannedVideo(videoPath, videoDate, latitude, longitude);
+      throw ServerFailure(errorMessage: 'Success but failed for test.');
       return true;
     } else {
       if (isDebugMode) {
@@ -125,7 +126,7 @@ class HttpDataSource implements RemoteDataRepository {
             AppRouter().mainNavigatorKey!.currentState!.context,
             'Error: ${result.data}');
       }
-      throw ServerException();
+      throw ServerFailure(errorMessage: 'Error: ${result.data}');
     }
   }
 
@@ -457,7 +458,7 @@ class HttpDataSource implements RemoteDataRepository {
     if (result.data != null && result.data.toString().contains('Saved file')) {
       return true;
     } else {
-      throw ServerException();
+      throw ServerFailure(errorMessage: result.data);
     }
   }
 
@@ -490,7 +491,7 @@ class HttpDataSource implements RemoteDataRepository {
       log('change profile pic result: $result');
       return true;
     } else {
-      throw ServerException();
+      throw ServerFailure(errorMessage: result.data);
     }
   }
 

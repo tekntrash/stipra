@@ -1,44 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'scanned_video_model.dart';
+part of 'error_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ScannedVideoModelAdapter extends TypeAdapter<ScannedVideoModel> {
+class ErrorModelAdapter extends TypeAdapter<ErrorModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 6;
 
   @override
-  ScannedVideoModel read(BinaryReader reader) {
+  ErrorModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ScannedVideoModel(
-      timeStamp: fields[0] as int,
-      videoPath: fields[1] as String,
-      isUploaded: fields[2] as bool,
-      barcodeTimeStamps: (fields[3] as List).cast<BarcodeTimeStampModel>(),
-      location: (fields[4] as List?)?.cast<double>(),
+    return ErrorModel(
+      tag: fields[0] as String,
+      message: fields[1] as String,
+      timestamp: fields[2] as int,
+      isUploaded: fields[3] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, ScannedVideoModel obj) {
+  void write(BinaryWriter writer, ErrorModel obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.timeStamp)
-      ..writeByte(1)
-      ..write(obj.videoPath)
-      ..writeByte(2)
-      ..write(obj.isUploaded)
-      ..writeByte(3)
-      ..write(obj.barcodeTimeStamps)
       ..writeByte(4)
-      ..write(obj.location);
+      ..writeByte(0)
+      ..write(obj.tag)
+      ..writeByte(1)
+      ..write(obj.message)
+      ..writeByte(2)
+      ..write(obj.timestamp)
+      ..writeByte(3)
+      ..write(obj.isUploaded);
   }
 
   @override
@@ -47,7 +44,7 @@ class ScannedVideoModelAdapter extends TypeAdapter<ScannedVideoModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ScannedVideoModelAdapter &&
+      other is ErrorModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
