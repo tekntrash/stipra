@@ -102,6 +102,16 @@ class DataProvider implements DataRepository {
       return Right(remoteData);
     } on ServerException {
       return Left(ServerFailure());
+    } catch (e) {
+      locator<LogService>().logError(
+        ErrorModel(
+          tag: 'DataProvider sendBarcode',
+          message: e.toString(),
+          timestamp: DateTime.now().millisecondsSinceEpoch,
+          isUploaded: false,
+        ),
+      );
+      return Left(ServerFailure());
     }
   }
 
@@ -752,6 +762,14 @@ class DataProvider implements DataRepository {
       } on ServerException {
         return Left(ServerFailure());
       } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider saveFCMToken',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(e);
       }
     } else {
@@ -773,6 +791,14 @@ class DataProvider implements DataRepository {
       } on ServerException {
         return Left(ServerFailure());
       } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider getFeatured',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
         return Left(e);
       }
     } else {
