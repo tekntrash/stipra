@@ -21,13 +21,14 @@ class ScannedVideoModelAdapter extends TypeAdapter<ScannedVideoModel> {
       videoPath: fields[1] as String,
       isUploaded: fields[2] as bool,
       barcodeTimeStamps: (fields[3] as List).cast<BarcodeTimeStampModel>(),
+      location: (fields[4] as List?)?.cast<double>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ScannedVideoModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.timeStamp)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class ScannedVideoModelAdapter extends TypeAdapter<ScannedVideoModel> {
       ..writeByte(2)
       ..write(obj.isUploaded)
       ..writeByte(3)
-      ..write(obj.barcodeTimeStamps);
+      ..write(obj.barcodeTimeStamps)
+      ..writeByte(4)
+      ..write(obj.location);
   }
 
   @override

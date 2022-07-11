@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/services/permission_service.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import '../../../core/services/scanned_video_service.dart';
 
@@ -22,7 +23,7 @@ import '../../widgets/overlay/lock_overlay_dialog.dart';
 class HomeViewModel extends BaseViewModel {
   late bool isInited;
   late List<WinItemModel> winItems;
-  late List<WinItemModel> featuredItems;
+  late SearchDtoModel featuredItems;
   late WinPointCategory selectedCategory;
   late WinPointDirection selectedDirection;
   late bool selectedExpire;
@@ -34,7 +35,7 @@ class HomeViewModel extends BaseViewModel {
   /// Also request permissions if not granted
   init() async {
     winItems = [];
-    featuredItems = [];
+    featuredItems = SearchDtoModel(tradeItems: [], winItems: []);
     isInited = false;
     isLoading = true;
     selectedExpire = false;
@@ -194,14 +195,18 @@ class HomeViewModel extends BaseViewModel {
   }
 
   Future getFeaturedItems() async {
-    final data = await locator<DataRepository>().getWinPointsFeatured();
+    final location = await locator<ScannedVideoService>()
+        .getLocationWithPermRequest(request: false);
+    final data = await locator<DataRepository>().getFeatured(50, -6);
     if (data is Right) {
-      featuredItems = (data as Right).value;
-      if (featuredItems.length == 0) {
+      log('Featured items: ${(data as Right).value}');
+      featuredItems = (data as Right).value as SearchDtoModel;
+      if (featuredItems.tradeItems?.length == 0 &&
+          featuredItems.winItems?.length == 0) {
         isFeaturedClosed = true;
       }
     } else {
-      featuredItems = [];
+      featuredItems = SearchDtoModel(tradeItems: [], winItems: []);
     }
   }
 

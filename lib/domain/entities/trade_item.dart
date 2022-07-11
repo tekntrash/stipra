@@ -4,7 +4,7 @@ class TradeItem extends Equatable {
   TradeItem({
     this.id,
     this.item,
-    this.image,
+    this.images,
     this.level,
     this.name,
     this.category,
@@ -17,7 +17,7 @@ class TradeItem extends Equatable {
 
   final String? id;
   int? item;
-  String? image;
+  List<String>? images;
   String? level;
   String? name;
   String? category;
@@ -31,7 +31,7 @@ class TradeItem extends Equatable {
   List<Object?> get props => [
         id,
         item,
-        image,
+        images,
         level,
         name,
         category,

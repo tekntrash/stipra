@@ -5,6 +5,7 @@ import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
+import 'package:stipra/domain/entities/search_dto.dart';
 
 import '../../data/enums/change_email_action_type.dart';
 import '../../data/enums/change_password_action_type.dart';
@@ -113,4 +114,8 @@ abstract class RemoteDataRepository {
   Future<void> addSeenWinPoint(String id);
 
   Future<List<TradeItemModel>> getTradePointsFeatured();
+
+  Future<void> saveFCMToken(String token);
+
+  Future<SearchDto> getFeatured(double lat, double long);
 }

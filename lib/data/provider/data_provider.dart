@@ -5,6 +5,7 @@ import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
+import 'package:stipra/domain/entities/search_dto.dart';
 import 'package:stipra/domain/entities/win_item.dart';
 import '../../domain/entities/trade_item.dart';
 import '../enums/change_email_action_type.dart';
@@ -512,6 +513,52 @@ class DataProvider implements DataRepository {
       try {
         final remoteData = await remoteDataSource.getTradePointsFeatured();
         //localDataSource.cacheLastWinPointsFeatured(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        return Left(e);
+      }
+    } else {
+      try {
+        /*final localData = await localDataSource.getLastWinPoints(
+          category,
+          direction,
+        );*/
+        //return Right(localData);
+        return Left(CacheFailure());
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> saveFCMToken(String token) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.saveFCMToken(token);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        return Left(e);
+      }
+    } else {
+      try {
+        return Left(CacheFailure());
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, SearchDto>> getFeatured(
+      double lat, double long) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.getFeatured(lat, long);
         return Right(remoteData);
       } on ServerException {
         return Left(ServerFailure());

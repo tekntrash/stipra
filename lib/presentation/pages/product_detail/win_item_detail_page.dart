@@ -16,6 +16,7 @@ import '../../../data/models/win_item_model.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../core/utils/time_converter/time_converter.dart';
 import '../../../data/models/product_model.dart';
+import '../../widgets/html_converter.dart';
 import '../barcode_scan/barcode_scan_page.dart';
 import '../map/map_controller.dart';
 import 'product_detail_viewmodel.dart';
@@ -24,6 +25,7 @@ import '../../widgets/image_box.dart';
 import '../../widgets/local_image_box.dart';
 import '../../widgets/theme_button.dart';
 import '../../../shared/app_theme.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 part 'top_bar.dart';
 
@@ -47,7 +49,8 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
   void initState() {
     carouselController = CarouselController();
     dotPosition = ValueNotifier(0.0);
-    locator<DataRepository>().addSeenWinPoint(widget.winItem.id!);
+    if (widget.winItem.id != null)
+      locator<DataRepository>().addSeenWinPoint(widget.winItem.id!);
     super.initState();
   }
 
@@ -169,7 +172,31 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
                                 Container(
                                   height: 8.h,
                                 ),
-                                Text(
+                                HTMLConverter.toRichText(
+                                  context,
+                                  widget.winItem.description ?? '',
+                                  textAlign: TextAlign.left,
+                                  defaultTextStyle: AppTheme()
+                                      .extraSmallParagraphRegularText
+                                      .copyWith(
+                                        fontSize: 14,
+                                        color: AppTheme().greyScale2,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                ),
+                                /*Html(
+                                  data: widget.winItem.description ?? '',
+                                  style: {
+                                    "*": Style(
+                                      fontFamily: AppTheme()
+                                          .extraSmallParagraphRegularText
+                                          .fontFamily!,
+                                      fontSize: FontSize(14),
+                                      color: AppTheme().greyScale2,
+                                    ),
+                                  },
+                                ),*/
+                                /*Text(
                                   widget.winItem.description ?? '',
                                   style: AppTheme()
                                       .extraSmallParagraphRegularText
@@ -177,7 +204,7 @@ class _WinItemDetailPageState extends State<WinItemDetailPage> {
                                         fontSize: 14,
                                         color: AppTheme().greyScale2,
                                       ),
-                                ),
+                                ),*/
                                 Container(
                                   height: 100.h,
                                 ),

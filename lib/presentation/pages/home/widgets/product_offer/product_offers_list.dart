@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import '../../../../../core/utils/router/app_navigator.dart';
+import '../../../../widgets/html_converter.dart';
 import '../../../product_detail/win_item_detail_page.dart';
 
 import '../../../../../shared/app_theme.dart';
@@ -128,7 +130,35 @@ class WinItemsList extends StatelessWidget {
                       height: 2,
                     ),
                     Container(
-                      child: Text(
+                      child: HTMLConverter.toRichText(
+                        context,
+                        winItem.description ?? '',
+                        textAlign: TextAlign.left,
+                        defaultTextStyle:
+                            AppTheme().extraSmallParagraphRegularText.copyWith(
+                                  fontSize: 13,
+                                  color: AppTheme().greyScale2,
+                                  decoration: TextDecoration.none,
+                                ),
+                        maxLines: 2,
+                      ),
+                      /*Html(
+                        data: winItem.description!,
+                        style: {
+                          "*": Style(
+                            fontFamily: AppTheme()
+                                .extraSmallParagraphRegularText
+                                .fontFamily!,
+                            fontSize: FontSize(13.5),
+                            color: AppTheme().greyScale2,
+                            maxLines: 2,
+                            display: Display.INLINE_BLOCK,
+                            textOverflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.left,
+                          ),
+                        },
+                      ),*/
+                      /*Text(
                         winItem.description!,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
@@ -137,7 +167,7 @@ class WinItemsList extends StatelessWidget {
                                   fontSize: 13,
                                   color: AppTheme().greyScale2,
                                 ),
-                      ),
+                      ),*/
                     ),
                   ],
                 ),

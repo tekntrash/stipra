@@ -314,6 +314,16 @@ class BarcodeScanViewModel extends BaseViewModel {
       Future.delayed(Duration(seconds: 8))
           .then((value) => SnackbarOverlay().closeCustomOverlay());
     }
+    /*SnackbarOverlayTop().show(
+      addFrameCallback: true,
+      onTap: () {
+        SnackbarOverlayTop().closeCustomOverlay();
+      },
+      text:
+          'New featured offers available, do you want to see them? Check it out.',
+      alignment: Alignment.topCenter,
+      removeDuration: Duration(seconds: 10),
+    );*/
   }
 
   /// Send the video and barcodes to server with location

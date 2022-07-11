@@ -10,7 +10,7 @@ class TradeItemModel extends TradeItem with HiveObjectMixin {
   TradeItemModel({
     this.id,
     this.item,
-    this.image,
+    this.images,
     this.level,
     this.name,
     this.category,
@@ -22,7 +22,7 @@ class TradeItemModel extends TradeItem with HiveObjectMixin {
   }) : super(
           id: id,
           item: item,
-          image: image,
+          images: images,
           level: level,
           name: name,
           category: category,
@@ -55,6 +55,8 @@ class TradeItemModel extends TradeItem with HiveObjectMixin {
   String? minimumpoints;
   @HiveField(10)
   String? maximumpoints;
+  @HiveField(11)
+  List<String>? images;
 
   fromRawJson(String str) => fromJson(json.decode(str));
 
@@ -63,7 +65,9 @@ class TradeItemModel extends TradeItem with HiveObjectMixin {
   fromJson(Map<String, dynamic> json) => TradeItemModel(
         id: json["id"],
         item: json["item"] == null ? null : json["item"],
-        image: json["image"] == null ? null : json["image"],
+        images: json["images"] == null
+            ? null
+            : List<String>.from(json["images"].map((x) => x)),
         level: json["level"] == null ? null : json["level"],
         name: json["name"] == null ? null : json["name"],
         category: json["category"] == null ? null : json["category"],
@@ -79,7 +83,7 @@ class TradeItemModel extends TradeItem with HiveObjectMixin {
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
         "item": item == null ? null : item,
-        "image": image == null ? null : image,
+        "images": images == null ? null : images,
         "level": level == null ? null : level,
         "name": name == null ? null : name,
         "category": category == null ? null : category,
