@@ -6,6 +6,7 @@ import 'package:dart_ipify/dart_ipify.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rest_api_package/requests/rest_api_request.dart';
 import 'package:rest_api_package/rest_api_package.dart';
+import 'package:stipra/core/services/notification_service.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
 import 'package:stipra/core/utils/router/app_router.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
@@ -16,6 +17,7 @@ import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
+import 'package:stipra/domain/entities/search_dto.dart';
 import 'package:stipra/presentation/widgets/snackbar_show.dart';
 import '../enums/change_email_action_type.dart';
 import '../enums/change_password_action_type.dart';
@@ -93,7 +95,7 @@ class HttpDataSource implements RemoteDataRepository {
     ValueNotifier<double>? progressNotifier,
   }) async {
     var file = File(videoPath);
-
+    log('sendScannedVideo token: ${locator<NotificationService>().token}');
     final result = await locator<RestApiHttpService>().requestFile(
       RestApiRequest(
         endPoint: baseUrl + 'newapp/upload.php',
@@ -103,6 +105,7 @@ class HttpDataSource implements RemoteDataRepository {
               'Latitude:$latitude,Longitude:$longitude^${file.path.split('/').last}',
           'submit': '',
           'videodate': '$videoDate',
+          'token': locator<NotificationService>().token ?? '',
         },
       ),
       fileFieldName: 'fileToUpload',
@@ -987,6 +990,52 @@ class HttpDataSource implements RemoteDataRepository {
       return response;
     } catch (e) {
       log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<void> saveFCMToken(String token) async {
+    try {
+      await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/fcm.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'save',
+            'token': token,
+          },
+        ),
+      );
+
+      return;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<SearchDto> getFeatured(double lat, double long) async {
+    try {
+      final response = await locator<RestApiHttpService>()
+          .requestFormAndHandle<SearchDtoModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/featured.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'show',
+            'latitude': lat,
+            'longitude': long,
+          },
+        ),
+        parseModel: SearchDtoModel(),
+        isRawJson: true,
+      );
+
+      return response;
+    } catch (e) {
+      log('Error in getFeatured : $e');
       throw ServerFailure(errorMessage: e.toString());
     }
   }

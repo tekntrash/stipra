@@ -49,13 +49,13 @@ class _TradeItemsList extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              (tradeItem.image != null)
+              (tradeItem.images != null && tradeItem.images!.length > 0)
                   ? Container(
                       width: 64.w,
                       height: 64.w,
                       child: Center(
                         child: CachedNetworkImage(
-                          imageUrl: tradeItem.image!,
+                          imageUrl: tradeItem.images!.first,
                           errorWidget: (context, url, error) =>
                               SvgPicture.asset(
                             'assets/images/image_box.svg',

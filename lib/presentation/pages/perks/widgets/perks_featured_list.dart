@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
@@ -12,11 +13,12 @@ import 'package:stipra/data/models/win_item_model.dart';
 import '../../../../../../core/utils/router/app_navigator.dart';
 
 import '../../../../../../shared/app_theme.dart';
+import '../../../widgets/html_converter.dart';
 import '../../../widgets/image_box.dart';
 import '../../perk_detail/perk_detail_page.dart';
 
 //* Creating a listview component for products
-
+/*
 class PerksFeaturedList extends StatefulWidget {
   final List<TradeItemModel> featuredItems;
   const PerksFeaturedList({
@@ -101,26 +103,56 @@ class _PerskFeaturedListState extends State<PerksFeaturedList> {
                         Expanded(
                           child: ImageBox(
                             width: 1.sw,
-                            height: 130.h,
-                            url: widget.featuredItems[itemIndex].image!,
+                            height: 200.h,
+                            url: widget.featuredItems[itemIndex].images!.first,
                             fit: BoxFit.contain,
                           ),
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Text(
+                        //if (itemIndex == 1)
+                        HTMLConverter.toRichText(
+                          context,
                           widget.featuredItems[itemIndex].description!,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: AppTheme()
+                          textAlign: TextAlign.center,
+                          defaultTextStyle: AppTheme()
                               .extraSmallParagraphRegularText
                               .copyWith(
                                 fontSize: 13,
                                 color: AppTheme().greyScale2,
                               ),
-                          textAlign: TextAlign.center,
+                          maxLines: 2,
                         ),
+                        /*Html(
+                          data: widget.featuredItems[itemIndex].description!,
+                          style: {
+                            "*": Style(
+                              fontFamily: AppTheme()
+                                  .extraSmallParagraphRegularText
+                                  .fontFamily!,
+                              fontSize: FontSize(13),
+                              color: AppTheme().greyScale2,
+                              maxLines: 2,
+                              display: Display.INLINE_BLOCK,
+                              textOverflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          },
+                        ),*/
+                        /*if (itemIndex != 1)
+                          Text(
+                            widget.featuredItems[itemIndex].description!,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: AppTheme()
+                                .extraSmallParagraphRegularText
+                                .copyWith(
+                                  fontSize: 13,
+                                  color: AppTheme().greyScale2,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),*/
                       ],
                     ),
                   ),
@@ -151,3 +183,4 @@ class _PerskFeaturedListState extends State<PerksFeaturedList> {
     );
   }
 }
+*/

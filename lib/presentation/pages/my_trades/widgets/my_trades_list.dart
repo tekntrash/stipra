@@ -126,7 +126,7 @@ class MyTradesList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${myTrades[index].totalpointstraded} Points redeemed ',
+                                '${myTrades[index].points} Points redeemed ',
                                 style: AppTheme().paragraphBoldText.copyWith(
                                       color: AppTheme().greyScale0,
                                     ),

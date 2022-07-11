@@ -6,6 +6,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:rest_api_package/rest_api_package.dart';
 import 'package:stipra/core/services/log_service.dart';
 import 'package:stipra/core/utils/lottie/lottie_cache.dart';
+import 'core/services/notification_service.dart';
 import 'core/services/permission_service.dart';
 import 'core/services/location_service.dart';
 import 'core/services/scanned_video_service.dart';
@@ -25,7 +26,7 @@ import 'domain/repositories/remote_data_repository.dart';
 
 //* Get general singleton with plugin
 final locator = GetIt.instance;
-bool isDebugMode = false;
+bool isDebugMode = true;
 
 Future<void> init() async {
   //* We will use these usecases in future (for clean code) currently we are not using usecases.
@@ -86,5 +87,10 @@ Future<void> init() async {
   );
   locator.registerLazySingleton<LottieCache>(
     () => LottieCache(),
+  );
+  final notificationService = NotificationService();
+  await notificationService.init();
+  locator.registerLazySingleton<NotificationService>(
+    () => notificationService,
   );
 }

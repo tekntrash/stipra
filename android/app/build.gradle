@@ -70,6 +70,9 @@ android {
             // useProguard true not enabled
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' 
         }
+        debug {
+            shrinkResources false
+        }
     }
 
     dependencies {
@@ -83,4 +86,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }

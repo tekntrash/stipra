@@ -3,8 +3,11 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/widgets/html_converter.dart';
 
 import '../../../data/models/trade_item_model.dart';
 import '../../../shared/app_theme.dart';
@@ -127,7 +130,36 @@ class _PerkDetailPageState extends State<PerkDetailPage> {
                                 Container(
                                   height: 8.h,
                                 ),
-                                Text(
+                                HTMLConverter.toRichText(
+                                  context,
+                                  widget.tradeItem.description ?? '',
+                                  textAlign: TextAlign.left,
+                                  defaultTextStyle: AppTheme()
+                                      .extraSmallParagraphRegularText
+                                      .copyWith(
+                                        fontSize: 14,
+                                        color: AppTheme().greyScale2,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                ),
+                                /*Html(
+                                  data: widget.tradeItem.description ?? '',
+                                  style: {
+                                    "*": Style(
+                                      fontFamily: AppTheme()
+                                          .extraSmallParagraphRegularText
+                                          .fontFamily!,
+                                      fontSize: FontSize(14),
+                                      color: AppTheme().greyScale2,
+                                      textAlign: TextAlign.left,
+                                      display: Display.BLOCK,
+                                      alignment: Alignment.topLeft,
+                                      textDecoration: TextDecoration.overline,
+                                    ),
+                                  },
+                                  shrinkWrap: true,
+                                ),*/
+                                /*Text(
                                   widget.tradeItem.description ?? '',
                                   style: AppTheme()
                                       .extraSmallParagraphRegularText
@@ -135,7 +167,7 @@ class _PerkDetailPageState extends State<PerkDetailPage> {
                                         fontSize: 14,
                                         color: AppTheme().greyScale2,
                                       ),
-                                ),
+                                ),*/
                                 Container(
                                   height: 100.h,
                                 ),
@@ -189,8 +221,8 @@ class _PerkDetailPageState extends State<PerkDetailPage> {
   }
 
   Widget buildImageBox() {
-    int imgLength = 1;
-    // widget.tradeItem.images?.where((e) => e.isNotEmpty).length ?? 0;
+    int imgLength =
+        widget.tradeItem.images?.where((e) => e.isNotEmpty).length ?? 0;
 
     return Container(
       height: 350.h,
@@ -220,8 +252,7 @@ class _PerkDetailPageState extends State<PerkDetailPage> {
                         ImageBox(
                   width: 1.sw,
                   height: 300.h,
-                  url: widget.tradeItem.image ??
-                      '', //widget.tradeItem.images![itemIndex],
+                  url: widget.tradeItem.images![itemIndex],
                   fit: BoxFit.scaleDown,
                 ),
               ),

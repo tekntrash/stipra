@@ -46,11 +46,13 @@ class HiveDataSource implements LocalDataRepository {
     Hive.registerAdapter(WinItemModelAdapter());
     Hive.registerAdapter(TradeItemModelAdapter());
     Hive.registerAdapter(ErrorModelAdapter());
-    await Hive.openBox<ScannedVideoModel>(_scannedVideosBoxName);
-    await Hive.openBox<UserModel>(_userBoxName);
-    await Hive.openBox<WinItemModel>(_winPointBoxName);
-    await Hive.openBox<TradeItemModel>(_tradePointBoxName);
-    await Hive.openBox<ErrorModel>(_errorLogsBoxName);
+
+    await openBox<ScannedVideoModel>(_scannedVideosBoxName);
+    await openBox<UserModel>(_userBoxName);
+    await openBox<WinItemModel>(_winPointBoxName);
+    await openBox<TradeItemModel>(_tradePointBoxName);
+    await openBox<ErrorModel>(_errorLogsBoxName);
+
     if (Hive.box<UserModel>(_userBoxName).values.length <= 0) {
       await cacheUser(UserModel());
     }
@@ -58,6 +60,16 @@ class HiveDataSource implements LocalDataRepository {
       log('userStream: ${box.value}');
       return box.value;
     });
+  }
+
+  Future<void> openBox<T>(String boxName) async {
+    try {
+      await Hive.openBox<T>(boxName);
+    } catch (e) {
+      var box = Hive.box<T>(boxName);
+      await box.clear();
+      await openBox<T>(boxName);
+    }
   }
 
   /// Cache the video datas to the local storage with hive

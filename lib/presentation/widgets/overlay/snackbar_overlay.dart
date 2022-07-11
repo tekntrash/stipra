@@ -7,8 +7,17 @@ import '../../../shared/app_theme.dart';
 //* Difference from snackbar_show is this is not related with context.
 //* And not using Scaffold's messenger to show.
 //* This class uses applications's main overlay to show dialogs top of ui.
+class SnackbarOverlayTop extends CustomOverlay with _SnackbarOverlay {
+  static SnackbarOverlayTop? _instance;
 
-class SnackbarOverlay extends CustomOverlay {
+  SnackbarOverlayTop._internal() {
+    _instance = this;
+  }
+
+  factory SnackbarOverlayTop() => _instance ?? SnackbarOverlayTop._internal();
+}
+
+class SnackbarOverlay extends CustomOverlay with _SnackbarOverlay {
   static SnackbarOverlay? _instance;
 
   SnackbarOverlay._internal() {
@@ -16,22 +25,32 @@ class SnackbarOverlay extends CustomOverlay {
   }
 
   factory SnackbarOverlay() => _instance ?? SnackbarOverlay._internal();
+}
 
+mixin _SnackbarOverlay on CustomOverlay {
   void show({
     bool addFrameCallback: false,
     bool forceOverlay = false,
     bool fullTap = false,
     Function()? onTap,
     required String text,
-    required String buttonText,
+    String? buttonText,
     Color? buttonTextColor,
     Duration? removeDuration,
+    Alignment? alignment,
   }) {
     if (forceOverlay) closeCustomOverlay();
     showCustomOverlay(
         addFrameCallback: addFrameCallback,
         onTap: onTap,
-        params: [text, buttonText, buttonTextColor, removeDuration, fullTap]);
+        params: [
+          text,
+          buttonText,
+          buttonTextColor,
+          removeDuration,
+          fullTap,
+          alignment
+        ]);
   }
 
   @override
@@ -46,28 +65,42 @@ class SnackbarOverlay extends CustomOverlay {
       buttonTextColor: params[2],
       removeDuration: params[3],
       fullTap: params[4],
+      alignment: params[5],
     );
   }
 }
+/*
+class SnackbarOverlay extends CustomOverlay {
+  static SnackbarOverlay? _instance;
+
+  SnackbarOverlay._internal() {
+    _instance = this;
+  }
+
+  factory SnackbarOverlay() => _instance ?? SnackbarOverlay._internal();
+
+}*/
 
 class SnackbarWidget extends StatefulWidget {
   final Function() closeOverlay;
   final Function()? onTap;
   final ValueNotifier<OverlayEntry?> overlayEntry;
   final String text;
-  final String buttonText;
+  final String? buttonText;
   final Color? buttonTextColor;
   final Duration? removeDuration;
   final bool fullTap;
+  final Alignment? alignment;
   SnackbarWidget({
     required this.overlayEntry,
     required this.onTap,
     required this.text,
-    required this.buttonText,
+    this.buttonText,
     required this.closeOverlay,
     this.buttonTextColor,
     this.removeDuration,
     this.fullTap: false,
+    this.alignment: Alignment.bottomCenter,
   });
 
   @override
@@ -103,7 +136,7 @@ class _SnackbarWidgetState extends State<SnackbarWidget> {
       duration: animationDuration,
       opacity: _opacity,
       child: Align(
-        alignment: Alignment.bottomCenter,
+        alignment: widget.alignment ?? Alignment.bottomCenter,
         child: SafeArea(
           child: GestureDetector(
             onTap: () {
@@ -138,30 +171,31 @@ class _SnackbarWidgetState extends State<SnackbarWidget> {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: widget.onTap,
-                      child: Container(
-                        color: Colors.transparent,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 7.5),
-                        child: InkWell(
-                          child: Ink(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 7.5),
-                            child: ClassicText(
-                              text: widget.buttonText,
-                              style: AppTheme()
-                                  .extraSmallParagraphSemiBoldText
-                                  .copyWith(
-                                    color: widget.buttonTextColor ??
-                                        AppTheme().primaryColor,
-                                  ),
+                    if (widget.buttonText != null)
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: Container(
+                          color: Colors.transparent,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 7.5),
+                          child: InkWell(
+                            child: Ink(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 7.5),
+                              child: ClassicText(
+                                text: widget.buttonText!,
+                                style: AppTheme()
+                                    .extraSmallParagraphSemiBoldText
+                                    .copyWith(
+                                      color: widget.buttonTextColor ??
+                                          AppTheme().primaryColor,
+                                    ),
+                              ),
                             ),
+                            onTap: widget.onTap,
                           ),
-                          onTap: widget.onTap,
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),

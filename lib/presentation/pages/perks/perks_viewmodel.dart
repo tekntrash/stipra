@@ -5,6 +5,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stipra/data/enums/trade_point_category.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 
+import '../../../core/services/scanned_video_service.dart';
+import '../../../data/models/search_dto_model.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../injection_container.dart';
 
@@ -13,7 +15,7 @@ import '../../../injection_container.dart';
 class PerksViewModel extends BaseViewModel {
   late bool isInited;
   late List<TradeItemModel> tradeItems;
-  late List<TradeItemModel> featuredItems;
+  late SearchDtoModel featuredItems;
   late TradePointCategory selectedCategory;
   late TradePointDirection selectedDirection;
   late bool selectedExpire;
@@ -23,7 +25,7 @@ class PerksViewModel extends BaseViewModel {
   /// Initialize the view model with the default category and direction
   init() async {
     tradeItems = [];
-    featuredItems = [];
+    featuredItems = SearchDtoModel(tradeItems: [], winItems: []);
     isInited = false;
     isLoading = true;
     selectedExpire = false;
@@ -85,14 +87,18 @@ class PerksViewModel extends BaseViewModel {
   }
 
   Future getFeaturedItems() async {
-    final data = await locator<DataRepository>().getTradePointsFeatured();
+    final location = await locator<ScannedVideoService>()
+        .getLocationWithPermRequest(request: false);
+    final data = await locator<DataRepository>().getFeatured(50, -6);
     if (data is Right) {
-      featuredItems = (data as Right).value;
-      if (featuredItems.length == 0) {
+      log('Featured items: ${(data as Right).value}');
+      featuredItems = (data as Right).value as SearchDtoModel;
+      if (featuredItems.tradeItems?.length == 0 &&
+          featuredItems.winItems?.length == 0) {
         isFeaturedClosed = true;
       }
     } else {
-      featuredItems = [];
+      featuredItems = SearchDtoModel(tradeItems: [], winItems: []);
     }
   }
 

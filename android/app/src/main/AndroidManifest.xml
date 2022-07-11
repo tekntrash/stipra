@@ -16,14 +16,17 @@
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
     <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
    <application
+        android:requestLegacyExternalStorage="true"
+        android:hardwareAccelerated="true"
         android:label="Stipra"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
-        <service
+        <!--<service
             android:name="changjoopark.com.flutter_foreground_plugin.FlutterForegroundService"
             android:enabled="true"
             android:exported="true"
             android:stopWithTask="true"
-            android:foregroundServiceType="mediaProjection" />
+            android:foregroundServiceType="mediaProjection" />-->
         <!-- <service android:name="com.changjoopark.flutter_foreground_plugin.FlutterForegroundService" android:foregroundServiceType="mediaProjection "/>
         -->
         <activity
@@ -42,6 +45,11 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+              <meta-data android:name="com.google.firebase.messaging.default_notification_icon" 
+                android:resource="@drawable/ic_logo" />
+                <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/colorAccent" />
             <!-- Displays an Android View that continues showing the launch screen
                  Drawable until Flutter paints its first frame, then this splash
                  screen fades out. A splash screen is useful to avoid any visual

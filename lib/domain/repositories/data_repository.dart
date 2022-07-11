@@ -121,4 +121,8 @@ abstract class DataRepository {
   Future<Either<Failure, void>> addSeenWinPoint(String id);
 
   Future<Either<Failure, List<TradeItem>>> getTradePointsFeatured();
+
+  Future<Either<Failure, void>> saveFCMToken(String token);
+
+  Future<Either<Failure, SearchDto>> getFeatured(double lat, double long);
 }

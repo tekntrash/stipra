@@ -19,7 +19,7 @@ class TradeItemModelAdapter extends TypeAdapter<TradeItemModel> {
     return TradeItemModel(
       id: fields[1] as String?,
       item: fields[0] as int?,
-      image: fields[2] as String?,
+      images: (fields[11] as List?)?.cast<String>(),
       level: fields[3] as String?,
       name: fields[4] as String?,
       category: fields[5] as String?,
@@ -28,13 +28,13 @@ class TradeItemModelAdapter extends TypeAdapter<TradeItemModel> {
       points: fields[8] as String?,
       minimumpoints: fields[9] as String?,
       maximumpoints: fields[10] as String?,
-    );
+    )..image = fields[2] as String?;
   }
 
   @override
   void write(BinaryWriter writer, TradeItemModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.item)
       ..writeByte(1)
@@ -56,7 +56,9 @@ class TradeItemModelAdapter extends TypeAdapter<TradeItemModel> {
       ..writeByte(9)
       ..write(obj.minimumpoints)
       ..writeByte(10)
-      ..write(obj.maximumpoints);
+      ..write(obj.maximumpoints)
+      ..writeByte(11)
+      ..write(obj.images);
   }
 
   @override

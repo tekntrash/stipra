@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/home/home_page.dart';
+import 'package:stipra/presentation/pages/home/widgets/featured_list.dart';
 import 'package:stipra/presentation/pages/perks/widgets/perks_category_list.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../widgets/custom_load_indicator.dart';
@@ -135,9 +136,10 @@ class _PerksPageState extends State<PerksPage>
                                             left: 15.w,
                                             right: 15.w,
                                           ),
-                                          sliver: PerksFeaturedList(
+                                          sliver: FeaturedList(
                                             featuredItems:
                                                 viewModel.featuredItems,
+                                            suffix: 'perkspage',
                                           ),
                                         )
                                       : SliverToBoxAdapter(

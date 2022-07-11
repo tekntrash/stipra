@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
@@ -85,12 +86,12 @@ class PerksList extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Center(
-                        child: tradeItems[index].image != null
+                        child: tradeItems[index].images!.first != null
                             ? Container(
                                 width: 96,
                                 height: 96,
                                 child: CachedNetworkImage(
-                                  imageUrl: tradeItems[index].image!,
+                                  imageUrl: tradeItems[index].images!.first,
                                   errorWidget: (context, url, error) =>
                                       SvgPicture.asset(
                                     'assets/images/image_box.svg',
@@ -131,16 +132,36 @@ class PerksList extends StatelessWidget {
                               SizedBox(
                                 height: 12,
                               ),
-                              Text(
-                                '${tradeItems[index].description}',
-                                style: AppTheme()
-                                    .smallParagraphRegularText
-                                    .copyWith(
-                                      color: AppTheme().greyScale2,
-                                    ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                              //if (index == tradeItems.length - 1)
+                              Html(
+                                data: '${tradeItems[index].description}',
+                                style: {
+                                  "*": Style(
+                                    fontFamily: AppTheme()
+                                        .smallParagraphRegularText
+                                        .fontFamily!,
+                                    fontSize: FontSize(AppTheme()
+                                        .smallParagraphRegularText
+                                        .fontSize),
+                                    color: AppTheme().greyScale2,
+                                    maxLines: 2,
+                                    display: Display.INLINE_BLOCK,
+                                    textOverflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                },
                               ),
+                              /*if (index != tradeItems.length - 1)
+                                Text(
+                                  '${tradeItems[index].description}',
+                                  style: AppTheme()
+                                      .smallParagraphRegularText
+                                      .copyWith(
+                                        color: AppTheme().greyScale2,
+                                      ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),*/
                             ],
                           ),
                           Column(

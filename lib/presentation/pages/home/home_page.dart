@@ -148,6 +148,7 @@ class _HomePageState extends State<HomePage>
                                           sliver: FeaturedList(
                                             featuredItems:
                                                 viewModel.featuredItems,
+                                            suffix: 'earnpage',
                                           ),
                                         )
                                       : SliverToBoxAdapter(
