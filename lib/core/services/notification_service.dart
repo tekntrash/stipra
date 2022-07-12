@@ -59,8 +59,8 @@ class NotificationService {
       log('My token: $token');
       log('My token2: ${locator<NotificationService>().token}');
       locator<DataRepository>().saveFCMToken(token ?? '');
-      await Future.delayed(Duration(seconds: 1));
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      //await Future.delayed(Duration(seconds: 1));
+      /*WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
         showDialog(
           context: AppRouter().mainNavigatorKey!.currentState!.context,
           builder: (context) => Center(
@@ -81,7 +81,7 @@ class NotificationService {
             ),
           ),
         );
-      });
+      });*/
       //_showNotificationCustomVibrationIconLed();
     }
   }
