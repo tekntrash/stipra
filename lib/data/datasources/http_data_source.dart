@@ -13,6 +13,7 @@ import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
+import 'package:stipra/data/models/privacy_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
@@ -829,7 +830,9 @@ class HttpDataSource implements RemoteDataRepository {
         parseModel: ProductConsumedModel(),
         isRawJson: true,
       );
-
+      log('------------------');
+      log('Response of request get products consumed: $response');
+      log('------------------');
       return response;
     } catch (e) {
       log('e : $e');
@@ -1036,6 +1039,95 @@ class HttpDataSource implements RemoteDataRepository {
       return response;
     } catch (e) {
       log('Error in getFeatured : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<PrivacyModel> setPrivacy(PrivacyModel value) async {
+    try {
+      /*final response = await locator<RestApiHttpService>()
+          .requestFormAndHandle<PrivacyModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/privacy.php',
+          requestMethod: RequestMethod.POST,
+          queryParameters: {
+            'action': 'changeprofile',
+            'alogin': locator<LocalDataRepository>().getUser().alogin,
+            'userid': locator<LocalDataRepository>().getUser().userid,
+          },
+          body: value.toJson(),
+        ),
+        parseModel: PrivacyModel(),
+        isRawJson: true,
+      );*/
+      final request = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/privacy.php',
+          requestMethod: RequestMethod.POST,
+          queryParameters: {
+            'action': 'changeprofile',
+            'alogin': locator<LocalDataRepository>().getUser().alogin,
+            'userid': locator<LocalDataRepository>().getUser().userid,
+          },
+          body: value.toJson(),
+        ),
+      );
+      log('request : $request');
+      final response =
+          locator<RestApiHttpService>().handleResponse<PrivacyModel>(
+        request,
+        parseModel: PrivacyModel(),
+        isRawJson: true,
+      );
+
+      return response;
+    } catch (e) {
+      log('Error in setPrivacy : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<PrivacyModel> getPrivacy() async {
+    try {
+      /*final response = await locator<RestApiHttpService>()
+          .requestFormAndHandle<PrivacyModel>(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/privacy.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'showprofile',
+            'alogin': locator<LocalDataRepository>().getUser().alogin,
+            'userid': locator<LocalDataRepository>().getUser().userid,
+          },
+        ),
+        parseModel: PrivacyModel(),
+        isRawJson: true,
+      );*/
+      final request = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/privacy.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'showprofile',
+            'alogin': locator<LocalDataRepository>().getUser().alogin,
+            'userid': locator<LocalDataRepository>().getUser().userid,
+          },
+        ),
+      );
+      log('request 2 : $request');
+
+      final response =
+          locator<RestApiHttpService>().handleResponse<PrivacyModel>(
+        request,
+        parseModel: PrivacyModel(),
+        isRawJson: true,
+      );
+      log('Response 2 : $response');
+      return response;
+    } catch (e) {
+      log('Error in getPrivacy : $e');
       throw ServerFailure(errorMessage: e.toString());
     }
   }

@@ -7,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/widgets/avatar_image.dart';
+import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../data/models/user_model.dart';
 import '../../../domain/repositories/data_repository.dart';
 import '../../../domain/repositories/local_data_repository.dart';
 import '../../../injection_container.dart';
-import 'profile_viewmodel.dart';
+import 'privacy_viewmodel.dart';
 import '../sign/enter_phone_number_page/enter_phone_number_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../sign/otp_verify_page/otp_verify_page.dart';
@@ -30,15 +31,15 @@ part 'widgets/top_bar.dart';
 /// and buttons for profile page UI
 /// It is using ViewModelBuilder to handle the state of the page with ProfileViewModel
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+class PrivacyPage extends StatefulWidget {
+  const PrivacyPage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<PrivacyPage> createState() => _PrivacyPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  /// Building ProfilePage ui but it depends on user state
+class _PrivacyPageState extends State<PrivacyPage> {
+  /// Building PrivacyPage ui but it depends on user state
   /// if user is logged in or not
   /// If logged in it will show the profile page ui
   /// If not it will show the sign in page ui
@@ -46,8 +47,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final isLogged = locator<LocalDataRepository>().getUser().userid != null;
     return isLogged
-        ? ViewModelBuilder<ProfileViewModel>.reactive(
-            viewModelBuilder: () => ProfileViewModel(),
+        ? ViewModelBuilder<PrivacyViewModel>.reactive(
+            viewModelBuilder: () => PrivacyViewModel(),
+            onModelReady: (model) => model.init(),
             builder: (context, viewModel, child) {
               return Scaffold(
                 appBar: PreferredSize(
@@ -74,6 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 CurvedContainer(
                                   radius: 30,
                                   child: Container(
+                                    height: 0.8.sh,
                                     color: AppTheme().whiteColor,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
@@ -81,57 +84,43 @@ class _ProfilePageState extends State<ProfilePage> {
                                         SizedBox(
                                           height: 80.h,
                                         ),
-                                        buildProfileButton(
-                                          'My Profile',
-                                          onTap: () {
-                                            viewModel.routeToMyProfile(context);
+                                        buildPrivacySwitch(
+                                          'Receive newsletter',
+                                          (viewModel.isInited == true)
+                                              ? (viewModel.privacyModel
+                                                      .receivenewsletter ??
+                                                  false)
+                                              : false,
+                                          onChanged: (newValue) {
+                                            viewModel.changeReceiveNewsLetter(
+                                                newValue);
                                           },
                                         ),
-                                        buildProfileButton(
-                                          'Privacy',
-                                          onTap: () {
-                                            viewModel.routeToPrivacy(context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'My Earnings',
-                                          onTap: () {
-                                            viewModel.routeToProductsConsumed(
-                                                context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'My Level',
-                                          onTap: () {
-                                            viewModel.routeToLevelPage(context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'My Redeems',
-                                          onTap: () {
-                                            viewModel.routeToMyTrades(context);
-                                          },
-                                        ),
-                                        buildProfileButton(
-                                          'Videos Waiting',
-                                          onTap: () {
+                                        buildPrivacySwitch(
+                                          'Receive emails with points',
+                                          (viewModel.isInited == true)
+                                              ? (viewModel.privacyModel
+                                                      .receiveemailspoints ??
+                                                  false)
+                                              : false,
+                                          onChanged: (newValue) {
                                             viewModel
-                                                .routeToVideosWaiting(context);
+                                                .changeReceiveEmailWithPoints(
+                                                    newValue);
                                           },
                                         ),
-                                        /*buildProfileButton(
-                                          'Configuration',
-                                          onTap: () {},
-                                        ),*/
-                                        buildProfileButton(
-                                          'Logout',
-                                          onTap: () {
-                                            viewModel.logout(context);
-                                            setState(() {});
+                                        buildPrivacySwitch(
+                                          'Receive mobile notifications',
+                                          (viewModel.isInited == true)
+                                              ? (viewModel.privacyModel
+                                                      .receivenotifications ??
+                                                  false)
+                                              : false,
+                                          onChanged: (newValue) {
+                                            viewModel
+                                                .changeReceiveMobileNotifications(
+                                                    newValue);
                                           },
-                                        ),
-                                        Container(
-                                          height: 150.h,
                                         ),
                                       ],
                                     ),
@@ -140,6 +129,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                             ),
                             buildTopBar(),
+                            if (viewModel.isInited != true)
+                              Positioned.fill(
+                                child: Container(
+                                  child: CustomLoadIndicator(),
+                                ),
+                              ),
                           ],
                         ),
                       ],
@@ -255,7 +250,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   /// Builds a button with a title and an onTap callback
   /// Using for buttons as a general structure
-  Widget buildProfileButton(String buttonName, {Function()? onTap}) {
+  Widget buildPrivacySwitch(String buttonName, bool value,
+      {required Function(bool) onChanged}) {
     return Container(
       margin: EdgeInsets.only(left: 20.w),
       width: double.infinity,
@@ -268,26 +264,29 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          child: Ink(
-            padding: EdgeInsets.symmetric(vertical: 15.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
+        child: Ink(
+          padding: EdgeInsets.symmetric(vertical: 15.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                buttonName,
+                style: AppTheme().smallParagraphRegularText,
+              ),
+              Switch.adaptive(
+                value: value,
+                onChanged: onChanged,
+                activeColor: AppTheme().darkPrimaryColor,
+              ),
+              /*SwitchListTile.adaptive(
+                title: Text(
                   buttonName,
                   style: AppTheme().smallParagraphRegularText,
                 ),
-                Container(
-                  margin: EdgeInsets.only(right: 20.w),
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    color: AppTheme().greyScale2,
-                  ),
-                ),
-              ],
-            ),
+                value: value,
+                onChanged: onChanged,
+              ),*/
+            ],
           ),
         ),
       ),

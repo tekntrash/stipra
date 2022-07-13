@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -47,6 +48,7 @@ Future<void> main() async {
       StipraApplication(),
     );
   }, (Object error, StackTrace stack) {
+    log('Error: $error', name: 'FMain');
     di.locator<LocalDataRepository>().logError(
           ErrorModel(
             tag: 'FMain Guard',

@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:stipra/data/enums/trade_point_category.dart';
+import 'package:stipra/data/models/privacy_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
@@ -29,6 +30,7 @@ class HiveDataSource implements LocalDataRepository {
   final _winPointBoxName = 'win_points';
   final _tradePointBoxName = 'trade_points';
   final _errorLogsBoxName = 'error_logs';
+  final _privacyBoxNmae = 'privacy';
 
   @override
   late Stream<UserModel> userStream;
@@ -46,12 +48,14 @@ class HiveDataSource implements LocalDataRepository {
     Hive.registerAdapter(WinItemModelAdapter());
     Hive.registerAdapter(TradeItemModelAdapter());
     Hive.registerAdapter(ErrorModelAdapter());
+    Hive.registerAdapter(PrivacyModelAdapter());
 
     await openBox<ScannedVideoModel>(_scannedVideosBoxName);
     await openBox<UserModel>(_userBoxName);
     await openBox<WinItemModel>(_winPointBoxName);
     await openBox<TradeItemModel>(_tradePointBoxName);
     await openBox<ErrorModel>(_errorLogsBoxName);
+    await openBox<PrivacyModel>(_privacyBoxNmae);
 
     if (Hive.box<UserModel>(_userBoxName).values.length <= 0) {
       await cacheUser(UserModel());
@@ -254,5 +258,24 @@ class HiveDataSource implements LocalDataRepository {
   Future<List<ErrorModel>> getLogs() async {
     var box = Hive.box<ErrorModel>(_errorLogsBoxName);
     return box.values.toList();
+  }
+
+  @override
+  PrivacyModel getPrivacy() {
+    var box = Hive.box<PrivacyModel>(_privacyBoxNmae);
+    return box.values.first;
+  }
+
+  @override
+  Future<void> setPrivacy(PrivacyModel privacyModel) async {
+    var box = Hive.box<PrivacyModel>(_privacyBoxNmae);
+
+    if (box.length > 0) {
+      box.values.first.updateFromJson(privacyModel.toJson());
+      await box.values.first.save();
+      return;
+    }
+
+    await box.add(privacyModel);
   }
 }

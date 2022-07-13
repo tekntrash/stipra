@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/models/food_fact_model.dart';
+import 'package:stipra/data/models/privacy_model.dart';
 import 'package:stipra/domain/entities/my_trade.dart';
 import 'package:stipra/domain/entities/product_consumed.dart';
 import 'package:stipra/domain/entities/search_dto.dart';
@@ -125,4 +126,7 @@ abstract class DataRepository {
   Future<Either<Failure, void>> saveFCMToken(String token);
 
   Future<Either<Failure, SearchDto>> getFeatured(double lat, double long);
+
+  Future<Either<Failure, PrivacyModel>> getPrivacy();
+  Future<Either<Failure, PrivacyModel>> setPrivacy(PrivacyModel privacyModel);
 }

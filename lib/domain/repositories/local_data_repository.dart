@@ -1,5 +1,6 @@
 import 'package:stipra/data/enums/trade_point_category.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
+import 'package:stipra/data/models/privacy_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 
@@ -55,4 +56,7 @@ abstract class LocalDataRepository {
 
   Future<void> logError(ErrorModel errorModel);
   Future<List<ErrorModel>> getLogs();
+
+  PrivacyModel getPrivacy();
+  Future<void> setPrivacy(PrivacyModel privacyModel);
 }

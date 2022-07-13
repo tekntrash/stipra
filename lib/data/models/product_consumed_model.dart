@@ -20,8 +20,8 @@ class ProductConsumedModel extends ProductConsumed {
   final String? longitude;
   final String? base64;
   final String? bincolor;
-  final String? points;
-  final String? totalproduct;
+  final dynamic points;
+  final dynamic totalproduct;
   final String? dateTaken;
   final String? barcode;
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:stipra/data/models/error_model.dart';
+import 'package:stipra/data/models/privacy_model.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/enums/trade_point_category.dart';
 import 'package:stipra/data/models/win_item_model.dart';
@@ -136,6 +137,18 @@ class JsonLocalDataSource implements LocalDataRepository {
   @override
   Future<List<ErrorModel>> getLogs() {
     // TODO: implement getLogs
+    throw UnimplementedError();
+  }
+
+  @override
+  PrivacyModel getPrivacy() {
+    // TODO: implement getPrivacy
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setPrivacy(PrivacyModel privacyModel) {
+    // TODO: implement setPrivacy
     throw UnimplementedError();
   }
 }

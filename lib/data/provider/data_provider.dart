@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
+import 'package:stipra/data/models/privacy_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/domain/entities/search_dto.dart';
@@ -812,6 +813,56 @@ class DataProvider implements DataRepository {
       } on CacheException {
         return Left(CacheFailure());
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, PrivacyModel>> getPrivacy() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.getPrivacy();
+        await localDataSource.setPrivacy(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider setPrivacy',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
+        return Left(e);
+      }
+    } else {
+      return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, PrivacyModel>> setPrivacy(PrivacyModel value) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.setPrivacy(value);
+        await localDataSource.setPrivacy(value);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider setPrivacy',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
+        return Left(e);
+      }
+    } else {
+      return Left(CacheFailure());
     }
   }
 }

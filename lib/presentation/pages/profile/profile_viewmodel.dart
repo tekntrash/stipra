@@ -5,6 +5,7 @@ import 'package:stipra/presentation/pages/my_level/my_level_page.dart';
 import 'package:stipra/presentation/pages/my_products/my_products_page.dart';
 import 'package:stipra/presentation/pages/my_profile/my_profile_page.dart';
 import 'package:stipra/presentation/pages/my_trades/my_trades_page.dart';
+import 'package:stipra/presentation/pages/privacy/privacy_page.dart';
 import 'package:stipra/presentation/pages/videos_waiting/videos_waiting_page.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../domain/repositories/local_data_repository.dart';
@@ -21,6 +22,13 @@ class ProfileViewModel extends BaseViewModel {
     AppNavigator.push(
       context: context,
       child: MyProfilePage(),
+    );
+  }
+
+  routeToPrivacy(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: PrivacyPage(),
     );
   }
 

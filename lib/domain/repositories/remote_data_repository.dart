@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/data/models/food_fact_model.dart';
 import 'package:stipra/data/models/my_trade_model.dart';
+import 'package:stipra/data/models/privacy_model.dart';
 import 'package:stipra/data/models/product_consumed_model.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
@@ -118,4 +119,7 @@ abstract class RemoteDataRepository {
   Future<void> saveFCMToken(String token);
 
   Future<SearchDto> getFeatured(double lat, double long);
+
+  Future<PrivacyModel> getPrivacy();
+  Future<PrivacyModel> setPrivacy(PrivacyModel privacyModel);
 }
