@@ -100,6 +100,7 @@ class HomeViewModel extends BaseViewModel {
 
   /// Wait for camera permission response then ask for storage permission if not granted and if it is not ios show error to open settings
   Future<void> askForCameraPermission() async {
+    log('ASKING CAMERA PERM');
     await locator<PermissionService>().requestPermission(
       Permission.camera,
       description:
@@ -141,9 +142,11 @@ class HomeViewModel extends BaseViewModel {
           'Stipra requires geolocation to show relevant products only and does not share this information with anyone.',
       onDenied: () async {
         //if (Platform.isIOS) {
+        final location = await locator<ScannedVideoService>()
+            .getLocationWithPermRequest(request: false);
         await Future.wait([
-          getWinItems(request: false),
-          getFeaturedItems(),
+          getWinItems(location: location),
+          getFeaturedItems(location: location),
           informAboutUploadedVideo(),
         ]);
         isInited = true;
@@ -154,13 +157,16 @@ class HomeViewModel extends BaseViewModel {
         }*/
       },
       onRequestGranted: () async {
+        final location = await locator<ScannedVideoService>()
+            .getLocationWithPermRequest(request: false);
         await Future.wait([
-          getWinItems(request: false),
-          getFeaturedItems(),
+          getWinItems(location: location),
+          getFeaturedItems(location: location),
           informAboutUploadedVideo(),
         ]);
         isInited = true;
         isLoading = false;
+        log('NOTIFIED');
         notifyListeners();
       },
       dontAskIfFirstTime: true,
@@ -174,9 +180,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   /// Get products from backend with location and with the help of singleton and data repository
-  Future getWinItems({bool request: true, String? key}) async {
-    final location = await locator<ScannedVideoService>()
-        .getLocationWithPermRequest(request: request);
+  Future getWinItems({List<double>? location, String? key}) async {
     final data = await locator<DataRepository>().getWinPoints(
       selectedCategory,
       selectedDirection,
@@ -184,6 +188,7 @@ class HomeViewModel extends BaseViewModel {
       selectedOutside,
       location ?? [0, 0],
     );
+    log('data: $data');
     if (key != null && key != requestKey) {
       return;
     }
@@ -194,12 +199,17 @@ class HomeViewModel extends BaseViewModel {
     }
   }
 
-  Future getFeaturedItems() async {
-    final location = await locator<ScannedVideoService>()
-        .getLocationWithPermRequest(request: false);
-    final data = await locator<DataRepository>().getFeatured(50, -6);
+  Future getFeaturedItems({
+    required List<double>? location,
+  }) async {
+    /*final location = await locator<ScannedVideoService>()
+        .getLocationWithPermRequest(request: false);*/
+    location ??= [0, 0];
+    final data =
+        await locator<DataRepository>().getFeatured(location[0], location[1]);
+    log('Get featured data is working.');
     if (data is Right) {
-      log('Featured items: ${(data as Right).value}');
+      //log('Featured items: ${(data as Right).value}');
       featuredItems = (data as Right).value as SearchDtoModel;
       if (featuredItems.tradeItems?.length == 0 &&
           featuredItems.winItems?.length == 0) {

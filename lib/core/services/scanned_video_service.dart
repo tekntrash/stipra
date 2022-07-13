@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:stipra/core/platform/app_info.dart';
 import 'package:stipra/presentation/widgets/overlay/snackbar_overlay.dart';
@@ -146,14 +147,11 @@ class ScannedVideoService {
   ///First index is latitude and second is longitude
   Future<List<double>?> getLocationWithPermRequest(
       {Function()? onRequestGranted, bool request: true}) async {
-    double latitude, longitude;
     final isLocationAccessGranted =
         await locator<LocationService>().isAccessGranted;
     if (isLocationAccessGranted) {
       final position = await locator<LocationService>().getCurrentLocation();
-      latitude = position.latitude;
-      longitude = position.longitude;
-      return [latitude, longitude];
+      return [position.latitude, position.longitude];
     } else {
       if (request)
         await locator<LocationService>()
