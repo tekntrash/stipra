@@ -66,6 +66,7 @@ class PrivacyViewModel extends BaseViewModel {
     var result = await locator<DataRepository>().setPrivacy(privacyModel);
     if (result is Right) {
       privacyModel = (result as Right).value as PrivacyModel;
+      notifyListeners();
     } else {
       //show error
       SnackbarOverlay().show(

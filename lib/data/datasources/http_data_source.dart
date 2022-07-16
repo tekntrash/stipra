@@ -122,7 +122,7 @@ class HttpDataSource implements RemoteDataRepository {
     if (result.data != null && result.data.toString().contains('Saved file')) {
       log('sendScannedVideo result: $result');
       callPythonForScannedVideo(videoPath, videoDate, latitude, longitude);
-      throw ServerFailure(errorMessage: 'Success but failed for test.');
+      //throw ServerFailure(errorMessage: 'Success but failed for test.');
       return true;
     } else {
       if (isDebugMode) {
