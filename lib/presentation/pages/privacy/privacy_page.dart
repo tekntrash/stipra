@@ -61,6 +61,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
                     gradient: AppTheme().gradientPrimary,
                   ),
                   child: SafeArea(
+                    bottom: false,
                     child: ListView(
                       children: [
                         SizedBox(
