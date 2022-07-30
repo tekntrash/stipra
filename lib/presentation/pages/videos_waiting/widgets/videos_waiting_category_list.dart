@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 
 import '../../../../data/enums/trade_point_category.dart';
@@ -33,7 +34,7 @@ class VideosWaitingCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'Videos Waiting',
+                            'videos_waiting_title'.tr,
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),
@@ -54,7 +55,7 @@ class VideosWaitingCategoryList extends StatelessWidget {
             margin: EdgeInsets.only(left: 15.w, right: 15.w),
             height: 80.h,
             child: Text(
-              'Below the videos you made which are waiting to be sent automatically as soon as you reach a wifi location. That way you do not spend data on your contract.',
+              'videos_waiting_subtitle'.tr,
               style: AppTheme().smallParagraphRegularText.copyWith(
                     color: AppTheme().greyScale0,
                   ),

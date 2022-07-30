@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/widgets/avatar_image.dart';
 import '../../../core/utils/router/app_navigator.dart';
@@ -82,28 +83,32 @@ class _MyProfilePageState extends State<MyProfilePage> {
                                           height: 80.h,
                                         ),
                                         buildProfileButton(
-                                          'Edit Profile',
+                                          'my_profile_page_edit_profile_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel
                                                 .routeToEditProfile(context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'Remove profile',
+                                          'my_profile_page_remove_profile_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel
                                                 .routeToDeleteAccount(context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'Change Email',
+                                          'my_profile_page_change_email_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel
                                                 .routeToChangeEmail(context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'Change Password',
+                                          'my_profile_page_change_password_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel
                                                 .routeToChangePassword(context);

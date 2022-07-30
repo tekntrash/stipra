@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/data/models/search_dto_model.dart';
@@ -79,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
                               Expanded(
                                 child: FloatingSearchBar(
                                   controller: floatingSearchBarController,
-                                  hint: 'Search',
+                                  hint: 'search_page_search_button_hint'.tr,
                                   scrollPadding:
                                       EdgeInsets.only(top: 18.h, bottom: 56),
                                   transitionDuration:
@@ -199,7 +200,7 @@ class _SearchPageState extends State<SearchPage> {
                                       padding:
                                           EdgeInsets.symmetric(vertical: 10.h),
                                       child: Text(
-                                        'Earn',
+                                        'search_page_group_title_earn'.tr,
                                         style: AppTheme()
                                             .largeParagraphBoldText
                                             .copyWith(
@@ -246,7 +247,7 @@ class _SearchPageState extends State<SearchPage> {
                                 margin: EdgeInsets.only(left: 15.w),
                                 padding: EdgeInsets.symmetric(vertical: 10.h),
                                 child: Text(
-                                  'Redeem',
+                                  'search_page_group_title_redeem'.tr,
                                   style: AppTheme()
                                       .largeParagraphBoldText
                                       .copyWith(

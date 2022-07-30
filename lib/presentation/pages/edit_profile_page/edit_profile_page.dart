@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:stacked/stacked.dart';
 import '../../widgets/country_selector/country_selector_button.dart';
@@ -60,8 +61,8 @@ class EditProfilePageState extends State<EditProfilePage> {
                         ),
                         fieldBuilder(
                           validatorModel: viewModel.address,
-                          text: 'Address',
-                          hintText: 'Enter your address',
+                          text: 'change_your_profile_field_title_address'.tr,
+                          hintText: 'change_your_profile_field_hint_address'.tr,
                         ),
                         SizedBox(
                           height: 20.h,
@@ -69,6 +70,7 @@ class EditProfilePageState extends State<EditProfilePage> {
                         Container(
                           margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
                           child: CountrySelectorButton(
+                            locale: Get.locale?.languageCode ?? 'en',
                             autoValidateMode: AutovalidateMode.disabled,
                             selectorConfig: SelectorConfig(
                               selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
@@ -92,7 +94,8 @@ class EditProfilePageState extends State<EditProfilePage> {
                                   fontSize:
                                       AppTheme().paragraphSemiBoldText.fontSize,
                                 ),
-                            hintText: 'Select a country',
+                            hintText:
+                                'change_your_profile_field_hint_country'.tr,
                           ),
                         ),
                         SizedBox(
@@ -100,16 +103,16 @@ class EditProfilePageState extends State<EditProfilePage> {
                         ),
                         fieldBuilder(
                           validatorModel: viewModel.city,
-                          text: 'City',
-                          hintText: 'Enter your city',
+                          text: 'change_your_profile_field_title_city'.tr,
+                          hintText: 'change_your_profile_field_hint_city'.tr,
                         ),
                         SizedBox(
                           height: 20.h,
                         ),
                         fieldBuilder(
                           validatorModel: viewModel.zipcode,
-                          text: 'Zipcode',
-                          hintText: 'Enter your zipcode',
+                          text: 'change_your_profile_field_title_zipcode'.tr,
+                          hintText: 'change_your_profile_field_hint_zipcode'.tr,
                         ),
                         SizedBox(
                           height: 20.h,
@@ -120,21 +123,23 @@ class EditProfilePageState extends State<EditProfilePage> {
                             SystemChannels.textInput
                                 .invokeMethod('TextInput.hide');
                           },
-                          title: 'Gender',
-                          unSelectedTitle: 'Select your gender',
+                          title: 'change_your_profile_field_title_gender'.tr,
+                          unSelectedTitle:
+                              'change_your_profile_field_hint_gender'.tr,
                           selected: viewModel.gender.textController.text,
                           onChanged: (value) {
                             viewModel.gender.textController.text = value;
                             viewModel.gender.validate();
                           },
-                          items: ['Male', 'Female'],
+                          items: ['gender_male'.tr, 'gender_female'.tr],
                           errorNotifier: viewModel.gender.errorNotifier,
                         ),
                         SizedBox(
                           height: 20.h,
                         ),
                         DateField(
-                          title: 'Date of birth',
+                          title: 'change_your_profile_field_title_date_of_birth'
+                              .tr,
                           initialDate: viewModel.convertStringToDate(
                               viewModel.dateofbirth.textController.text),
                           onDateChange: (p0) {

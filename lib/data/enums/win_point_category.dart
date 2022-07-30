@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class _WinPointCategoryExtension {
   static List<String> categories = [
     "All",
@@ -73,6 +75,6 @@ enum WinPointDirection {
 
 extension WinPointCategoryExtension on WinPointCategory {
   String get getCategoryName {
-    return _WinPointCategoryExtension.categories[this.index];
+    return 'earn_page_category_${name.toLowerCase()}'.tr;
   }
 }

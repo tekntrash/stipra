@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/widgets/avatar_image.dart';
 import '../../../core/utils/router/app_navigator.dart';
@@ -82,38 +83,43 @@ class _ProfilePageState extends State<ProfilePage> {
                                           height: 80.h,
                                         ),
                                         buildProfileButton(
-                                          'My Profile',
+                                          'profile_page_my_profile_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel.routeToMyProfile(context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'Privacy',
+                                          'profile_page_privacy_button_text'.tr,
                                           onTap: () {
                                             viewModel.routeToPrivacy(context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'My Earnings',
+                                          'profile_page_my_earnings_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel.routeToProductsConsumed(
                                                 context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'My Level',
+                                          'profile_page_my_level_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel.routeToLevelPage(context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'My Redeems',
+                                          'profile_page_my_redeems_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel.routeToMyTrades(context);
                                           },
                                         ),
                                         buildProfileButton(
-                                          'Videos Waiting',
+                                          'profile_page_videos_waiting_button_text'
+                                              .tr,
                                           onTap: () {
                                             viewModel
                                                 .routeToVideosWaiting(context);
@@ -124,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           onTap: () {},
                                         ),*/
                                         buildProfileButton(
-                                          'Logout',
+                                          'profile_page_logout_button_text'.tr,
                                           onTap: () {
                                             viewModel.logout(context);
                                             setState(() {});

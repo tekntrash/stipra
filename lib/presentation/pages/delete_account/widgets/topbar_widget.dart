@@ -36,7 +36,7 @@ class _TopBarWidget extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Text(
-                    'Remove your profile',
+                    'remove_profile_title'.tr,
                     style: AppTheme().smallParagraphMediumText.copyWith(
                           fontSize: 26,
                           color: AppTheme().blackColor,
@@ -49,7 +49,7 @@ class _TopBarWidget extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Text(
-                    'This will remove all your data in Stipra. Warning! This is irreversible. If that\'s ok insert please your password',
+                    'remove_profile_subtitle'.tr,
                     style: AppTheme().smallParagraphMediumText.copyWith(
                           color: AppTheme().blackColor,
                         ),

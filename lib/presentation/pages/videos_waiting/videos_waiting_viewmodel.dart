@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart' show Right;
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';

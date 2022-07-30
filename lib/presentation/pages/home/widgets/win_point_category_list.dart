@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 
 import '../../../../data/models/offer_model.dart';
@@ -77,7 +78,8 @@ class _WinPointCategoryListState extends State<WinPointCategoryList> {
                       children: [
                         Flexible(
                           child: Text(
-                            'Earn', //'Products on ${selectedCategory.getCategoryName}',
+                            'earn_page_title'
+                                .tr, //'Products on ${selectedCategory.getCategoryName}',
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),
@@ -155,9 +157,10 @@ class _WinPointCategoryListState extends State<WinPointCategoryList> {
                                     const SizedBox(width: 16),
                                     Text(
                                       item == 'outside'
-                                          ? 'Outside my area'
+                                          ? 'earn_page_filter_outside_my_area'
+                                              .tr
                                           : item == 'expired'
-                                              ? 'Expired'
+                                              ? 'earn_page_filter_expired'.tr
                                               : item,
                                       style: const TextStyle(
                                         fontSize: 14,
@@ -224,7 +227,7 @@ class _WinPointCategoryListState extends State<WinPointCategoryList> {
                       height: 35.h,
                       child: Center(
                         child: Text(
-                          'Show with',
+                          'earn_page_filter_title'.tr,
                           style:
                               AppTheme().extraSmallParagraphMediumText.copyWith(
                                     color: AppTheme().greyScale2,

@@ -30,7 +30,7 @@ class ConfirmButton extends StatelessWidget {
                   ),
                 )
               : Text(
-                  'Confirm',
+                  'change_email_confirm_button_text'.tr,
                   style: AppTheme().buttonText.copyWith(color: Colors.white),
                 ),
         ),

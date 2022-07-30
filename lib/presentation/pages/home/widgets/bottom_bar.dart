@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../../../core/utils/router/app_navigator.dart';
 import '../../../../core/utils/router/app_router.dart';
@@ -52,7 +53,7 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Expanded(
                         child: Text(
-                          'Earn',
+                          'bottom_navigation_bar_earn_label'.tr,
                           style: AppTheme()
                               .extraSmallParagraphRegularText
                               .copyWith(
@@ -81,7 +82,7 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Expanded(
                         child: Text(
-                          'Redeem',
+                          'bottom_navigation_bar_redeem_label'.tr,
                           style: AppTheme()
                               .extraSmallParagraphRegularText
                               .copyWith(
@@ -102,7 +103,7 @@ class _BottomBarState extends State<BottomBar> {
                 child: Container(
                   padding: EdgeInsets.only(top: 18),
                   child: Text(
-                    'Make video',
+                    'bottom_navigation_bar_make_video_label'.tr,
                     style: AppTheme().extraSmallParagraphRegularText.copyWith(
                           color: AppTheme().darkPrimaryColor,
                           letterSpacing: 0.25,
@@ -124,7 +125,7 @@ class _BottomBarState extends State<BottomBar> {
                       ),
                       Expanded(
                         child: Text(
-                          'Profile',
+                          'bottom_navigation_bar_profile_label'.tr,
                           style: AppTheme()
                               .extraSmallParagraphRegularText
                               .copyWith(
@@ -156,7 +157,7 @@ class _BottomBarState extends State<BottomBar> {
                     ),
                     Expanded(
                       child: Text(
-                        'Info',
+                        'bottom_navigation_bar_info_label'.tr,
                         style:
                             AppTheme().extraSmallParagraphRegularText.copyWith(
                                   color: getSelectedColor(3),

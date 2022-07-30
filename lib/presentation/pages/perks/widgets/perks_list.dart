@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/presentation/pages/perk_detail/perk_detail_page.dart';
@@ -26,7 +27,7 @@ class PerksList extends StatelessWidget {
         ? SliverToBoxAdapter(
             child: Center(
               child: Text(
-                'No redeem available',
+                'redeem_page_no_redeem'.tr,
                 style: AppTheme().paragraphSemiBoldText.copyWith(
                       color: AppTheme().greyScale0,
                     ),
@@ -168,7 +169,7 @@ class PerksList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Starting from',
+                                'redeem_page_starting_from'.tr,
                                 style: AppTheme()
                                     .extraSmallParagraphRegularText
                                     .copyWith(

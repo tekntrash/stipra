@@ -89,7 +89,10 @@ class _TradeItemsList extends StatelessWidget {
                       height: 2.h,
                     ),
                     Text(
-                      'Level ${tradeItem.level.toString()}',
+                      'search_page_redeem_level'
+                          .trParams({'level': tradeItem.level.toString()}),
+
+                      //'Level ${tradeItem.level.toString()}',
                       style: AppTheme().extraSmallParagraphRegularText.copyWith(
                             fontSize: 13,
                             color: AppTheme().greyScale0,

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stipra/core/services/scanned_video_service.dart';
@@ -68,7 +69,7 @@ class _VideosWaitingListState extends State<VideosWaitingList>
         ? SliverToBoxAdapter(
             child: Center(
               child: Text(
-                'All of your videos uploaded!',
+                'videos_waiting_no_waiting_videos'.tr,
                 style: AppTheme().paragraphSemiBoldText.copyWith(
                       color: AppTheme().greyScale0,
                     ),
@@ -279,7 +280,8 @@ class _VideosWaitingListState extends State<VideosWaitingList>
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        'Scanned on:',
+                                        'videos_waiting_item_scanned_on_text'
+                                            .tr,
                                         style: AppTheme()
                                             .smallParagraphSemiBoldText
                                             .copyWith(

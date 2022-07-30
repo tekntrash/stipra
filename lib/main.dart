@@ -5,7 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/models/error_model.dart';
+import 'data/messages/messages.dart';
 import 'domain/repositories/local_data_repository.dart';
 import 'presentation/pages/splash/splash_page.dart';
 import 'shared/app_theme.dart';
@@ -33,6 +35,7 @@ Future<void> main() async {
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await di.init();
+    await Get.updateLocale(Get.deviceLocale ?? Locale('en', 'US'));
     FlutterError.onError = (FlutterErrorDetails details) {
       FlutterError.presentError(details);
       di.locator<LocalDataRepository>().logError(
@@ -70,7 +73,10 @@ class StipraApplication extends StatelessWidget {
       designSize: Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: () => MaterialApp(
+      builder: () => GetMaterialApp(
+        translations: Messages(),
+        locale: Get.locale,
+        fallbackLocale: Locale('en', 'US'),
         debugShowCheckedModeBanner: false,
         home: SplashPage(),
         navigatorKey: AppRouter().mainNavigatorKey,

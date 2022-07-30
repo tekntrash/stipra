@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
@@ -11,6 +12,7 @@ import 'package:stipra/presentation/pages/perk_detail/perk_detail_page.dart';
 
 import '../../../../../data/models/offer_model.dart';
 import '../../../../../shared/app_theme.dart';
+import '../../../widgets/html_converter.dart';
 
 /// Create UI for my trades as list
 /// And building them with the list given as parameter
@@ -28,7 +30,7 @@ class MyTradesList extends StatelessWidget {
         ? SliverToBoxAdapter(
             child: Center(
               child: Text(
-                'No redeem available',
+                'my_redeems_no_redeem'.tr,
                 style: AppTheme().paragraphSemiBoldText.copyWith(
                       color: AppTheme().greyScale0,
                     ),
@@ -126,7 +128,9 @@ class MyTradesList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${myTrades[index].points} Points redeemed ',
+                                'my_redeems_redeemed_points_title'.trParams({
+                                  'points': myTrades[index].points.toString()
+                                }),
                                 style: AppTheme().paragraphBoldText.copyWith(
                                       color: AppTheme().greyScale0,
                                     ),
@@ -134,7 +138,20 @@ class MyTradesList extends StatelessWidget {
                               SizedBox(
                                 height: 12,
                               ),
-                              Text(
+                              HTMLConverter.toRichText(
+                                context,
+                                '${myTrades[index].description}',
+                                textAlign: TextAlign.left,
+                                defaultTextStyle: AppTheme()
+                                    .smallParagraphRegularText
+                                    .copyWith(
+                                      color: AppTheme().greyScale2,
+                                      decoration: TextDecoration.none,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                maxLines: 2,
+                              ),
+                              /*Text(
                                 '${myTrades[index].description}',
                                 style: AppTheme()
                                     .smallParagraphRegularText
@@ -143,7 +160,7 @@ class MyTradesList extends StatelessWidget {
                                     ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                              ),
+                              ),*/
                             ],
                           ),
                           /*RichText(
@@ -173,7 +190,7 @@ class MyTradesList extends StatelessWidget {
                               Container(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Redeemed on:',
+                                  'my_redeems_redeemed_on'.tr,
                                   style: AppTheme()
                                       .extraSmallParagraphSemiBoldText
                                       .copyWith(

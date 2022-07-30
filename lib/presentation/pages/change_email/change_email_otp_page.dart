@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'change_email_otp_viewmodel.dart';
 import '../sign/otp_verify_page/otp_verify_page.dart';
@@ -84,7 +85,8 @@ class ChangeEmailOtpPage extends StatelessWidget {
                                                 children: [
                                                   TextSpan(
                                                     text:
-                                                        'Didn\'t receive the code? ',
+                                                        'change_email_otp_didnt_receive_code'
+                                                            .tr,
                                                     style: TextStyle(
                                                       color:
                                                           AppTheme().blackColor,
@@ -92,7 +94,9 @@ class ChangeEmailOtpPage extends StatelessWidget {
                                                     ),
                                                   ),
                                                   TextSpan(
-                                                    text: 'RESEND',
+                                                    text:
+                                                        'change_email_otp_resend'
+                                                            .tr,
                                                     style: TextStyle(
                                                       color: AppTheme()
                                                           .primaryColor,
@@ -113,7 +117,8 @@ class ChangeEmailOtpPage extends StatelessWidget {
                                                     children: [
                                                       TextSpan(
                                                         text:
-                                                            'Please wait before resending the code ',
+                                                            'change_email_otp_resend_wait'
+                                                                .tr,
                                                         style: TextStyle(
                                                           color: AppTheme()
                                                               .blackColor,
@@ -162,7 +167,8 @@ class ChangeEmailOtpPage extends StatelessWidget {
                           Container(
                             margin: EdgeInsets.only(bottom: 10.h),
                             alignment: Alignment.bottomCenter,
-                            child: Text('Stipra all rights reserved'),
+                            child:
+                                Text('change_email_otp_all_right_reserved'.tr),
                           ),
                         ],
                       ),

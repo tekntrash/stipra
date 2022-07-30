@@ -2,6 +2,7 @@
 //* It is providing a text field to write something or validate something.
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 // ignore: implementation_imports
 import 'package:intl_phone_number_input/src/models/country_list.dart';
 // ignore: implementation_imports
@@ -291,7 +292,7 @@ class _InputWidgetView
             child: Container(
               padding: EdgeInsets.only(bottom: 5, left: 5),
               child: ClassicText(
-                text: 'Country',
+                text: 'change_your_profile_field_title_country'.tr,
                 style: AppTheme().smallParagraphMediumText.copyWith(
                       fontSize: AppTheme().paragraphSemiBoldText.fontSize,
                     ),

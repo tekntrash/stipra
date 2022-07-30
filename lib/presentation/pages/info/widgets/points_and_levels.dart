@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
 import 'package:stipra/presentation/pages/my_level/my_level_page.dart';
 import 'package:stipra/shared/app_theme.dart';
@@ -35,7 +36,7 @@ class _PointsAndLevelsState extends State<PointsAndLevels> {
               Navigator.of(context).pop();
             },
           ),
-          title: Text('Points and levels'),
+          title: Text('points_and_levels_title'.tr),
           centerTitle: true,
           actions: [],
         ),
@@ -58,7 +59,7 @@ class _PointsAndLevelsState extends State<PointsAndLevels> {
                     vertical: 20,
                   ),
                   child: Text(
-                    'Make videos to earn points and trade them for perks.',
+                    'points_and_levels_text'.tr,
                     style: AppTheme().smallParagraphRegularText,
                   ),
                 ),
@@ -71,29 +72,29 @@ class _PointsAndLevelsState extends State<PointsAndLevels> {
                     right: 20,
                   ),
                   child: Text(
-                    'Some perks however require a minimum amount of points to be traded. For that, Stipra has 4 levels based on the amount of points you collected: Grasshopper, Frog, Snake, and Eagle',
+                    'points_and_levels_sub_text'.tr,
                     style: AppTheme().smallParagraphRegularText,
                   ),
                 ),
                 buildLevel(
                   points: '0',
                   imageUrl: 'grasshopper.jpeg',
-                  text: 'Grasshopper',
+                  text: 'my_level_level_name_grasshopper'.tr,
                 ),
                 buildLevel(
                   points: '20.000',
                   imageUrl: 'frog.jpeg',
-                  text: 'Frog',
+                  text: 'my_level_level_name_frog'.tr,
                 ),
                 buildLevel(
                   points: '60.000',
                   imageUrl: 'snake.jpeg',
-                  text: 'Snake',
+                  text: 'my_level_level_name_snake'.tr,
                 ),
                 buildLevel(
                   points: '100.000',
                   imageUrl: 'eagle.jpeg',
-                  text: 'Eagle',
+                  text: 'my_level_level_name_eagle'.tr,
                 ),
               ],
             ),
@@ -138,7 +139,9 @@ class _PointsAndLevelsState extends State<PointsAndLevels> {
           style: AppTheme().smallParagraphRegularText,
         ),
         subtitle: Text(
-          'You have collected at least $points points',
+          'points_and_levels_collected'.trParams({
+            'points': points,
+          }),
           style: AppTheme().extraSmallParagraphRegularText,
         ),
         trailing: Container(

@@ -20,7 +20,7 @@ AppBar _buildTopBar(BuildContext context) {
       },
     ),
     title: Text(
-      'My profile',
+      'my_profile_page_title'.tr,
       style: AppTheme().paragraphSemiBoldText.copyWith(
             color: Colors.white,
           ),

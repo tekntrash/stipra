@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/contact/contact_viewmodel.dart';
 
@@ -37,7 +38,7 @@ class ContactPage extends StatelessWidget {
                   Navigator.of(context).pop();
                 },
               ),
-              title: Text('Contact'),
+              title: Text('contact_title'.tr),
               centerTitle: true,
               actions: [],
             ),
@@ -60,24 +61,24 @@ class ContactPage extends StatelessWidget {
                       ),
                       fieldBuilder(
                         validatorModel: viewModel.name,
-                        text: 'Name',
-                        hintText: 'Enter your name',
+                        text: 'contact_title_name_field_title'.tr,
+                        hintText: 'contact_title_name_field_hint'.tr,
                       ),
                       SizedBox(
                         height: 20.h,
                       ),
                       fieldBuilder(
                         validatorModel: viewModel.email,
-                        text: 'Email',
-                        hintText: 'Enter your email',
+                        text: 'contact_title_email_field_title'.tr,
+                        hintText: 'contact_title_email_field_hint'.tr,
                       ),
                       SizedBox(
                         height: 20.h,
                       ),
                       fieldBuilder(
                         validatorModel: viewModel.content,
-                        text: 'Message',
-                        hintText: 'Enter your message',
+                        text: 'contact_title_message_field_title'.tr,
+                        hintText: 'contact_title_message_field_hint'.tr,
                         maxLines: null,
                       ),
                       SizedBox(

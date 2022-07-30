@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 
 import '../../../../data/enums/trade_point_category.dart';
@@ -50,7 +51,8 @@ class PerksCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'Redeem', //'Products on ${selectedCategory.getCategoryName}',
+                            'redeem_page_title'
+                                .tr, //'Products on ${selectedCategory.getCategoryName}',
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),
@@ -89,7 +91,7 @@ class PerksCategoryList extends StatelessWidget {
                       height: 35.h,
                       child: Center(
                         child: Text(
-                          'Include expired',
+                          'redeem_page_include_expired'.tr,
                           style:
                               AppTheme().extraSmallParagraphMediumText.copyWith(
                                     color: selectedExpire

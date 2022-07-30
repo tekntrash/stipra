@@ -32,7 +32,7 @@ class _SendButton extends StatelessWidget {
                   ),
                 )
               : Text(
-                  'Send',
+                  'contact_title_send_button_text'.tr,
                   style: AppTheme().buttonText.copyWith(color: Colors.white),
                 ),
         ),

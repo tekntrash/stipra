@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/widgets/theme_button.dart';
 
@@ -179,8 +180,10 @@ class _VideosWaitingPageState extends State<VideosWaitingPage>
                                             builder: (context, value, child) {
                                               return Text(
                                                 value.length == 0
-                                                    ? 'Upload now'
-                                                    : 'Cancel',
+                                                    ? 'videos_waiting_upload_now_button_title'
+                                                        .tr
+                                                    : 'videos_waiting_cancel_button_title'
+                                                        .tr,
                                                 style: AppTheme()
                                                     .paragraphSemiBoldText
                                                     .copyWith(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stipra/shared/app_theme.dart';
 
 import '../../../widgets/local_image_box.dart';
@@ -26,7 +27,7 @@ class WhatIsStipraPage extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-          title: Text('What is Stipra'),
+          title: Text('what_is_stipra_title'.tr),
           centerTitle: true,
           actions: [],
         ),
@@ -49,7 +50,8 @@ class WhatIsStipraPage extends StatelessWidget {
                     vertical: 20,
                   ),
                   child: Text(
-                    'Give your trash meaning! Stipra is an innovative system that allows you to receive points for each household consumer product that you normally throw out after you use.\n\nFor that, you download the app, make a video of your garbage as you throw the products in each bin, and receive points after they are recognized.\n\nStipra accepts products you use in your home as long as they have a barcode: a shampoo, a sardine can, a wine bottle, a beer can, a canned food ...\n\nAll products must have been consumed by you and can be thrown in any bin as long as it is located in the geographical area the manufacturer set up.\n\nFor that it is necessary that you have the GPS activated so that the system identifies the location. And, if you can throw them in the correct recycling bin (you know: plastic in yellow, glass in green ...) even better.',
+                    'what_is_stipra_text'.tr,
+                    //'Give your trash meaning! Stipra is an innovative system that allows you to receive points for each household consumer product that you normally throw out after you use.\n\nFor that, you download the app, make a video of your garbage as you throw the products in each bin, and receive points after they are recognized.\n\nStipra accepts products you use in your home as long as they have a barcode: a shampoo, a sardine can, a wine bottle, a beer can, a canned food ...\n\nAll products must have been consumed by you and can be thrown in any bin as long as it is located in the geographical area the manufacturer set up.\n\nFor that it is necessary that you have the GPS activated so that the system identifies the location. And, if you can throw them in the correct recycling bin (you know: plastic in yellow, glass in green ...) even better.',
                     style: AppTheme().smallParagraphRegularText,
                   ),
                 ),
@@ -71,7 +73,7 @@ class WhatIsStipraPage extends StatelessWidget {
                   ),
                   padding: EdgeInsets.only(top: 20, bottom: 20),
                   child: Text(
-                    'Each picture or video is immediately analyzed by our Artificial Intelligence system and, once the products are identified, it gives you the corresponding points and you get an email.\n\nAs for the points, you can exchange them for products, trips, gifts, promotions...: in your client area you can see how many points you have and redeem them.',
+                    'what_is_stipra_below_text'.tr,
                     style: AppTheme().smallParagraphRegularText,
                   ),
                 ),

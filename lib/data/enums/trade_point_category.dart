@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class _TradePointCategoryExtension {
   static List<String> categories = [
     "All",
@@ -31,6 +33,7 @@ enum TradePointDirection {
 
 extension TradePointCategoryExtension on TradePointCategory {
   String get getCategoryName {
-    return _TradePointCategoryExtension.categories[this.index];
+    return 'redeem_page_category_${name.toLowerCase()}'.tr;
+    //return _TradePointCategoryExtension.categories[this.index];
   }
 }

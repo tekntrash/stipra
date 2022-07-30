@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/my_level/my_level_viewmodel.dart';
 import 'package:stipra/presentation/widgets/avatar_image.dart';
@@ -63,7 +64,7 @@ class _MyLevelPageState extends State<MyLevelPage> {
                         Navigator.of(context).pop();
                       },
                     ),
-                    title: Text('My Level'),
+                    title: Text('my_level_title'.tr),
                     centerTitle: true,
                     actions: [],
                   ),
@@ -102,7 +103,7 @@ class _MyLevelPageState extends State<MyLevelPage> {
                                         SizedBox(
                                           height: 40,
                                         ),
-                                        Text('Other levels',
+                                        Text('my_level_other_levels'.tr,
                                             style: AppTheme()
                                                 .smallParagraphSemiBoldText),
                                         SizedBox(
@@ -310,7 +311,12 @@ class _MyLevelPageState extends State<MyLevelPage> {
           style: AppTheme().smallParagraphRegularText,
         ),
         subtitle: Text(
-          'You have to collect ${maxPoint - int.parse(currentPoints ?? '0')} points to reach this level',
+          'my_level_progression_subtitle_text'.trParams(
+            {
+              'points': '${maxPoint - int.parse(currentPoints ?? '0')}',
+            },
+          ),
+          //'You have to collect ${maxPoint - int.parse(currentPoints ?? '0')} points to reach this level',
           style: AppTheme().extraSmallParagraphRegularText,
         ),
         trailing: Container(
@@ -368,11 +374,22 @@ class _MyLevelPageState extends State<MyLevelPage> {
           ],
         ),
         Text(
-          '${int.parse(currentPoints ?? '0')} Points',
+          'my_level_my_points'.trParams(
+            {
+              'points': '${int.parse(currentPoints ?? '0')}',
+            },
+          ),
+          //'${int.parse(currentPoints ?? '0')} Points',
           style: AppTheme().smallParagraphRegularText,
         ),
         Text(
-          'You need ${(maxPoint - int.parse(currentPoints ?? '0')).toInt()} Points to become ${getLevelName('${maxPoint.toInt()}')}',
+          'my_level_next_level_points_description'.trParams(
+            {
+              'points': '${maxPoint - int.parse(currentPoints ?? '0')}',
+              'levelName': '${getLevelName('${maxPoint.toInt()}')}'
+            },
+          ),
+          //'You need ${(maxPoint - int.parse(currentPoints ?? '0')).toInt()} Points to become ${getLevelName('${maxPoint.toInt()}')}',
           style: AppTheme().extraSmallParagraphRegularText,
         ),
       ],
@@ -382,14 +399,14 @@ class _MyLevelPageState extends State<MyLevelPage> {
   String getLevelName(String? points) {
     var level = '';
     if (points == null)
-      level = 'Grasshopper';
+      level = 'my_level_level_name_grasshopper'.tr;
     else if (int.parse(points) < 20000)
-      level = 'Grasshopper';
+      level = 'my_level_level_name_grasshopper'.tr;
     else if (int.parse(points) < 59999)
-      level = 'Frog';
+      level = 'my_level_level_name_frog'.tr;
     else if (int.parse(points) < 99999)
-      level = 'Snake';
-    else if (int.parse(points) >= 100000) return 'Eagle';
+      level = 'my_level_level_name_snake'.tr;
+    else if (int.parse(points) >= 100000) return 'my_level_level_name_eagle'.tr;
     return level;
   }
 

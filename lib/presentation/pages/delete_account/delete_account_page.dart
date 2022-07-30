@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/delete_account/delete_account_viewmodel.dart';
 import 'package:stipra/presentation/widgets/custom_button.dart';
@@ -53,8 +54,8 @@ class DeleteAccountPageState extends State<DeleteAccountPage> {
                         FieldBuilderAuto(
                           controller: viewModel.oldPassword.textController,
                           validator: viewModel.oldPassword.validate,
-                          text: 'Current Password',
-                          hint: 'Password',
+                          text: 'remove_profile_current_password_title'.tr,
+                          hint: 'remove_profile_current_password_hint'.tr,
                           obscureVisibility: true,
                           margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
                           autovalidateMode: true,

@@ -36,7 +36,7 @@ class TopBarWidget extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Text(
-                    'Change your password',
+                    'change_password_title'.tr,
                     style: AppTheme().smallParagraphMediumText.copyWith(
                           fontSize: 26,
                           color: AppTheme().blackColor,
@@ -49,7 +49,7 @@ class TopBarWidget extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Text(
-                    'Enter your old password and new password to change.',
+                    'change_password_subtitle'.tr,
                     style: AppTheme().smallParagraphMediumText.copyWith(
                           color: AppTheme().blackColor,
                         ),

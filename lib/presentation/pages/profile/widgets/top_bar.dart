@@ -22,7 +22,7 @@ AppBar _buildTopBar(BuildContext context) {
         //Navigator.of(context).pop();
       },
     ),
-    title: Text('Profile'),
+    title: Text('profile_page_profile_title'.tr),
     centerTitle: true,
     actions: [
       /*Container(

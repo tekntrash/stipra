@@ -17,11 +17,11 @@ class ProductConsumed extends Equatable {
   final String? latitude;
   final String? longitude;
   final String? base64;
-  final String? bincolor;
+  final dynamic bincolor;
   final dynamic points;
   final dynamic totalproduct;
   final String? dateTaken;
-  final String? barcode;
+  final dynamic barcode;
 
   @override
   List<Object?> get props => [

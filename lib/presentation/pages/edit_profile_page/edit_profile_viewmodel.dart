@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import '../../../data/models/validator_model.dart';
 
@@ -47,9 +48,9 @@ class EditProfileViewModel extends BaseViewModel {
       city.textController.text = profile.city ?? '';
       zipcode.textController.text = profile.zipcode ?? '';
       gender.textController.text = profile.gender == 'M'
-          ? 'Male'
+          ? 'gender_male'.tr
           : profile.gender == 'F'
-              ? 'Female'
+              ? 'gender_female'.tr
               : '';
       dateofbirth.textController.text = convertDateToString(
           convertStringToDateOneByOne(
@@ -89,7 +90,7 @@ class EditProfileViewModel extends BaseViewModel {
           dobday: '${dateofBirthDate.day}',
           dobmonth: '${dateofBirthDate.month}',
           dobyear: '${dateofBirthDate.year}',
-          gender: gender.textController.text == 'Male' ? 'M' : 'F',
+          gender: gender.textController.text == 'gender_male'.tr ? 'M' : 'F',
         ),
       );
       if (result is Right) {

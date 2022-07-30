@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import '../forgot_password/forgot_password_viewmodel.dart';
 import '../../../widgets/custom_button.dart';
@@ -55,8 +56,8 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
                         FieldBuilderAuto(
                           controller: viewModel.oldPassword.textController,
                           validator: viewModel.oldPassword.validate,
-                          text: 'Old Password',
-                          hint: 'Old Password',
+                          text: 'change_password_current_password_title'.tr,
+                          hint: 'change_password_current_password_title'.tr,
                           obscureVisibility: true,
                           margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
                           autovalidateMode: true,
@@ -76,8 +77,8 @@ class ChangePasswordPageState extends State<ChangePasswordPage> {
                           controller: viewModel.newPassword.textController,
                           validator: viewModel.newPassword.validate,
                           obscureVisibility: true,
-                          text: 'New Password',
-                          hint: 'New Password',
+                          text: 'change_password_new_password_title'.tr,
+                          hint: 'change_password_new_password_title'.tr,
                           margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
                           autovalidateMode: true,
                           style: AppTheme().smallParagraphRegularText,

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/widgets/avatar_image.dart';
 import 'package:stipra/presentation/widgets/custom_load_indicator.dart';
@@ -86,7 +87,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
                                           height: 80.h,
                                         ),
                                         buildPrivacySwitch(
-                                          'Receive newsletter',
+                                          'privacy_receive_newsletter'.tr,
                                           (viewModel.isInited == true)
                                               ? (viewModel.privacyModel
                                                       .receivenewsletter ??
@@ -98,7 +99,7 @@ class _PrivacyPageState extends State<PrivacyPage> {
                                           },
                                         ),
                                         buildPrivacySwitch(
-                                          'Receive emails with points',
+                                          'privacy_receive_email'.tr,
                                           (viewModel.isInited == true)
                                               ? (viewModel.privacyModel
                                                       .receiveemailspoints ??
@@ -111,7 +112,8 @@ class _PrivacyPageState extends State<PrivacyPage> {
                                           },
                                         ),
                                         buildPrivacySwitch(
-                                          'Receive mobile notifications',
+                                          'privacy_receive_mobile_notification'
+                                              .tr,
                                           (viewModel.isInited == true)
                                               ? (viewModel.privacyModel
                                                       .receivenotifications ??

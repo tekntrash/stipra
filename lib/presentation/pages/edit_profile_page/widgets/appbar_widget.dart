@@ -20,7 +20,7 @@ AppBar _buildTopBar(BuildContext context) {
       },
     ),
     title: Text(
-      'Change your profile',
+      'change_your_profile_title'.tr,
       style: AppTheme().paragraphSemiBoldText.copyWith(
             color: Colors.black,
           ),

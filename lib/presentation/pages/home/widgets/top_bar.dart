@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:stipra/data/models/user_model.dart';
 import 'package:stipra/domain/repositories/data_repository.dart';
@@ -101,7 +102,8 @@ class _TopBarState extends State<TopBar> {
                                   snapshot.data?.userid != null) {
                                 if (snapshot.data?.points != null) {
                                   return Text(
-                                    '${snapshot.data?.points} Points',
+                                    'top_bar_points'.trParams(
+                                        {'points': '${snapshot.data?.points}'}),
                                     style: AppTheme()
                                         .extraSmallParagraphRegularText
                                         .copyWith(
@@ -110,7 +112,7 @@ class _TopBarState extends State<TopBar> {
                                   );
                                 } else {
                                   return Text(
-                                    '0 Points',
+                                    'top_bar_points'.trParams({'points': '0'}),
                                     style: AppTheme()
                                         .extraSmallParagraphRegularText
                                         .copyWith(
@@ -162,7 +164,7 @@ class _TopBarState extends State<TopBar> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Text(
-                                    'Sign in',
+                                    'top_bar_sign_in'.tr,
                                     style: AppTheme()
                                         .extraSmallParagraphRegularText
                                         .copyWith(
@@ -211,7 +213,7 @@ class _TopBarState extends State<TopBar> {
                     width: 15,
                   ),
                   Text(
-                    'Search',
+                    'search_button_hint_text'.tr,
                     style: AppTheme().extraSmallParagraphRegularText.copyWith(
                           color: AppTheme().greyScale2,
                         ),

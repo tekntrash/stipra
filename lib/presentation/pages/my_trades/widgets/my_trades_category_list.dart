@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/enums/win_point_category.dart';
 
 import '../../../../data/enums/trade_point_category.dart';
@@ -34,7 +35,7 @@ class MyTradesCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'My Redeems',
+                            'my_redeems_title'.tr,
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),

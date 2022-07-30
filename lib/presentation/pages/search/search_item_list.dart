@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import '../../../../../core/utils/router/app_navigator.dart';
@@ -38,7 +39,7 @@ class SearchItemList extends StatelessWidget {
                 ? SliverToBoxAdapter(
                     child: Center(
                       child: Text(
-                        'We couldn\'t find any results.',
+                        'search_page_no_result'.tr,
                         style: AppTheme().smallParagraphSemiBoldText.copyWith(
                               color: AppTheme().greyScale0,
                             ),
@@ -48,7 +49,7 @@ class SearchItemList extends StatelessWidget {
                 : SliverToBoxAdapter(
                     child: Center(
                       child: Text(
-                        'Start searching to find offers.',
+                        'search_page_start_search'.tr,
                         style: AppTheme().smallParagraphSemiBoldText.copyWith(
                               color: AppTheme().greyScale0,
                             ),
@@ -142,7 +143,10 @@ class SearchItemList extends StatelessWidget {
                       height: 2.h,
                     ),
                     Text(
-                      '${winItem.points.toString()} Points',
+                      'search_page_earn_points'
+                          .trParams({'points': winItem.points!.toString()}),
+
+                      //'${winItem.points.toString()} Points',
                       style: AppTheme().extraSmallParagraphRegularText.copyWith(
                             fontSize: 13,
                             color: AppTheme().greyScale0,

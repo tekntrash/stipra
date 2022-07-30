@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 class AutoValidatorModel {
   late TextEditingController textController;
@@ -17,7 +18,7 @@ class AutoValidatorModel {
 
   String? _isEmpty(String? text) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     }
     return null;
   }

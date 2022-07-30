@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stipra/shared/app_theme.dart';
 
 import '../../../widgets/local_image_box.dart';
@@ -27,7 +28,7 @@ class HowToMakeVideoPage extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-          title: Text('How to make a video'),
+          title: Text('how_to_make_a_video_title'.tr),
           centerTitle: true,
           actions: [],
         ),
@@ -50,7 +51,7 @@ class HowToMakeVideoPage extends StatelessWidget {
                     vertical: 20,
                   ),
                   child: Text(
-                    'To make a video of your general household trash, click on "Make Video" from the app and show the products as you dispose them in the recycling bins.\n\nYou can also do a video of just one product by clicking on the link at that product.\n\nThe video will start in 3 seconds and will run for up to 60 seconds. You can stop it at any time and choose whether or not you want to send it.\n\nEnsure you show the barcodes! Each time a barcode is seen, the app will tell you and will vibrate, then you can show the next product.\n\nThe video will only be sent for analysis when you reach a wifi: that way we will not spend your mobile data. \n\nOnce the video reaches our servers, it is analyzed and you will receive in minutes an email with your points.\n\nSee below an example of a video.',
+                    'how_to_make_a_video_text'.tr,
                     style: AppTheme().smallParagraphRegularText,
                   ),
                 ),

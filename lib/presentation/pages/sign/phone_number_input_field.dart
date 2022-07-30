@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 // ignore: implementation_imports
 import 'package:intl_phone_number_input/src/models/country_list.dart';
 // ignore: implementation_imports
@@ -420,7 +421,7 @@ class _InputWidgetView
           state.onChanged(text!);
           if (widget.phonevalidator.textController.text.isEmpty) {
             widget.phonevalidator.errorNotifier.value =
-                'This field can not be empty.';
+                'text_field_error_message'.tr;
             return false;
           }
           final errorResult = ValidatorService().phoneNumberWith1To12(

@@ -63,9 +63,9 @@ class _VideoWidgetState extends State<VideoWidget> {
               onPressed: () {
                 LockOverlayDialog().showCustomOverlay(
                   child: LocationPermissionDialog(
-                    descriptionText: 'Are you sure to delete this video?',
-                    button1Text: 'Delete',
-                    button2Text: 'Cancel',
+                    descriptionText: 'videos_delete_description'.tr,
+                    button1Text: 'video_delete_button_delete'.tr,
+                    button2Text: 'video_delete_button_cancel'.tr,
                     onButton1Tap: () async {
                       LockOverlayDialog().closeOverlay();
                       LockOverlay().showClassicLoadingOverlay();

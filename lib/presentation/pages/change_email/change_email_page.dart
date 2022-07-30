@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import '../sign/forgot_password/forgot_password_viewmodel.dart';
 import '../../widgets/custom_button.dart';
@@ -55,8 +56,8 @@ class ChangeEmailPageState extends State<ChangeEmailPage> {
                         FieldBuilderAuto(
                           controller: viewModel.oldEmail.textController,
                           validator: viewModel.oldEmail.validate,
-                          text: 'Current Email',
-                          hint: 'Current Email',
+                          text: 'change_email_current_email_title'.tr,
+                          hint: 'change_email_current_email_title'.tr,
                           isEnabled: false,
                           margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
                           autovalidateMode: true,
@@ -75,8 +76,8 @@ class ChangeEmailPageState extends State<ChangeEmailPage> {
                         FieldBuilderAuto(
                           controller: viewModel.newEmail.textController,
                           validator: viewModel.newEmail.validate,
-                          text: 'New Email',
-                          hint: 'Enter New Email',
+                          text: 'change_email_new_email_title'.tr,
+                          hint: 'change_email_new_email_hint'.tr,
                           margin: EdgeInsets.fromLTRB(20.w, 0, 20.w, 0),
                           autovalidateMode: true,
                           style: AppTheme().smallParagraphRegularText,

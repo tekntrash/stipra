@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../shared/app_theme.dart';
@@ -57,7 +58,7 @@ class DateField extends StatelessWidget {
                     pickerBackgroundColor: Colors.white,
                     initialValue: initialDate,
                     onDateChange: onDateChange,
-                    hintText: 'Select Date',
+                    hintText: 'change_your_profile_field_hint_date_of_birth'.tr,
                     fontSize: AppTheme().smallParagraphMediumText.fontSize!,
                   ),
                 ),

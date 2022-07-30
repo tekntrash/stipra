@@ -21,7 +21,7 @@ class TopBarWidget extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Text(
-                    'Change your profile',
+                    'change_your_profile_title'.tr,
                     style: AppTheme().smallParagraphMediumText.copyWith(
                           fontSize: 26,
                           color: AppTheme().blackColor,

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class _MyProductCategoryExtension {
   static List<String> categories = [
     "All",
@@ -33,7 +35,7 @@ enum MyProductCategory {
 enum MyProductOrder {
   barcode,
   label,
-  datetaken,
+  datetimetaken,
 }
 
 enum MyProductDirection {
@@ -49,6 +51,7 @@ extension MyProductCategoryExtension on MyProductCategory {
 
 extension MyProductOrderExtension on MyProductOrder {
   String get getOrderName {
-    return _MyProductCategoryExtension.orders[this.index];
+    return 'my_earnings_order_type_${name.toLowerCase()}'.tr;
+    //return _MyProductCategoryExtension.orders[this.index];
   }
 }

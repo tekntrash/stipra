@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import '../../../../../core/utils/router/app_navigator.dart';
 import '../../../../widgets/html_converter.dart';
@@ -30,7 +31,7 @@ class WinItemsList extends StatelessWidget {
             ? SliverToBoxAdapter(
                 child: Center(
                   child: Text(
-                    'No offers available',
+                    'earn_page_no_offers_available'.tr,
                     style: AppTheme().paragraphSemiBoldText.copyWith(
                           color: AppTheme().greyScale0,
                         ),
@@ -120,7 +121,8 @@ class WinItemsList extends StatelessWidget {
                       height: 2.h,
                     ),
                     Text(
-                      '${winItem.points.toString()} Points',
+                      'earn_page_product_points'
+                          .trParams({'points': winItem.points.toString()}),
                       style: AppTheme().extraSmallParagraphRegularText.copyWith(
                             fontSize: 13,
                             color: AppTheme().greyScale0,

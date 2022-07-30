@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 class ValidatorModel {
   late TextEditingController textController;
@@ -19,7 +20,7 @@ class ValidatorModel {
 
   bool isEmpty() {
     if (textController.text.isEmpty) {
-      errorNotifier.value = 'This field can not be empty.';
+      errorNotifier.value = 'text_field_error_message'.tr;
       return false;
     }
     errorNotifier.value = null;

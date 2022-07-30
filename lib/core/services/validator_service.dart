@@ -1,10 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ValidatorService {
   String? onlyNumber(String? text) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       RegExp regExp = new RegExp(r'[^0-9-]');
 
@@ -17,7 +18,7 @@ class ValidatorService {
 
   String? onlyDouble(String? text) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       RegExp regExp = new RegExp(r'[^0-9-.]');
 
@@ -30,7 +31,7 @@ class ValidatorService {
 
   String? onlyText(String? text, {int? maxLength}) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       RegExp regExp = new RegExp(r'[!@#<>?":_`~;[\]\\|=+) (*&^%0-9-]');
 
@@ -46,7 +47,7 @@ class ValidatorService {
 
   String? phoneNumber(String? text) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
       RegExp regExp = new RegExp(pattern);
@@ -60,7 +61,7 @@ class ValidatorService {
 
   String? onlyRequired(String? text, {int? maxLength}) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       if (maxLength != null) if (text!.length > maxLength) {
         return 'Please enter a $maxLength digit.';
@@ -71,7 +72,7 @@ class ValidatorService {
 
   String? passwordUpperLowerNumber(String? text, {int? minLength}) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       //Number contains at least one digit
       RegExp numberExp = new RegExp(r'(?=.*[0-9])');
@@ -98,7 +99,7 @@ class ValidatorService {
 
   String? email(String? text) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       final isEmailCorrect = EmailValidator.validate(text!);
 
@@ -113,7 +114,7 @@ class ValidatorService {
     String? text,
   ) {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       //await Future.delayed(Duration(milliseconds: 250));
 
@@ -130,7 +131,7 @@ class ValidatorService {
   Future<String?> validateEmailWhenStop(String? text,
       {required TextEditingController controller}) async {
     if (text?.isEmpty == true) {
-      return 'This field can not be empty.';
+      return 'text_field_error_message'.tr;
     } else {
       await Future.delayed(Duration(milliseconds: 100));
       if (text == controller.text) {

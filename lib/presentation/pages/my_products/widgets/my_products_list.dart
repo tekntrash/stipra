@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:stipra/core/utils/extensions/app_string_extension.dart';
 import 'package:stipra/core/utils/router/app_navigator.dart';
@@ -30,7 +31,7 @@ class MyProductsList extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    'You don\'t have any products yet. Make videos of your household garbage as you dispose of the individual items and you will earn points',
+                    'my_earnings_not_exists_text'.tr,
                     style: AppTheme().smallParagraphMediumText.copyWith(
                           color: AppTheme().greyScale0,
                         ),
@@ -58,7 +59,7 @@ class MyProductsList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Scan',
+                        'my_earnings_scan_button'.tr,
                         style: AppTheme().paragraphSemiBoldText.copyWith(),
                       ),
                       SizedBox(
@@ -181,7 +182,13 @@ class MyProductsList extends StatelessWidget {
                                 height: 12,
                               ),
                               Text(
-                                '${productsConsumed[index].points} Points per product',
+                                'my_earnings_subtitle_points'.trParams(
+                                  {
+                                    'points':
+                                        '${productsConsumed[index].points}',
+                                  },
+                                ),
+                                //'${productsConsumed[index].points} Points per product',
                                 style: AppTheme()
                                     .smallParagraphRegularText
                                     .copyWith(
@@ -195,7 +202,17 @@ class MyProductsList extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                'Consumed ${productsConsumed[index].totalproduct} ${productsConsumed[index].totalproduct == '1' ? 'time' : 'times'}',
+                                'my_earnings_subtitle_consumed_singular'
+                                    .trPluralParams(
+                                  'my_earnings_subtitle_consumed_plural',
+                                  int.parse(
+                                      productsConsumed[index].totalproduct),
+                                  {
+                                    'number':
+                                        '${productsConsumed[index].totalproduct}',
+                                  },
+                                ),
+                                //'Consumed ${productsConsumed[index].totalproduct} ${productsConsumed[index].totalproduct == '1' ? 'time' : 'times'}',
                                 style: AppTheme()
                                     .smallParagraphRegularText
                                     .copyWith(
@@ -215,7 +232,7 @@ class MyProductsList extends StatelessWidget {
                               Container(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Consumed on:',
+                                  'my_earnings_consumed_on'.tr,
                                   style: AppTheme()
                                       .extraSmallParagraphSemiBoldText
                                       .copyWith(

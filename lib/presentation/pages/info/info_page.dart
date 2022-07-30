@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/core/platform/app_info.dart';
 import '../../../core/utils/router/app_navigator.dart';
 import '../../../data/models/user_model.dart';
 import '../../../domain/repositories/data_repository.dart';
@@ -68,37 +70,52 @@ class _InfoPageState extends State<InfoPage> {
                                 child: Container(
                                   color: AppTheme().whiteColor,
                                   child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(
-                                        height: 30.h,
+                                      Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
+                                            height: 30.h,
+                                          ),
+                                          buildProfileButton(
+                                            'info_page_what_is_stipra'.tr,
+                                            onTap: () {
+                                              viewModel
+                                                  .routeToWhatIsStipra(context);
+                                            },
+                                          ),
+                                          buildProfileButton(
+                                            'info_page_how_to_make_a_video'.tr,
+                                            onTap: () {
+                                              viewModel.routeToHowToMakeVideo(
+                                                  context);
+                                            },
+                                          ),
+                                          buildProfileButton(
+                                            'info_page_points_and_levels'.tr,
+                                            onTap: () {
+                                              viewModel.routeToPointsAndLevels(
+                                                  context);
+                                            },
+                                          ),
+                                          buildProfileButton(
+                                            'info_page_contact'.tr,
+                                            onTap: () {
+                                              viewModel.routeToContact(context);
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                      buildProfileButton(
-                                        'What is Stipra',
-                                        onTap: () {
-                                          viewModel
-                                              .routeToWhatIsStipra(context);
-                                        },
-                                      ),
-                                      buildProfileButton(
-                                        'How to make a Video',
-                                        onTap: () {
-                                          viewModel
-                                              .routeToHowToMakeVideo(context);
-                                        },
-                                      ),
-                                      buildProfileButton(
-                                        'Points and levels',
-                                        onTap: () {
-                                          viewModel
-                                              .routeToPointsAndLevels(context);
-                                        },
-                                      ),
-                                      buildProfileButton(
-                                        'Contact',
-                                        onTap: () {
-                                          viewModel.routeToContact(context);
-                                        },
+                                      Container(
+                                        margin:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 32),
+                                        child: Text(
+                                          'Version: ${AppInfo.version}+${AppInfo.buildNumber}',
+                                          style: AppTheme()
+                                              .smallParagraphRegularText,
+                                        ),
                                       ),
                                     ],
                                   ),

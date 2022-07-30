@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:stipra/data/enums/my_product_category.dart';
 import 'package:stipra/presentation/widgets/selector_buttons/dropdown_selector_button.dart';
 
@@ -44,7 +45,7 @@ class MyProductsCategoryList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            'My Earnings',
+                            'my_earnings_title'.tr,
                             style: AppTheme().largeParagraphBoldText.copyWith(
                                   color: AppTheme().greyScale0,
                                 ),
@@ -104,7 +105,8 @@ class MyProductsCategoryList extends StatelessWidget {
                       height: 35.h,
                       child: Center(
                         child: Text(
-                          'Order by ${selectedOrder.getOrderName}',
+                          'my_earnings_order_by_text'
+                              .trParams({'type': selectedOrder.getOrderName}),
                           style:
                               AppTheme().extraSmallParagraphMediumText.copyWith(
                                     color: AppTheme().greyScale2,
