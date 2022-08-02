@@ -24,6 +24,7 @@ class LogService {
         '${locator<LocalDataRepository>().getUser().name} & ${locator<LocalDataRepository>().getUser().userid}',
         locator<LocalDataRepository>().getUser().alogin ?? 'Not logged',
         error,
+        true,
       );
       if (result is Right) {
         //

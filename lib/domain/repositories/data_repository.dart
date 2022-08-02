@@ -99,7 +99,7 @@ abstract class DataRepository {
   Future<Either<Failure, SearchDto>> search(String text);
 
   Future<Either<Failure, void>> sendMail(
-      String name, String email, String content);
+      String name, String email, String content, bool isDebug);
 
   Future<Either<Failure, String>> getPoints();
 

@@ -20,6 +20,7 @@ import 'package:stipra/data/models/trade_item_model.dart';
 import 'package:stipra/data/models/win_item_model.dart';
 import 'package:stipra/domain/entities/search_dto.dart';
 import 'package:stipra/presentation/widgets/snackbar_show.dart';
+import '../../core/platform/app_info.dart';
 import '../enums/change_email_action_type.dart';
 import '../enums/change_password_action_type.dart';
 import '../enums/change_profile_action_type.dart';
@@ -457,6 +458,7 @@ class HttpDataSource implements RemoteDataRepository {
         body: {
           'videodate': '$videoDate',
           'token': locator<NotificationService>().token ?? '',
+          'version': '${AppInfo.version}+${AppInfo.buildNumber}',
         },
       ),
     );
@@ -692,7 +694,8 @@ class HttpDataSource implements RemoteDataRepository {
   }
 
   @override
-  Future<void> sendMail(String name, String email, String content) async {
+  Future<void> sendMail(
+      String name, String email, String content, bool isDebug) async {
     try {
       final response = await locator<RestApiHttpService>().requestForm(
         RestApiRequest(
@@ -705,6 +708,7 @@ class HttpDataSource implements RemoteDataRepository {
             'name': name,
             'email': email,
             'content': content,
+            'debug': '$isDebug',
           },
         ),
       );

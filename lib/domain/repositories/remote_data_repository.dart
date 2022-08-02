@@ -93,7 +93,8 @@ abstract class RemoteDataRepository {
 
   Future<SearchDtoModel> search(String text);
 
-  Future<void> sendMail(String name, String email, String content);
+  Future<void> sendMail(
+      String name, String email, String content, bool isDebug);
 
   Future<String> getPoints();
 

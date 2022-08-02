@@ -511,9 +511,11 @@ class DataProvider implements DataRepository {
     String name,
     String email,
     String content,
+    bool isDebug,
   ) async {
     try {
-      final remoteData = await remoteDataSource.sendMail(name, email, content);
+      final remoteData =
+          await remoteDataSource.sendMail(name, email, content, isDebug);
       return Right(remoteData);
     } on ServerFailure catch (e) {
       return Left(e);

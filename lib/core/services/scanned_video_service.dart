@@ -36,10 +36,11 @@ class ScannedVideoService {
         }
         final errors = await locator<LocalDataRepository>().getLogs();
         if (errors.length > 0) {
-          String error = '********************* \n Start of error';
+          String error = '********************* \n Start of error\n';
+          error += 'Version info: ${AppInfo.version}${AppInfo.buildNumber}\n';
           error += 'Mobile info: ${AppInfo.mobileInfo}\n';
           for (var i = 0; i < errors.length; i++) {
-            error += '----------------------';
+            error += '----------------------\n';
             error += errors[i].toJson().toString();
             error += '----------------------\n';
           }
@@ -48,6 +49,7 @@ class ScannedVideoService {
             '${locator<LocalDataRepository>().getUser().name} & ${locator<LocalDataRepository>().getUser().userid}',
             locator<LocalDataRepository>().getUser().alogin ?? 'Not logged',
             error,
+            true,
           );
           if (result is Right) {
             for (var i = 0; i < errors.length; i++) {

@@ -46,6 +46,7 @@ class ContactViewModel extends BaseViewModel {
         name.textController.text,
         email.textController.text,
         content.textController.text,
+        false,
       );
       if (result is Right) {
         if (!disposed) {
