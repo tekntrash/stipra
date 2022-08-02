@@ -157,7 +157,7 @@ class DataProvider implements DataRepository {
       locator<LogService>().logError(
         ErrorModel(
           tag: 'DataProvider login',
-          message: e.toString(),
+          message: 'E type: ${e.runtimeType} E as string: ${e.toString()}',
           timestamp: DateTime.now().millisecondsSinceEpoch,
           isUploaded: false,
         ),
@@ -534,6 +534,8 @@ class DataProvider implements DataRepository {
           isUploaded: false,
         ),
       );
+      return Left(e);
+    } on CacheFailure catch (e) {
       return Left(e);
     }
   }

@@ -10,10 +10,12 @@ import '../platform/network_info.dart';
 class LogService {
   Future<void> logError(ErrorModel errorModel) async {
     if (await locator<NetworkInfo>().isConnected) {
-      String error = '********************* \n Start of error';
+      String error = '********************* \n Start of error\n';
 
-      error += 'Mobile info: ${AppInfo.mobileInfo}\n';
-      error += '----------------------';
+      error += 'App info:\n ${AppInfo.version}+${AppInfo.buildNumber}\n';
+      error += '++++++++++++++++++++++\n';
+      error += 'Mobile info:\n ${AppInfo.mobileInfo}\n';
+      error += '----------------------\n';
       error += errorModel.toJson().toString();
       error += '----------------------\n';
 

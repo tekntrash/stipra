@@ -75,8 +75,9 @@ class StipraApplication extends StatelessWidget {
       splitScreenMode: true,
       builder: () => GetMaterialApp(
         translations: Messages(),
-        locale: Get.locale,
-        fallbackLocale: Locale('en', 'US'),
+        locale: Locale('en', 'US'),
+        //locale: Get.locale,
+        //fallbackLocale: Locale('en', 'US'),
         debugShowCheckedModeBanner: false,
         home: SplashPage(),
         navigatorKey: AppRouter().mainNavigatorKey,

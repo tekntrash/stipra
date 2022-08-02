@@ -737,6 +737,9 @@ class HttpDataSource implements RemoteDataRepository {
         ),
       );
       log('Response of request get points: $response');
+      if (user.userid == null) {
+        throw CacheFailure();
+      }
       List result = json.decode(response.data);
       final points = result[0]['points'];
       if (points != null) {
