@@ -708,14 +708,16 @@ class HttpDataSource implements RemoteDataRepository {
             'name': name,
             'email': email,
             'content': content,
-            'debug': '$isDebug',
+            'debug': isDebug ? 'yes' : 'no',
           },
         ),
       );
-      log('Response of request send email: $response');
+      log('-------------------------------------------');
+      log('Response of request send email: $response isDebug: $isDebug name: $name email: $email content: $content');
+      log('-------------------------------------------');
       Map<String, dynamic> result = json.decode(response.data);
       final status = result['status'];
-      if (status == 'Email sent') {
+      if (status.contains('sent to')) {
         return;
       } else {
         throw status ?? 'Unknown error';
@@ -753,6 +755,8 @@ class HttpDataSource implements RemoteDataRepository {
       } else {
         throw 'Can not get points';
       }
+    } on CacheFailure {
+      throw CacheFailure();
     } catch (e) {
       log('e : $e');
       throw ServerFailure(errorMessage: e.toString());

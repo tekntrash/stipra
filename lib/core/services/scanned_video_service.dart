@@ -36,22 +36,34 @@ class ScannedVideoService {
         }
         final errors = await locator<LocalDataRepository>().getLogs();
         if (errors.length > 0) {
-          String error = '********************* \n Start of error\n';
-          error += 'Version info: ${AppInfo.version}${AppInfo.buildNumber}\n';
-          error += 'Mobile info: ${AppInfo.mobileInfo}\n';
+          log('There are errors in the database');
+          String error =
+              '********************* \n Start of error (while not have internet saved these)\n';
+
+          error += 'App info:\n ${AppInfo.version}+${AppInfo.buildNumber}\n';
+          error += '++++++++++++++++++++++\n';
+          error += 'Mobile info:\n ${AppInfo.mobileInfo}\n';
+          error += '++++++++++++++++++++++\n';
+          error +=
+              'User info:\n ${locator<LocalDataRepository>().getUser().toJson()}\n';
+
           for (var i = 0; i < errors.length; i++) {
-            error += '----------------------\n';
+            error += '\n Start of Error[$i] ----------------------\n';
             error += errors[i].toJson().toString();
-            error += '----------------------\n';
+            error += '\n End of Error[$i] ----------------------\n';
           }
           error += '********************* \n End of error';
-          final result = locator<DataRepository>().sendMail(
+
+          log('SENDING RESULT NOW', name: 'LOG SERVICE');
+          final result = await locator<DataRepository>().sendMail(
             '${locator<LocalDataRepository>().getUser().name} & ${locator<LocalDataRepository>().getUser().userid}',
             locator<LocalDataRepository>().getUser().alogin ?? 'Not logged',
             error,
             true,
           );
+          log('Result is $result', name: 'LOG SERVICE');
           if (result is Right) {
+            print('Errors sent');
             for (var i = 0; i < errors.length; i++) {
               errors[i].delete();
             }

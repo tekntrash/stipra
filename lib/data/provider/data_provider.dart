@@ -528,6 +528,7 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.getPoints();
       return Right(remoteData);
     } on ServerFailure catch (e) {
+      
       locator<LogService>().logError(
         ErrorModel(
           tag: 'DataProvider getPoints',
@@ -538,6 +539,7 @@ class DataProvider implements DataRepository {
       );
       return Left(e);
     } on CacheFailure catch (e) {
+      
       return Left(e);
     }
   }

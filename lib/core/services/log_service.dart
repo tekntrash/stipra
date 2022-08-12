@@ -15,6 +15,9 @@ class LogService {
       error += 'App info:\n ${AppInfo.version}+${AppInfo.buildNumber}\n';
       error += '++++++++++++++++++++++\n';
       error += 'Mobile info:\n ${AppInfo.mobileInfo}\n';
+      error += '++++++++++++++++++++++\n';
+      error +=
+          'User info:\n ${locator<LocalDataRepository>().getUser().toJson()}\n';
       error += '----------------------\n';
       error += errorModel.toJson().toString();
       error += '----------------------\n';
