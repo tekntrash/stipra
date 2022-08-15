@@ -4,6 +4,7 @@ import 'package:barcode_widget/barcode_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:stacked/stacked.dart';
@@ -78,7 +79,7 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                 Navigator.of(context).pop();
               },
             ),
-            title: Text('Detail'),
+            title: Text('my_earning_product_detail_title'.tr),
             centerTitle: true,
             actions: [],
           ),
@@ -165,7 +166,7 @@ class _MyProductsDetailPageState extends State<MyProductsDetailPage> {
                             width: 8,
                           ),
                           Text(
-                            'See Locations',
+                            'my_earning_product_detail_button_text'.tr,
                             style: AppTheme().paragraphSemiBoldText.copyWith(),
                           ),
                         ],

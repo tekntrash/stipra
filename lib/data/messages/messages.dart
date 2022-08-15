@@ -261,7 +261,14 @@ class Messages extends Translations {
           'trade_button_cancel': 'Cancel',
           'trade_you_can_not_trade':
               'You can not trade more than @points points',
-          //My Product detail page
+          //My Earning (Product) detail page
+          'my_earning_product_detail_title': 'Detail',
+          'my_earning_product_detail_button_text': 'See Locations',
+          'my_earning_product_detail_points': '@points Points per product',
+          'my_earning_product_detail_consumed_singular':
+              'Consumed @number time',
+          'my_earning_product_detail_consumed_plural': 'Consumed @number times',
+          'my_earning_product_detail_consumed_on': 'Consumed:',
           //Featured
           //Login Page
           //Register Page

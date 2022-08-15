@@ -528,7 +528,6 @@ class DataProvider implements DataRepository {
       final remoteData = await remoteDataSource.getPoints();
       return Right(remoteData);
     } on ServerFailure catch (e) {
-      
       locator<LogService>().logError(
         ErrorModel(
           tag: 'DataProvider getPoints',
@@ -539,7 +538,6 @@ class DataProvider implements DataRepository {
       );
       return Left(e);
     } on CacheFailure catch (e) {
-      
       return Left(e);
     }
   }
@@ -705,6 +703,40 @@ class DataProvider implements DataRepository {
         locator<LogService>().logError(
           ErrorModel(
             tag: 'DataProvider addSeenWinPoint',
+            message: e.toString(),
+            timestamp: DateTime.now().millisecondsSinceEpoch,
+            isUploaded: false,
+          ),
+        );
+        return Left(e);
+      }
+    } else {
+      try {
+        /*final localData = await localDataSource.getLastWinPoints(
+          category,
+          direction,
+        );*/
+        //return Right(localData);
+        return Left(CacheFailure());
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addSeenTradePoint(String id) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteData = await remoteDataSource.addSeenTradePoint(id);
+        //localDataSource.cacheLastWinPointsFeatured(remoteData);
+        return Right(remoteData);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on ServerFailure catch (e) {
+        locator<LogService>().logError(
+          ErrorModel(
+            tag: 'DataProvider addSeenTradePoint',
             message: e.toString(),
             timestamp: DateTime.now().millisecondsSinceEpoch,
             isUploaded: false,

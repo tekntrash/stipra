@@ -986,6 +986,27 @@ class HttpDataSource implements RemoteDataRepository {
   }
 
   @override
+  Future<void> addSeenTradePoint(String id) async {
+    try {
+      final result = await locator<RestApiHttpService>().requestForm(
+        RestApiRequest(
+          endPoint: baseUrl + 'newapp/tradepoints.php',
+          requestMethod: RequestMethod.GET,
+          queryParameters: {
+            'action': 'update',
+            'id': id,
+          },
+        ),
+      );
+      log('Result of seen trade: $result');
+      return;
+    } catch (e) {
+      log('e : $e');
+      throw ServerFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
   Future<List<TradeItemModel>> getTradePointsFeatured() async {
     try {
       final response = await locator<RestApiHttpService>()

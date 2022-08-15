@@ -33,13 +33,25 @@ class _TopBar extends StatelessWidget {
                       height: 5.h,
                     ),
                     Text(
-                      '${productConsumed.points?.toString()} Points per product',
+                      'my_earning_product_detail_points'.trParams(
+                        {'points': '${productConsumed.points}'},
+                      ),
                       style: AppTheme().smallParagraphSemiBoldText.copyWith(
                             color: AppTheme().primaryColor,
                           ),
                     ),
                     Text(
-                      'Consumed ${productConsumed.totalproduct?.toString()} ${productConsumed.totalproduct == '1' ? 'time' : 'times'}',
+                      productConsumed.totalproduct == '1'
+                          ? 'my_earning_product_detail_consumed_singular'
+                              .trParams({
+                              'number':
+                                  '${productConsumed.totalproduct?.toString()}'
+                            })
+                          : 'my_earning_product_detail_consumed_plural'
+                              .trParams({
+                              'number':
+                                  '${productConsumed.totalproduct?.toString()}'
+                            }),
                       style:
                           AppTheme().extraSmallParagraphSemiBoldText.copyWith(),
                     ),
@@ -52,7 +64,7 @@ class _TopBar extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      'Consumed:',
+                      'my_earning_product_detail_consumed_on'.tr,
                       style: AppTheme().smallParagraphSemiBoldText.copyWith(
                             fontSize: AppTheme()
                                     .smallParagraphSemiBoldText

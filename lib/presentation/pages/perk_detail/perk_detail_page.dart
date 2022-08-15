@@ -10,6 +10,8 @@ import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/widgets/html_converter.dart';
 
 import '../../../data/models/trade_item_model.dart';
+import '../../../domain/repositories/data_repository.dart';
+import '../../../injection_container.dart';
 import '../../../shared/app_theme.dart';
 import '../../widgets/curved_container.dart';
 import '../../widgets/image_box.dart';
@@ -41,6 +43,8 @@ class _PerkDetailPageState extends State<PerkDetailPage> {
   void initState() {
     carouselController = CarouselController();
     dotPosition = ValueNotifier(0.0);
+    if (widget.tradeItem.id != null)
+      locator<DataRepository>().addSeenTradePoint(widget.tradeItem.id!);
     super.initState();
   }
 
