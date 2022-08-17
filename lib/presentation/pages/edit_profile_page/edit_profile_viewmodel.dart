@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stipra/presentation/widgets/country_selector/country_service.dart';
 import '../../../data/models/validator_model.dart';
 
 import '../../../../injection_container.dart';
@@ -32,6 +33,7 @@ class EditProfileViewModel extends BaseViewModel {
 
   ValidatorModel gender = ValidatorModel();
   ValidatorModel countryValidator = ValidatorModel();
+  String? countryShortName;
   ValidatorModel dateofbirth = ValidatorModel();
   bool isSending = false;
 
@@ -44,7 +46,13 @@ class EditProfileViewModel extends BaseViewModel {
     if (result is Right) {
       final ProfileModel profile = (result as Right).value;
       address.textController.text = profile.address ?? '';
-      countryValidator.textController.text = profile.country ?? '';
+
+      countryShortName = profile.country ?? '';
+      countryValidator.textController.text = CountryService()
+              .findCountryWithAlpha2Code(profile.country ?? '')
+              .name ??
+          '';
+
       city.textController.text = profile.city ?? '';
       zipcode.textController.text = profile.zipcode ?? '';
       gender.textController.text = profile.gender == 'M'
@@ -84,7 +92,7 @@ class EditProfileViewModel extends BaseViewModel {
         ChangeProfileActionType.changeprofile,
         ProfileModel(
           address: address.textController.text,
-          country: countryValidator.textController.text,
+          country: countryShortName,
           city: city.textController.text,
           zipcode: zipcode.textController.text,
           dobday: '${dateofBirthDate.day}',

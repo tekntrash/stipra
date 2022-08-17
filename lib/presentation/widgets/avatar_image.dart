@@ -14,18 +14,27 @@ class AvatarImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var nowParam = DateTime.now();
     return ClipOval(
-      child: CachedNetworkImage(
-        imageUrl:
-            'https://api.stipra.com/newapp/avatar.php?action=getavatar&alogin=${user?.alogin}&userid=${user?.userid}',
+      child: Image.network(
+        'https://api.stipra.com/newapp/avatar.php?action=getavatar&alogin=${user?.alogin}&userid=${user?.userid}' +
+            '#' +
+            '$nowParam',
+        key: GlobalKey(),
         fit: BoxFit.cover,
-        placeholder: (context, url) => Center(
-          child: Container(
-            color: AppTheme().greyLight,
-          ),
-        ),
-        placeholderFadeInDuration: Duration(milliseconds: 300),
-        errorWidget: (context, error, stackTrace) {
+        loadingBuilder: (BuildContext context, Widget child,
+            ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) {
+            return child;
+          }
+
+          return Center(
+            child: Container(
+              color: AppTheme().greyLight,
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
           return SvgPicture.asset(
             AppImages.avatar.imagePath,
             fit: BoxFit.cover,

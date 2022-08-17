@@ -575,6 +575,7 @@ class HttpDataSource implements RemoteDataRepository {
           body: profile?.toJson() ?? {},
         ),
       );
+      log('Sending profile: ${profile?.toJson()}');
       log('Response of request changeProfile: $response');
       final profileModel =
           locator<RestApiHttpService>().handleResponse<ProfileModel>(

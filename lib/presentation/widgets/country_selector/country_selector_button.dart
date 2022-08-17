@@ -40,7 +40,7 @@ import 'country_select_button.dart';
 class CountrySelectorButton extends StatefulWidget {
   final SelectorConfig selectorConfig;
 
-  final ValueChanged<String> onCountryChanged;
+  final ValueChanged<Country?> onCountryChanged;
 
   final String? initialValue;
   final String? hintText;
@@ -255,7 +255,7 @@ class _InputWidgetState extends State<CountrySelectorButton> {
     setState(() {
       this.country = country;
     });
-    widget.onCountryChanged(country?.name ?? '');
+    widget.onCountryChanged(country);
     widget.countryValidator.textController.text = country?.name ?? '';
     //TODO country changed
   }

@@ -79,9 +79,10 @@ class EditProfilePageState extends State<EditProfilePage> {
                               useEmoji: true,
                               setSelectorButtonAsPrefixIcon: false,
                             ),
-                            onCountryChanged: (String country) {
+                            onCountryChanged: (country) {
                               viewModel.countryValidator.errorNotifier.value =
                                   null;
+                              viewModel.countryShortName = country!.alpha2Code;
                               print(country);
                             },
                             initialValue:

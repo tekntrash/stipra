@@ -72,10 +72,11 @@ class EnterPhoneNumberViewModel extends BaseViewModel {
         await sendBackendSignUpRequest(context);
         LockOverlay().closeOverlay();
         return;
+      } else if (isSignIn == true) {
+        LockOverlay().showClassicLoadingOverlay();
+        await sendBackendSignInRequest(context);
+        LockOverlay().closeOverlay();
       }
-      LockOverlay().showClassicLoadingOverlay();
-      await sendBackendSignInRequest(context);
-      LockOverlay().closeOverlay();
     } else {
       //Error
     }
