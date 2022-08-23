@@ -89,6 +89,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                             viewModel.routeToMyProfile(context);
                                           },
                                         ),
+                                        /*buildProfileButton(
+                                          'Loyalty Cards',
+                                          onTap: () {
+                                            viewModel
+                                                .routeToLoyaltyCards(context);
+                                          },
+                                        ),*/
                                         buildProfileButton(
                                           'profile_page_privacy_button_text'.tr,
                                           onTap: () {

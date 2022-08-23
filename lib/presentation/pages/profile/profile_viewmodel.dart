@@ -12,6 +12,7 @@ import '../../../domain/repositories/local_data_repository.dart';
 import '../../../injection_container.dart';
 import '../change_email/change_email_page.dart';
 import '../edit_profile_page/edit_profile_page.dart';
+import '../loyalty_cards/card_list/card_list_page.dart';
 import '../sign/change_password/change_password_page.dart';
 
 /// Profile Controller for handling routes in there
@@ -22,6 +23,13 @@ class ProfileViewModel extends BaseViewModel {
     AppNavigator.push(
       context: context,
       child: MyProfilePage(),
+    );
+  }
+
+  routeToLoyaltyCards(BuildContext context) {
+    AppNavigator.push(
+      context: context,
+      child: LoyaltyCardListPage(),
     );
   }
 

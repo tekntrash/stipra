@@ -25,7 +25,7 @@ class LockOverlay {
     if (haveOverlay) return;
     //final String myKey = _uniqueKey;
     if (buildAfterRebuild) {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         showClassicLoadingOverlay();
       });
       return;

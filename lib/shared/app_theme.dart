@@ -49,6 +49,18 @@ class AppTheme {
     fontSize: 25,
     fontWeight: FontWeight.bold,
   );
+  final medParagraphBoldText = GoogleFonts.inter(
+    fontSize: 22,
+    fontWeight: FontWeight.bold,
+  );
+  final medParagraphSemiboldText = GoogleFonts.inter(
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
+  );
+  final medParagraphRegularText = GoogleFonts.inter(
+    fontSize: 22,
+    fontWeight: FontWeight.w400,
+  );
   final paragraphBoldText = GoogleFonts.inter(
     fontSize: 20,
     fontWeight: FontWeight.bold,

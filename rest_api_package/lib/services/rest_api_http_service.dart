@@ -173,7 +173,7 @@ class RestApiHttpService {
     Function(int, int)? onSendProgress,
     CancelToken? cancelToken,
   }) async {
-    Response resp;
+    Response? resp;
     String url = apiRequest.endPoint;
 
     Options options = await prepareOptions(authorize: apiRequest.authorize);
@@ -215,7 +215,8 @@ class RestApiHttpService {
       if (e.response != null) {
         return e.response!;
       }
-      throw Exception('DIO Error: $e');
+      throw Exception(
+          'URL: $url options: $options QueryParams: ${apiRequest.queryParameters} body: ${apiRequest.body} Response: ${resp?.toString()} fileName: $fileFieldName ---> DIO Error: $e Error response: ${e.response} Error message: ${e.message} stacktrace ${e.stackTrace} reqoptions: ${e.requestOptions}');
     }
     return resp;
   }

@@ -102,6 +102,9 @@ dependencies:
   flutter_local_notifications: ^9.5.3+1
   html_unescape: ^2.0.0
   simple_html_css: ^3.0.1+1
+  credit_card_scanner: ^1.0.5
+  flutter_credit_card: ^3.0.3
+  
 
 dependency_overrides:
   permission_handler: ^9.2.0

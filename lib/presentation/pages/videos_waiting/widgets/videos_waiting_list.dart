@@ -322,7 +322,7 @@ class _VideosWaitingListState extends State<VideosWaitingList>
                                             true;
                                         widget.scannedVideos[index].save();
                                         WidgetsBinding.instance
-                                            ?.addPostFrameCallback(
+                                            .addPostFrameCallback(
                                           (timeStamp) {
                                             setState(() {});
                                           },

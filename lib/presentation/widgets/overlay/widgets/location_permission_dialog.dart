@@ -40,7 +40,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
   @override
   void initState() {
     _isResumed = true;
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -60,7 +60,7 @@ class _LocationPermissionDialogState extends State<LocationPermissionDialog>
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

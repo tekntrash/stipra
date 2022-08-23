@@ -24,7 +24,7 @@ abstract class CustomOverlay {
     if (haveOverlay) return;
 
     if (addFrameCallback) {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         showCustomOverlay(onTap: onTap, params: params);
       });
       return;

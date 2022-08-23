@@ -300,7 +300,7 @@ class BarcodeScanViewModel extends BaseViewModel {
       SnackbarOverlay().show(
         addFrameCallback: true,
         onTap: () {
-          WidgetsBinding.instance?.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             AppNavigator.push(
               context: AppRouter().mainNavigatorKey!.currentState!.context,
               child: EnterPhoneNumberScreen(isSignIn: true),

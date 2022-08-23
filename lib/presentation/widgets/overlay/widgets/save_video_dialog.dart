@@ -32,7 +32,7 @@ class _SaveVideoDialogState extends State<SaveVideoDialog>
   @override
   void initState() {
     _isResumed = true;
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -52,7 +52,7 @@ class _SaveVideoDialogState extends State<SaveVideoDialog>
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

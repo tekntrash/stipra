@@ -134,7 +134,8 @@ class DataProvider implements DataRepository {
       locator<LogService>().logError(
         ErrorModel(
           tag: 'DataProvider SendScannedVideo',
-          message: e.toString(),
+          message:
+              'Parameters: Progress notifier $progressNotifier, ------ ${e.toString()}',
           timestamp: DateTime.now().millisecondsSinceEpoch,
           isUploaded: false,
         ),
