@@ -4,20 +4,32 @@ class RestApiHttpService {
   Map<String, String> publicHeaders = <String, String>{};
   Dio dio;
   DefaultCookieJar cookieJar;
-  RestApiHttpService(this.dio, this.cookieJar) {
+
+  ///! Make sure base url ends with /
+  ///So you can call your API like in the examples.
+  final String baseUrl;
+
+  ///! Make sure base url ends with /
+  ///So you can call your API like in the examples.
+  RestApiHttpService(
+    this.dio,
+    this.cookieJar,
+    this.baseUrl,
+  ) {
     log('Cookie interceptor adding');
     dio.interceptors.add(CookieManager(cookieJar));
     log('Cookie interceptor added');
   }
 
-  Future<Options> prepareOptions({bool authorize = false}) async {
+  Future<Options> prepareOptions({String? bearerToken}) async {
     final Map<String, String> headers = <String, String>{};
     headers.putIfAbsent(
         HttpHeaders.contentTypeHeader, () => 'application/json');
-    headers.putIfAbsent(HttpHeaders.acceptHeader, () => 'application/json');
+    //headers.putIfAbsent(HttpHeaders.acceptHeader, () => 'application/json');
 
-    if (authorize) {
-      //headers.putIfAbsent(HttpHeaders.authorizationHeader, () => UserService().getToken!);
+    if (bearerToken != null) {
+      headers.putIfAbsent(
+          HttpHeaders.authorizationHeader, () => 'Bearer $bearerToken');
     }
     return Options(
         headers: headers,
@@ -28,7 +40,7 @@ class RestApiHttpService {
   }
 
   Future<T> requestAndHandle<T>(
-    RestApiRequest apiRequest, {
+    IRestApiRequest apiRequest, {
     bool removeBaseUrl = false,
     required dynamic parseModel,
     bool isRawJson = false,
@@ -39,7 +51,7 @@ class RestApiHttpService {
   }
 
   Future<List<T>> requestAndHandleList<T>(
-    RestApiRequest apiRequest, {
+    IRestApiRequest apiRequest, {
     bool removeBaseUrl = false,
     required dynamic parseModel,
     bool isRawJson = false,
@@ -52,12 +64,12 @@ class RestApiHttpService {
     );
   }
 
-  Future<Response> request(RestApiRequest apiRequest,
+  Future<Response> request(IRestApiRequest apiRequest,
       {bool removeBaseUrl = false}) async {
     Response resp;
-    String url = apiRequest.endPoint;
+    String url = baseUrl + apiRequest.endPoint;
 
-    Options options = await prepareOptions(authorize: apiRequest.authorize);
+    Options options = await prepareOptions(bearerToken: apiRequest.bearerToken);
 
     try {
       if (apiRequest.requestMethod == RequestMethod.GET) {
@@ -100,7 +112,7 @@ class RestApiHttpService {
   }
 
   Future<T> requestFormAndHandle<T>(
-    RestApiRequest apiRequest, {
+    IRestApiRequest apiRequest, {
     required dynamic parseModel,
     bool isRawJson = false,
   }) async {
@@ -110,7 +122,7 @@ class RestApiHttpService {
   }
 
   Future<List<T>> requestFormAndHandleList<T>(
-    RestApiRequest apiRequest, {
+    IRestApiRequest apiRequest, {
     required dynamic parseModel,
     bool isRawJson = false,
   }) async {
@@ -120,12 +132,12 @@ class RestApiHttpService {
   }
 
   Future<Response> requestForm(
-    RestApiRequest apiRequest,
+    IRestApiRequest apiRequest,
   ) async {
     Response resp;
     String url = apiRequest.endPoint;
 
-    Options options = await prepareOptions(authorize: apiRequest.authorize);
+    Options options = await prepareOptions(bearerToken: apiRequest.bearerToken);
 
     var formData = FormData();
 
@@ -167,7 +179,7 @@ class RestApiHttpService {
   }
 
   Future<Response> requestFile(
-    RestApiRequest apiRequest, {
+    IRestApiRequest apiRequest, {
     required String fileFieldName,
     required File file,
     Function(int, int)? onSendProgress,
@@ -176,12 +188,16 @@ class RestApiHttpService {
     Response? resp;
     String url = apiRequest.endPoint;
 
-    Options options = await prepareOptions(authorize: apiRequest.authorize);
+    Options options = await prepareOptions(bearerToken: apiRequest.bearerToken);
 
     var mfile = await MultipartFile.fromFile(
       file.path,
       filename: file.path.split('/').last,
     );
+    /*var mfile = MultipartFile.fromBytes(
+      file.readAsBytesSync(),
+      filename: file.path.split('/').last,
+    );*/
     var formData = FormData();
 
     formData.files.add(MapEntry(fileFieldName, mfile));
@@ -243,21 +259,17 @@ class RestApiHttpService {
     if (response.statusCode == 200 || response.statusCode == 201) {
       try {
         final data = response.data;
-        log('-------------------------------');
-        log('Response handle type: $parseModel and isRawJson: $isRawJson');
         log('Response data: $data');
-        log('-------------------------------');
         if (isRawJson) {
           final list = json.decode(data) as List;
           return List<T>.from(list.map((x) => parseModel.fromJson(x)));
         }
         return List<T>.from(data.map((x) => parseModel.fromJson(x)));
       } catch (e) {
-        log('Error: $e');
-        return <T>[];
+        return parseModel.fromJson({});
       }
     } else {
-      return <T>[];
+      return [parseModel.fromJson({})];
     }
   }
 }

@@ -1,21 +1,19 @@
 part of '../card_add_page.dart';
 
 class _CardForm extends ViewModelWidget<LoyaltyCardAddViewModel> {
-  _CardForm() : super(reactive: false);
+  _CardForm() : super();
   @override
   Widget build(BuildContext context, LoyaltyCardAddViewModel viewModel) {
+    log('Card info from form: ${viewModel.creditCardModel.toJson()}');
     return CustomCreditCardForm(
-      cardNumber: '',
+      cardNumber: viewModel.creditCardModel.cardNumber ?? '',
       cvvCode: '',
-      expiryDate: '',
-      cardHolderName: '',
-      cardIssuerName: '',
+      expiryDate: viewModel.creditCardModel.expiryDate ?? '',
+      cardHolderName: viewModel.creditCardModel.cardHolderName ?? '',
+      cardIssuerName: viewModel.creditCardModel.cardIssuerName ?? '',
       formKey: viewModel.formKey,
       onCreditCardModelChange: (data) {
-        viewModel.cardHolderName = data.cardHolderName;
-        viewModel.cardNumber = data.cardNumber;
-        viewModel.expiryDate = data.expiryDate;
-        viewModel.cardIssuer = data.cardIssuerName;
+        viewModel.creditCardModel = data;
         viewModel.notifyListeners();
       },
       themeColor: Colors.red,

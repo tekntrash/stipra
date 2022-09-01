@@ -3,11 +3,10 @@ part of '../card_add_page.dart';
 class _CardView extends ViewModelWidget<LoyaltyCardAddViewModel> {
   @override
   Widget build(BuildContext context, LoyaltyCardAddViewModel viewModel) {
-    log('sr: ${viewModel.cardIssuer}');
     return CustomCreditCardWidget(
-      cardNumber: viewModel.cardNumber,
-      expiryDate: viewModel.expiryDate,
-      cardHolderName: viewModel.cardHolderName,
+      cardNumber: viewModel.creditCardModel.cardNumber ?? '',
+      expiryDate: viewModel.creditCardModel.expiryDate ?? '',
+      cardHolderName: viewModel.creditCardModel.cardHolderName ?? '',
       cvvCode: '',
       showBackView: false,
       onCreditCardWidgetChange: (creditCardBrand) {
@@ -16,13 +15,13 @@ class _CardView extends ViewModelWidget<LoyaltyCardAddViewModel> {
       customCardTypeIcons: [
         CustomCardTypeIcon(
           cardType: CardType.otherBrand,
-          cardImage: viewModel.cardIssuer.getIconFromIssuer,
+          cardImage: viewModel.creditCardModel.cardIssuerName.getIconFromIssuer,
         ),
       ],
       cardType: CardType.otherBrand,
       isSwipeGestureEnabled: false,
       isHolderNameVisible: true,
-      cardBgColor: viewModel.cardIssuer.getColorFromIssuer,
+      cardBgColor: viewModel.creditCardModel.cardIssuerName.getColorFromIssuer,
       isChipVisible: false,
       obscureCardNumber: false,
       numberTextStyle: AppTheme().smallParagraphRegularText.copyWith(
@@ -37,7 +36,7 @@ class _CardView extends ViewModelWidget<LoyaltyCardAddViewModel> {
             fontSize: 12,
           ),
       borderRadius: 15,
-      bankName: viewModel.cardIssuer.toUpperCase(),
+      bankName: viewModel.creditCardModel.cardIssuerName?.toUpperCase(),
     );
   }
 }

@@ -1,5 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:stipra/core/services/validator_service.dart';
+
+import 'data/models/custom_credit_card_model.dart';
 
 class CustomCreditCardForm extends StatefulWidget {
   const CustomCreditCardForm({
@@ -110,11 +115,13 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
     cardIssuerName = widget.cardIssuerName;
 
     creditCardModel = CustomCreditCardModel(
-      cardNumber,
-      expiryDate,
-      cardHolderName,
-      cardIssuerName,
+      cardNumber: cardNumber,
+      expiryDate: expiryDate,
+      cardHolderName: cardHolderName,
+      cardIssuerName: cardIssuerName,
     );
+
+    setState(() {});
   }
 
   @override
@@ -164,6 +171,22 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
   }
 
   @override
+  void didUpdateWidget(covariant CustomCreditCardForm oldWidget) {
+    if (widget.cardNumber != oldWidget.cardNumber ||
+        widget.cardHolderName != oldWidget.cardHolderName ||
+        widget.cardIssuerName != oldWidget.cardIssuerName ||
+        widget.expiryDate != oldWidget.expiryDate) {
+      log('not same with old');
+      createCreditCardModel();
+      _cardNumberController.text = widget.cardNumber;
+      _expiryDateController.text = widget.expiryDate;
+      _cardHolderNameController.text = widget.cardHolderName;
+      _cardIssuerNameController.text = widget.cardIssuerName;
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void dispose() {
     cardHolderNode.dispose();
     cardIssuerNode.dispose();
@@ -192,8 +215,8 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
             Visibility(
               visible: widget.isIssuerNameVisible,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                margin: const EdgeInsets.only(left: 16, top: 16, right: 16),
+                padding: const EdgeInsets.only(bottom: 4.0),
+                margin: const EdgeInsets.only(left: 16, top: 0, right: 16),
                 child: TextFormField(
                   controller: _cardIssuerNameController,
                   cursorColor: widget.cursorColor ?? themeColor,
@@ -208,13 +231,15 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
                   onEditingComplete: () {
                     FocusScope.of(context).requestFocus(cardNumberNode);
                   },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: ValidatorService().onlyRequired,
                 ),
               ),
             ),
             Visibility(
               visible: widget.isCardNumberVisible,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
                 child: TextFormField(
                   obscureText: widget.obscureNumber,
@@ -231,10 +256,13 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   autofillHints: const <String>[AutofillHints.creditCardNumber],
-                  autovalidateMode: widget.autovalidateMode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   validator: (String? value) {
                     // Validate less that 13 digits +3 white spaces
-                    if (value!.isEmpty || value.length < 12) {
+                    if (value!.isEmpty) {
+                      return ValidatorService().onlyRequired(value);
+                    }
+                    if (value.length < 12) {
                       return widget.numberValidationMessage;
                     }
                     return null;
@@ -248,7 +276,7 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
                   visible: widget.isExpiryDateVisible,
                   child: Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
                       margin:
                           const EdgeInsets.only(left: 16, top: 8, right: 16),
                       child: TextFormField(
@@ -267,9 +295,10 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
                         autofillHints: const <String>[
                           AutofillHints.creditCardExpirationDate
                         ],
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (String? value) {
                           if (value!.isEmpty) {
-                            return widget.dateValidationMessage;
+                            return ValidatorService().onlyRequired(value);
                           }
                           final DateTime now = DateTime.now();
                           final List<String> date = value.split(RegExp(r'/'));
@@ -293,7 +322,7 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
             Visibility(
               visible: widget.isHolderNameVisible,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 margin: const EdgeInsets.only(left: 16, top: 8, right: 16),
                 child: TextFormField(
                   controller: _cardHolderNameController,
@@ -310,6 +339,8 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
                     FocusScope.of(context).unfocus();
                     onCreditCardModelChange(creditCardModel);
                   },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: ValidatorService().onlyRequired,
                 ),
               ),
             ),
@@ -318,14 +349,4 @@ class _CustomCreditCardFormState extends State<CustomCreditCardForm> {
       ),
     );
   }
-}
-
-class CustomCreditCardModel {
-  CustomCreditCardModel(this.cardNumber, this.expiryDate, this.cardHolderName,
-      this.cardIssuerName);
-
-  String cardNumber = '';
-  String expiryDate = '';
-  String cardHolderName = '';
-  String cardIssuerName = '';
 }

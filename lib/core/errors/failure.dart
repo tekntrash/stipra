@@ -40,3 +40,7 @@ class PhoneSmsExceededLimit extends Failure {
 class CacheFailure extends Failure {}
 
 class DeletedFileFailure extends Failure {}
+
+class NetworkFailure extends Failure {
+  NetworkFailure() : super([]);
+}

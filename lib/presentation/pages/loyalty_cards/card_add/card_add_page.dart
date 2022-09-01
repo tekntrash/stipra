@@ -1,52 +1,94 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/credit_card_form.dart';
-import 'package:flutter_credit_card/credit_card_model.dart';
 import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:flutter_credit_card/custom_card_type_icon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stipra/presentation/pages/loyalty_cards/card_add/card_add_viewmodel.dart';
 import 'package:stipra/presentation/pages/loyalty_cards/custom_credit_card_form.dart';
-import 'package:stipra/presentation/widgets/local_image_box.dart';
+import 'package:stipra/presentation/pages/loyalty_cards/data/enums/card_brand_specs.dart';
+import 'package:stipra/presentation/pages/loyalty_cards/data/models/custom_credit_card_model.dart';
+import 'package:stipra/presentation/widgets/theme_button.dart';
 
 import '../../../../shared/app_theme.dart';
-import '../../../widgets/field_builder_auto.dart';
 import '../custom_credit_card_widget.dart';
 
 part 'widgets/card_view.dart';
 part 'widgets/card_form.dart';
 
 class LoyaltyCardAddPage extends StatelessWidget {
-  const LoyaltyCardAddPage({Key? key}) : super(key: key);
+  final CustomCreditCardModel? oldCardModel;
+  const LoyaltyCardAddPage({
+    Key? key,
+    this.oldCardModel,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<LoyaltyCardAddViewModel>.nonReactive(
       viewModelBuilder: () => LoyaltyCardAddViewModel(),
+      onModelReady: (model) => model.init(oldCardModel),
       builder: (context, viewModel, child) {
         return Scaffold(
           appBar: buildAppBar(context),
           backgroundColor: AppTheme().whiteColor,
-          body: Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: 0,
-              vertical: 12,
-            ),
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: topSideBuilder(),
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: topSideBuilder(),
+              ),
+              SliverToBoxAdapter(
+                child: _CardView(),
+              ),
+              SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () async {
+                    viewModel.scanCard(context);
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.only(
+                        left: 16, top: 0, right: 16, bottom: 12),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.fullscreen,
+                          size: 24,
+                          color: AppTheme().greyScale3,
+                        ),
+                        SizedBox(width: 6),
+                        Text(
+                          'Scan your card',
+                          style: AppTheme().smallParagraphMediumText.copyWith(
+                                fontSize: 18,
+                                color: AppTheme().greyScale3,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                SliverToBoxAdapter(
-                  child: _CardView(),
+              ),
+              SliverToBoxAdapter(
+                child: _CardForm(),
+              ),
+              SliverToBoxAdapter(
+                child: ThemeButton(
+                  borderRadius: BorderRadius.circular(50),
+                  width: 50,
+                  height: 50,
+                  margin:
+                      EdgeInsets.only(top: 12, bottom: 12, left: 16, right: 16),
+                  onTap: () {
+                    viewModel.saveCard(context);
+                  },
+                  text: 'Save',
                 ),
-                SliverToBoxAdapter(
-                  child: _CardForm(),
-                ),
-              ],
-            ),
+              )
+            ],
           ),
         );
       },
@@ -86,6 +128,7 @@ class LoyaltyCardAddPage extends StatelessWidget {
   Widget topSideBuilder() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -95,39 +138,33 @@ class LoyaltyCardAddPage extends StatelessWidget {
             style: AppTheme().medParagraphRegularText,
           ),
         ),
+        /*GestureDetector(
+          onTap: () async {
+            // viewModel.scanCard(context);
+          },
+          child: Container(
+            padding:
+                const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 8),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.fullscreen,
+                  size: 22,
+                  color: AppTheme().greyScale3,
+                ),
+                SizedBox(width: 6),
+                Text(
+                  'Scan your card',
+                  style: AppTheme().smallParagraphMediumText.copyWith(
+                        fontSize: 16,
+                        color: AppTheme().greyScale3,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),*/
       ],
-    );
-  }
-}
-
-extension CardExtension on String? {
-  Color get getColorFromIssuer {
-    if (this?.toLowerCase() == 'nectar') {
-      return Colors.purple[900]!;
-    } else if (this?.toLowerCase() == 'stipra') {
-      return AppTheme().darkPrimaryColor;
-    } else {
-      return Colors.black;
-    }
-  }
-
-  Widget get getIconFromIssuer {
-    late String icon;
-    double size = 28;
-    if (this?.toLowerCase() == 'nectar') {
-      icon = 'nectar_logo.png';
-      size = 64;
-    } else {
-      icon = 'wireless.png';
-    }
-    return Container(
-      height: 64,
-      child: LocalImageBox(
-        width: size,
-        height: size,
-        imgUrl: icon,
-        fit: BoxFit.contain,
-      ),
     );
   }
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "cardNumber": "5413 7513 6875 6721",
+    "expiryDate": "11/25",
+    "cardHolderName": "Ramazan Yigit",
+    "cardIssuerName": "Nectar"
+  },
+  {
+    "cardNumber": "8751 5470 2215 9687",
+    "expiryDate": "07/26",
+    "cardHolderName": "Ramazan Yigit",
+    "cardIssuerName": "Stipra"
+  },
+  {
+    "cardNumber": "8751 5470 2215 9687",
+    "expiryDate": "07/26",
+    "cardHolderName": "Ramazan Yigit",
+    "cardIssuerName": "test"
+  }
+]
