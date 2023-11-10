@@ -1,5 +1,5 @@
 # Stipra
-<img src="https://www.stipra.com/images/iphone-mockup.png" >
+<img src="https://www.stipra.com/images/iphone-mockup.png" width="50%">
 <div align="left">
 The Stipra Ecosystem is a product of TeknTrash: it the first service which effectively rewards people for proper recycling while providing companies with unique post-sales data. The ecosystem is made of an app, a monitoring website (corp.stipra.com), and a network of StipraPOD ("Point of Disposal") connected<br><br>
 
