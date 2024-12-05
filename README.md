@@ -10,7 +10,5 @@ This code is developed in Flutter and can run in Android and IOS<br><br>
 
 <b>Future improvements</b><br>
 1 - NFC card reader to login to the StipraPOD network of smart bins using the mobile without having to carry a card<br>
-2 - Connection with loyalty systems (Nectar, BP, ASDA, etc) as to integrate with their systems and obtain rewards<br><br>
-  
-Please note this is a dead project, therefore there is no support of any kind
+2 - Connection with loyalty systems (Nectar, BP, ASDA, etc) as to integrate with their systems and obtain rewards
 <div>
