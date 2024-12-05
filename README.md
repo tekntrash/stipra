@@ -7,8 +7,3 @@ This repository is the app of the Stipra system. The app uses the camera to read
 This code is therefore quite useful as a basis for a camera system able to send videos to be studied, and also as a basis for a loyalty system, where points are awarded to users and they can trade it for perks<br><br>
 
 This code is developed in Flutter and can run in Android and IOS<br><br>
-
-<b>Future improvements</b><br>
-1 - NFC card reader to login to the StipraPOD network of smart bins using the mobile without having to carry a card<br>
-2 - Connection with loyalty systems (Nectar, BP, ASDA, etc) as to integrate with their systems and obtain rewards
-<div>
